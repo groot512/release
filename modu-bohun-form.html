@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모두보훈 가맹점 가입 신청서 (사전등록)</title>
+    <!-- Google Fonts: Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-md p-8 md:p-12 my-10">
+        
+        <!-- 헤더 섹션 -->
+        <div class="text-center mb-10 border-b pb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">모두보훈 가맹점 가입 신청서</h1>
+            <p class="text-lg text-gray-600 mt-2">(사전등록)</p>
+            <p class="text-gray-500 mt-6 text-left leading-relaxed">
+                국가를 위해 희생하고 공헌하신 국가보훈대상자분들과 그 가족분들께 존경과 감사의 마음을 담아 할인 혜택 등을 제공하는 '모두보훈' 캠페인에 동참해주셔서 진심으로 감사드립니다.
+                <br>정식 서비스 오픈 전 가맹점 사전 등록을 위한 신청서이며, 작성해주신 정보는 할인 정보 안내 페이지 제작에 활용됩니다.
+            </p>
+        </div>
+
+        <!-- 설문 폼 -->
+        <form id="survey-form" class="space-y-8">
+            
+            <!-- 업체 정보 섹션 -->
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold text-gray-800 border-l-4 border-blue-600 pl-4">1. 업체 정보</h2>
+                <div>
+                    <label for="bizName" class="block text-sm font-medium text-gray-700 mb-1">업체명 <span class="text-red-500">*</span></label>
+                    <input type="text" id="bizName" name="bizName" required class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="bizRegNum" class="block text-sm font-medium text-gray-700 mb-1">사업자등록번호 <span class="text-red-500">*</span></label>
+                    <input type="text" id="bizRegNum" name="bizRegNum" required placeholder="예: 123-45-67890" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="bizAddress" class="block text-sm font-medium text-gray-700 mb-1">사업장 주소 <span class="text-red-500">*</span></label>
+                    <input type="text" id="bizAddress" name="bizAddress" required class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="bizType" class="block text-sm font-medium text-gray-700 mb-1">업종 <span class="text-red-500">*</span></label>
+                    <input type="text" id="bizType" name="bizType" required placeholder="예: 일반음식점, 카페, 미용실 등" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="repName" class="block text-sm font-medium text-gray-700 mb-1">대표자 성명 <span class="text-red-500">*</span></label>
+                    <input type="text" id="repName" name="repName" required class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="repPhone" class="block text-sm font-medium text-gray-700 mb-1">대표자 연락처 <span class="text-red-500">*</span></label>
+                    <input type="tel" id="repPhone" name="repPhone" required placeholder="예: 010-1234-5678" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+
+            <!-- 혜택 정보 섹션 -->
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold text-gray-800 border-l-4 border-blue-600 pl-4">2. 혜택 정보</h2>
+                <div>
+                    <label for="benefit" class="block text-sm font-medium text-gray-700 mb-1">제공 혜택 <span class="text-red-500">*</span></label>
+                    <textarea id="benefit" name="benefit" rows="4" required placeholder="예: 전 품목 10% 할인 (주류 제외), 식사 메뉴 주문 시 음료 1잔 무료 제공 등" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+                <div>
+                    <label for="otherInfo" class="block text-sm font-medium text-gray-700 mb-1">기타 전달 사항 (선택)</label>
+                    <textarea id="otherInfo" name="otherInfo" rows="3" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+            </div>
+
+            <!-- 첨부파일 섹션 -->
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold text-gray-800 border-l-4 border-blue-600 pl-4">3. 첨부 파일</h2>
+                <div>
+                    <label for="file" class="block text-sm font-medium text-gray-700 mb-1">사업자등록증 사본 (선택)</label>
+                    <input type="file" id="file" name="file" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
+                </div>
+            </div>
+
+            <!-- 약관 동의 섹션 -->
+            <div class="space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 border-l-4 border-blue-600 pl-4">4. 약관 동의</h2>
+                <div class="p-4 border rounded-md bg-gray-50">
+                    <label for="consent" class="flex items-start">
+                        <input type="checkbox" id="consent" name="consent" required class="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-1">
+                        <div class="ml-3 text-sm">
+                            <span class="font-medium text-gray-800">개인정보 수집 및 이용 동의 (필수)</span>
+                            <div class="text-gray-500 mt-2 h-24 overflow-y-auto text-xs p-2 bg-white border rounded-md">
+                                1. 수집하는 개인정보의 항목 : 업체명, 사업자등록번호, 사업장 주소, 업종, 대표자 성명, 대표자 연락처<br>
+                                2. 개인정보의 수집 및 이용 목적 : '모두보훈' 캠페인 가맹점 정보 확인 및 안내 페이지 제작, 관련 안내 및 연락<br>
+                                3. 개인정보의 보유 및 이용 기간 : 정보 수집 및 이용 목적 달성 시 또는 정보주체의 삭제 요청 시까지 보유 및 이용됩니다.<br>
+                                4. 귀하는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다. 다만, 동의를 거부할 경우 가맹점 등록이 제한될 수 있습니다.
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+
+            <!-- 제출 버튼 -->
+            <div>
+                <button type="submit" id="submit-button" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    가입 신청서 제출하기
+                </button>
+            </div>
+        </form>
+
+        <!-- 상태 메시지 표시 영역 -->
+        <div id="status" class="mt-8 text-center text-md font-medium"></div>
+    </div>
+
+    <script>
+        // =================================================================
+        // 중요: 이 URL을 당신의 새 Google Apps Script 웹 앱 URL로 바꾸세요.
+        // =================================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3LA9If_izBbvGwf395kE7MmGklIlPohhnan7UzMMJ3gqQnd_zgOY77WvIv1GynX2yVw/exec";
+        // =================================================================
+
+        const form = document.getElementById('survey-form');
+        const statusDiv = document.getElementById('status');
+        const submitButton = document.getElementById('submit-button');
+        const consentCheckbox = document.getElementById('consent');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!consentCheckbox.checked) {
+                statusDiv.innerHTML = '<span class="text-red-600">개인정보 수집 및 이용에 동의해야 합니다.</span>';
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.innerText = "제출 중입니다...";
+            statusDiv.textContent = "";
+
+            const formData = new FormData(form);
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    statusDiv.innerHTML = '<span class="text-green-600">✅ 신청서가 성공적으로 제출되었습니다. 검토 후 연락드리겠습니다.</span>';
+                    form.reset();
+                } else {
+                    throw new Error(data.message || '알 수 없는 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error!', error);
+                statusDiv.innerHTML = `<span class="text-red-600">❌ 제출에 실패했습니다: ${error.message}</span>`;
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.innerText = "가입 신청서 제출하기";
+            });
+        });
+    </script>
+</body>
+</html>
