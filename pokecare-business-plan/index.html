@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포케어 (PokeCare) - 깨끗한 얼음을 선물하다</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-snowflake"></i>
+                <span>포케어</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#hero">홈</a></li>
+                <li><a href="#market">시장분석</a></li>
+                <li><a href="#services">서비스</a></li>
+                <li><a href="#differentiation">차별화</a></li>
+                <li><a href="#education">교육/창업</a></li>
+                <li><a href="#growth">성장전망</a></li>
+            </ul>
+            <button class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-logo">
+                        <i class="fas fa-snowflake"></i>
+                        <h1>포케어 <span class="text-accent">(PokeCare)</span></h1>
+                    </div>
+                    <p class="hero-tagline">깨끗한 얼음을 선물하다</p>
+                    <p class="hero-description">카페·식당 제빙기 토탈 위생 관리 서비스</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn--primary btn--lg">
+                            <i class="fas fa-store"></i>
+                            창업 문의
+                        </button>
+                        <button class="btn btn--outline btn--lg">
+                            <i class="fas fa-phone"></i>
+                            서비스 신청
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-icon-grid">
+                        <div class="hero-icon"><i class="fas fa-tint"></i></div>
+                        <div class="hero-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="hero-icon"><i class="fas fa-cog"></i></div>
+                        <div class="hero-icon"><i class="fas fa-chart-line"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Analysis Section -->
+    <section id="market" class="market-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-bar"></i> 시장 분석</h2>
+                <p>빠르게 성장하는 제빙기 위생 관리 시장</p>
+            </div>
+            <div class="market-grid">
+                <div class="market-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-won-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-target="1200">0</h3>
+                        <p>억원/년 시장규모</p>
+                    </div>
+                </div>
+                <div class="market-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-trending-up"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-target="10">0</h3>
+                        <p>% 연평균 성장률</p>
+                    </div>
+                </div>
+                <div class="market-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-target="30">0</h3>
+                        <p>% 정기 세척률</p>
+                    </div>
+                </div>
+                <div class="market-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-target="500000">0</h3>
+                        <p>개 타겟 매장</p>
+                    </div>
+                </div>
+            </div>
+            <div class="market-chart-container">
+                <div class="chart-wrapper">
+                    <h3>시장 성장 전망</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-cogs"></i> 서비스 요금제</h2>
+                <p>다양한 규모의 사업장에 맞는 맞춤형 서비스</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <i class="fas fa-cube"></i>
+                        <h3>소형(업소용)</h3>
+                        <div class="price">
+                            <span class="currency">₩</span>
+                            <span class="amount">100,000</span>
+                        </div>
+                        <p>1회 세척</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 기본 분해세척</li>
+                        <li><i class="fas fa-check"></i> 살균 소독</li>
+                        <li><i class="fas fa-check"></i> 필터 교체</li>
+                        <li><i class="fas fa-check"></i> 위생 점검</li>
+                    </ul>
+                    <button class="btn btn--outline btn--full-width">선택하기</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <i class="fas fa-cubes"></i>
+                        <h3>일반형</h3>
+                        <div class="price">
+                            <span class="currency">₩</span>
+                            <span class="amount">120,000</span>
+                        </div>
+                        <p>1회 세척</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 완전 분해세척</li>
+                        <li><i class="fas fa-check"></i> 살균 소독</li>
+                        <li><i class="fas fa-check"></i> 전체 필터 교체</li>
+                        <li><i class="fas fa-check"></i> 성능 점검</li>
+                        <li><i class="fas fa-check"></i> SWAB 검사</li>
+                    </ul>
+                    <button class="btn btn--outline btn--full-width">선택하기</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <i class="fas fa-industry"></i>
+                        <h3>반달형</h3>
+                        <div class="price">
+                            <span class="currency">₩</span>
+                            <span class="amount">180,000</span>
+                        </div>
+                        <p>1회 세척</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 대용량 분해세척</li>
+                        <li><i class="fas fa-check"></i> 전문 살균 소독</li>
+                        <li><i class="fas fa-check"></i> 고급 필터 교체</li>
+                        <li><i class="fas fa-check"></i> 정밀 성능 점검</li>
+                        <li><i class="fas fa-check"></i> SWAB 검사</li>
+                        <li><i class="fas fa-check"></i> 6개월 A/S</li>
+                    </ul>
+                    <button class="btn btn--outline btn--full-width">선택하기</button>
+                </div>
+            </div>
+            <div class="membership-section">
+                <div class="membership-card">
+                    <div class="membership-header">
+                        <i class="fas fa-crown"></i>
+                        <h3>멤버십 서비스</h3>
+                        <div class="membership-price">
+                            <span class="currency">₩</span>
+                            <span class="amount">100,000</span>
+                            <span class="period">/월</span>
+                        </div>
+                    </div>
+                    <div class="membership-benefits">
+                        <div class="benefit">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>매월 방문 점검</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-robot"></i>
+                            <span>자동공급장치 관리</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-tools"></i>
+                            <span>3개월마다 분해세척</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-microscope"></i>
+                            <span>정기 SWAB 검사</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-music"></i>
+                            <span>음원서비스</span>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary btn--full-width">
+                        <i class="fas fa-star"></i>
+                        멤버십 신청
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Differentiation Section -->
+    <section id="differentiation" class="differentiation-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-star"></i> 차별화 포인트</h2>
+                <p>포케어만의 특별한 서비스</p>
+            </div>
+            <div class="differentiation-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>자동공급장치(ADS)</h3>
+                    <p>IoT 기반 상시 살균 소독 시스템으로 24시간 자동 관리</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <h3>SWAB 검사</h3>
+                    <p>전문 인증기관 연계 청결 인증으로 믿을 수 있는 위생 관리</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>스마트 관리 앱</h3>
+                    <p>실시간 예약·관리·알림 시스템으로 편리한 서비스 이용</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3>음원서비스</h3>
+                    <p>라이선스 무제한 음악 제공으로 매장 분위기 업그레이드</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>클린카페 인증</h3>
+                    <p>소비자 신뢰 정보 공개로 매장 브랜드 가치 향상</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education & Franchise Section -->
+    <section id="education" class="education-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-graduation-cap"></i> 교육 및 창업</h2>
+                <p>체계적인 교육 프로그램과 안정적인 창업 지원</p>
+            </div>
+            <div class="education-content">
+                <div class="education-info">
+                    <div class="info-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>교육 기간</h3>
+                        <p>1주 (4일) 집중 교육</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-won-sign"></i>
+                        <h3>창업 비용</h3>
+                        <p>500만원</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-handshake"></i>
+                        <h3>가맹비</h3>
+                        <p>1,000만원</p>
+                    </div>
+                </div>
+                <div class="curriculum">
+                    <h3><i class="fas fa-book"></i> 교육 커리큘럼</h3>
+                    <div class="curriculum-grid">
+                        <div class="curriculum-item">
+                            <i class="fas fa-seedling"></i>
+                            <span>소자본 창업</span>
+                        </div>
+                        <div class="curriculum-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>제빙기 위생 기준</span>
+                        </div>
+                        <div class="curriculum-item">
+                            <i class="fas fa-wrench"></i>
+                            <span>관리 방법 및 트렌드</span>
+                        </div>
+                        <div class="curriculum-item">
+                            <i class="fas fa-hammer"></i>
+                            <span>현장 실습</span>
+                        </div>
+                        <div class="curriculum-item">
+                            <i class="fas fa-headset"></i>
+                            <span>CS 교육</span>
+                        </div>
+                        <div class="curriculum-item">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>마케팅</span>
+                        </div>
+                        <div class="curriculum-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>운영 노하우</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Growth Projections Section -->
+    <section id="growth" class="growth-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-rocket"></i> 성장 전망</h2>
+                <p>지속적인 성장과 수익성을 보장하는 비즈니스 모델</p>
+            </div>
+            <div class="projections-grid">
+                <div class="projection-card">
+                    <div class="projection-year">2026</div>
+                    <div class="projection-stats">
+                        <div class="stat">
+                            <i class="fas fa-won-sign"></i>
+                            <span class="stat-value">100억원</span>
+                            <span class="stat-label">매출</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="stat-value">10,000개</span>
+                            <span class="stat-label">매장</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="projection-card featured">
+                    <div class="projection-year">2027</div>
+                    <div class="projection-stats">
+                        <div class="stat">
+                            <i class="fas fa-won-sign"></i>
+                            <span class="stat-value">300억원</span>
+                            <span class="stat-label">매출</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="stat-value">30,000개</span>
+                            <span class="stat-label">매장</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="projection-card">
+                    <div class="projection-year">2028</div>
+                    <div class="projection-stats">
+                        <div class="stat">
+                            <i class="fas fa-won-sign"></i>
+                            <span class="stat-value">1,000억원</span>
+                            <span class="stat-label">매출</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="stat-value">80,000개</span>
+                            <span class="stat-label">매장</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="growth-chart-container">
+                <h3>매출 성장 추이</h3>
+                <div class="chart-container" style="position: relative; height: 400px;">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-snowflake"></i>
+                        <span>포케어 (PokeCare)</span>
+                    </div>
+                    <p>깨끗한 얼음을 선물하다</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>서비스</h4>
+                        <ul>
+                            <li><a href="#services">제빙기 세척</a></li>
+                            <li><a href="#services">멤버십</a></li>
+                            <li><a href="#differentiation">차별화</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>창업</h4>
+                        <ul>
+                            <li><a href="#education">교육 프로그램</a></li>
+                            <li><a href="#education">가맹 문의</a></li>
+                            <li><a href="#growth">성장 전망</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>연락처</h4>
+                        <ul>
+                            <li><i class="fas fa-phone"></i> 1588-0000</li>
+                            <li><i class="fas fa-envelope"></i> info@pokecare.co.kr</li>
+                            <li><i class="fas fa-map-marker-alt"></i> 서울시 강남구</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 포케어 (PokeCare). All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
