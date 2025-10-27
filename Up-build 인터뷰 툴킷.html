@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Up-build: 핵심 고객 인터뷰 툴킷</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- 
+    <!-- Chosen Palette: Eco Professional (Light grays, white, and a professional green/blue accent for highlights and active states, matching the Up-build theme) -->
+    <!-- Application Structure Plan: The SPA is designed as an "Interactive Interview Toolkit," not a static report. The core information architecture revolves around a primary toggle to switch between "Supplier" and "Demand" interview paths. This dynamically shows/hides the relevant question blocks (Parts 2 & 3), but keeps the common sections (Parts 1, 4, 5) visible for both. This structure was chosen because the source material is a tool, and this design directly supports the interviewer's primary task: navigating the correct question flow for a specific interviewee, making it far more usable than a linear document. -->
+    <!-- Visualization & Content Choices: Report Info: 50-question script with A/B paths. -> Goal: Make the script navigable and usable. -> Presentation: Toggle-based dynamic content display (JS), questions grouped into styled cards (HTML/Tailwind), key questions highlighted with icons/color. -> Interaction: User clicks "Supplier" or "Demand" button. JS hides the irrelevant question path (Part 2 or 3) and shows the relevant one. -> Justification: This interaction is the most logical way to consume this "A/B path" document, transforming it from a static script into a functional tool. -> Library/Method: Vanilla JS (event listeners, class toggling). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f4f7f6;
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem; /* 24px */
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 1.5rem; /* 24px */
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .card-title {
+            font-size: 1.5rem; /* 24px */
+            font-weight: 700;
+            color: #047857; /* emerald-700 */
+        }
+        .card-subtitle {
+            font-size: 0.875rem; /* 14px */
+            color: #6b7280;
+        }
+        .card-body {
+            padding: 1.5rem; /* 24px */
+        }
+        .question-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+            space-y: 1rem; /* 16px */
+        }
+        .question-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.75rem;
+            border-radius: 0.5rem; /* 8px */
+            border: 1px solid #e5e7eb;
+            background-color: #fafafa;
+        }
+        .question-item-key {
+            background-color: #fefce8; /* yellow-50 */
+            border-color: #facc15; /* yellow-400 */
+            border-left-width: 4px;
+        }
+        .question-number {
+            font-weight: 600;
+            color: #059669; /* emerald-600 */
+            width: 2.5rem; /* 40px */
+            flex-shrink: 0;
+        }
+        .question-text {
+            color: #374151; /* gray-700 */
+            flex-grow: 1;
+        }
+        .question-note {
+            font-size: 0.875rem; /* 14px */
+            color: #6b7280; /* gray-500 */
+            margin-top: 0.25rem; /* 4px */
+        }
+        .toggle-btn {
+            padding: 0.75rem 1.5rem; /* 12px 24px */
+            border-radius: 0.5rem; /* 8px */
+            font-weight: 600;
+            font-size: 1rem; /* 16px */
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+        .toggle-btn-active {
+            background-color: #059669; /* emerald-600 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .toggle-btn-inactive {
+            background-color: white;
+            color: #374151; /* gray-700 */
+            border-color: #d1d5db; /* gray-300 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-3xl font-bold text-gray-800">Up-build: 핵심 고객 인터뷰 툴킷</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 md:p-10">
+        
+        <!-- Introduction Section -->
+        <div class="section-card">
+            <div class="card-body">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3">인터뷰의 목적</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    본 인터뷰의 목적은 건설/인테리어 현장의 '잉여자재' 처리와 '자재 수급' 과정에서 발생하는 실제 문제점(Pain Point)을 파악하고, 'Up-build' 플랫폼의 핵심 가치를 검증하기 위함입니다. 인터뷰 내용은 사업 모델 수립에만 사용되며, 개인 정보는 철저히 비밀이 보장됩니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- Interview Target Toggle -->
+        <div class="mb-8 p-4 bg-white rounded-lg shadow sticky top-[73px] z-10">
+            <div class="flex items-center space-x-4">
+                <span class="text-lg font-semibold text-gray-700">인터뷰 대상:</span>
+                <button id="btn-supplier" class="toggle-btn toggle-btn-active">
+                    🏢 공급자 (A그룹)
+                </button>
+                <button id="btn-demand" class="toggle-btn toggle-btn-inactive">
+                    🧑‍🎨 수요자 (B그룹)
+                </button>
+            </div>
+        </div>
+
+        <!-- Questions Flow -->
+        <div>
+            <!-- Supplier Flow (Default) -->
+            <div id="flow-supplier">
+                <!-- PART 1 (Common) -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2 class="card-title">PART 1: 인터뷰 대상자 정보 (공통)</h2>
+                        <p class="card-subtitle">
+                            [주의] 한 사람이 두 가지 역할을 겸할 수도 있습니다. (예: 인테리어 업체) 이 경우, 두 그룹의 질문을 모두 활용합니다.
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="question-list">
+                            <li class="question-item"><span class="question-number">1.</span><span class="question-text"><strong>소개:</strong> 현재 어떤 일을 하고 계신가요? (회사명/개인, 직책, 주요 업무)</span></li>
+                            <li class="question-item"><span class="question-number">2.</span><span class="question-text"><strong>경력/규모:</strong> 이 분야에서 일하신 지는 얼마나 되셨나요?</span></li>
+                            <li class="question-item"><span class="question-number">3.</span><span class="question-text"><strong>(기업 대상)</strong> 주로 어떤 규모의 프로젝트(연간/월간 프로젝트 수, 평균 예산)를 담당하시나요?</span></li>
+                            <li class="question-item"><span class="question-number">4.</span><span class="question-text"><strong>(개인 대상)</strong> 얼마나 자주 자재를 구매하거나 프로젝트를 진행하시나요? (예: 월 2~3회)</span></li>
+                            <li class="question-item"><span class="question-number">5.</span><span class="question-text"><strong>의사결정:</strong> 자재를 구매하거나 폐기물을 처리할 때, 직접 의사결정을 하시나요?</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PART 2 (Supplier) -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2 class="card-title">PART 2: 현황 및 문제점 파악 (A: 공급자)</h2>
+                        <p class="card-subtitle">대상: 건설사, 철거업체, 인테리어 시공사 등 자재가 '남는' 사람</p>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-xl font-bold text-gray-700 mb-4">A-1: 잉여자재 발생 현황</h3>
+                        <ul class="question-list mb-6">
+                            <li class="question-item"><span class="question-number">6.</span><span class="question-text">하나의 프로젝트(현장)가 끝나면 보통 어떤 종류의 잉여자재가 발생하나요? (목재, 타일, 석고보드, 철물 등)</span></li>
+                            <li class="question-item"><span class="question-number">7.</span><span class="question-text">가장 많이 남고, 가장 처리하기 골치 아픈 자재는 무엇인가요?</span></li>
+                            <li class="question-item"><span class="question-number">8.</span><span class="question-text">평균적으로 프로젝트 총 자재비 중 몇 % 정도가 잉여자재로 남는다고 생각하시나요? (비용적 감각)</span></li>
+                            <li class="question-item"><span class="question-number">9.</span><span class="question-text">그 잉여자재의 품질(상태)은 보통 어떤가요? (예: 완전 새것, 일부 사용, 스크래치 등)</span></li>
+                        </ul>
+
+                        <h3 class="text-xl font-bold text-gray-700 mb-4">A-2: 잉여자재 처리 (핵심 고통 질문)</h3>
+                        <ul class="question-list">
+                            <li class="question-item question-item-key"><span class="question-number">10. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> 현재, 사용하고 남은 자재를 *구체적으로* 어떻게 처리하고 계신가요? (복수 응답 가능)</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">11. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> (10번 답변에 따라) **폐기물 처리 업체**를 부른다고 하셨는데, 그 과정에 대해 자세히 말씀해 주시겠어요?</span></li>
+                            <li class="question-item"><span class="question-number">12.</span><span class="question-text">처리 비용은 보통 얼마나 드시나요? (톤당, 트럭당, 혹은 현장당 계약 등)</span></li>
+                            <li class="question-item"><span class="question-number">13.</span><span class="question-text">비용 외에, 폐기물 처리 과정에서 가장 불편하거나 짜증 나는 점은 무엇인가요? (시간, 상차 인력, 복잡한 서류, 업체 찾기 등)</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">14. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> 혹시 법적/환경적 규제 때문에 겪는 어려움은 없으신가요?</span></li>
+                            <li class="question-item"><span class="question-number">15.</span><span class="question-text">(10번 답변에 따라) **보관**하신다고 하셨는데, 어디에 얼마나 보관하시나요? 보관 비용이나 공간 문제가 발생하진 않나요?</span></li>
+                            <li class="question-item"><span class="question-number">16.</span><span class="question-text">(10번 답변에 따라) **다른 현장**에서 재사용하신다고 하셨는데, 그 비율은 얼마나 되나요? 재사용 시 어려운 점은 무엇인가요?</span></li>
+                            <li class="question-item"><span class="question-number">17.</span><span class="question-text">(10번 답변에 따라) **지인/거래처**에게 준다고 하셨는데, 그 과정은 만족스러우신가요? (연락의 번거로움, 운반 문제 등)</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">18. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> 지금까지 남는 자재를 '판매'해서 수익을 내보려고 시도한 적이 있으신가요?</span></li>
+                            <li class="question-item"><span class="question-number">19.</span><span class="question-text">(18번 'Yes'일 경우) 어떤 방법(중고나라, 당근, 관련 커뮤니티 등)을 쓰셨고, 그 경험은 어떠셨나요? (성공/실패 이유)</span></li>
+                            <li class="question-item"><span class="question-number">20.</span><span class="question-text">(18번 'No'일 경우) 왜 한 번도 판매할 생각을 하지 않으셨나요? (너무 번거로워서, 돈이 안 될 것 같아서, 방법을 몰라서 등)</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">21. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> 만약 지금 당장 남은 목재 1톤을 현금 5만 원과 바꿀 수 있다면, 어떤 행동(분류, 사진 찍기, 운반)까지 하실 의향이 있으신가요?</span></li>
+                            <li class="question-item"><span class="question-number">22.</span><span class="question-text"><strong>잉여자재 활용 방법</strong>에 대해 고민해 보신 적이 있나요? (User's Q2)</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PART 4 (Common) -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2 class="card-title">PART 4: 플랫폼 반응 및 가설 검증 (공통)</h2>
+                        <p class="card-subtitle">
+                            [플랫폼 소개] "저희는 '건설/인테리어 현장에서 남는 고품질의 잉여자재'를 '소량의 자재가 필요한 사람'에게 연결해주는 모바일 플랫폼(앱)을 만들려고 합니다."
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="question-list mb-6">
+                            <li class="question-item"><span class="question-number">36.</span><span class="question-text">이 아이디어를 처음 들었을 때, 가장 먼저 드는 생각이나 느낌은 어떠신가요?</span></li>
+                            <li class="question-item"><span class="question-number">37.</span><span class="question-text"><strong>(공급자 대상)</strong> 이런 플랫폼이 있다면, 잉여자재를 '등록(판매)'할 의향이 있으신가요? (User's Q3)</span></li>
+                            <li class="question-item"><span class="question-number">38.</span><span class="question-text"><strong>(수요자 대상)</strong> 이런 플랫폼이 있다면, 잉여자재를 '검색(구매)'할 의향이 있으신가요? (User's Q3)</span></li>
+                            <li class="question-item"><span class="question-number">39.</span><span class="question-text">(37, 38번에 이어) 그렇게 생각하신 가장 큰 이유는 무엇인가요?</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">40. ⭐</span><span class="question-text"><strong>(★핵심질문 - 공급자)</strong> 자재를 앱에 등록(사진 찍기, 수량/상태 입력)하는 과정이 얼마나 '간편'해야 사용하실 것 같나요?</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">41. ⭐</span><span class="question-text"><strong>(★핵심질문 - 수요자)</strong> 원하는 자재를 '검색'할 때, 어떤 정보가 가장 중요하게 보여야 할까요? (가격, 위치, 상태, 수량, 배송 가능 여부 등)</span></li>
+                        </ul>
+
+                        <h3 class="text-xl font-bold text-gray-700 mb-4">물류 및 가격 가설 검증</h3>
+                        <ul class="question-list">
+                            <li class="question-item question-item-key"><span class="question-number">42. ⭐</span><span class="question-text"><strong>(★핵심질문 - 공통)</strong> 이 플랫폼에서 가장 큰 문제는 '운반(물류)'일 것 같습니다. 이 문제는 어떻게 해결하는 것이 가장 합리적이라고 생각하시나요? (1)구매자가 직접 픽업(용달) / (2)판매자가 배송 / (3)플랫폼이 배송 대행</span></li>
+                            <li class="question-item"><span class="question-number">43.</span><span class="question-text"><strong>(공급자 대상)</strong> 만약 플랫폼에서 **'무상으로 수거'**해 가는 서비스를 제공한다면(판매대금 0원), 폐기 비용을 내는 것보다 매력적인가요? (User's Q4)</span></li>
+                            <li class="question-item"><span class="question-number">44.</span><span class="question-text"><strong>(공급자 대상)</strong> (43번에 이어) 만약 '무상 수거'가 아니라, 판매 시 판매 금액의 50%를 정산해 드리는 대신 '2주간 보관'을 하셔야 한다면 어떤 것을 선택하시겠어요?</span></li>
+                            <li class="question-item"><span class="question-number">45.</span><span class="question-text"><strong>(수요자 대상)</strong> 잉여자재의 가격은 '새 자재 대비 몇 %' 정도가 적정하다고 생각하시나요?</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PART 5 (Common) -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2 class="card-title">PART 5: 협업 및 파트너 관계 질문 (공통)</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="question-list">
+                            <li class="question-item"><span class="question-number">46.</span><span class="question-text"><strong>(공급자/기업 대상)</strong> 만약 저희가 귀사의 '폐기물 처리 비용 절감' 및 'ESG 경영 성과 보고서'를 제공하는 조건으로, 발생하는 모든 잉여자재를 저희 플랫폼에 독점 공급하는 파트너십(MOU)을 제안한다면 어떠신가요?</span></li>
+                            <li class="question-item"><span class="question-number">47.</span><span class="question-text"><strong>(수요자/공방 대상)</strong> 저희가 잉여자재를 '원자재 키트'로 구성하여 저렴하게 공급하고, 공방에서 이를 '소비자용 완제품(가구, 소품)'으로 만들어 저희 플랫폼에서 함께 판매하는 모델을 제안한다면 어떠신가요? (User's Q5)</span></li>
+                            <li class="question-item"><span class="question-number">48.</span><span class="question-text"><strong>(수요자/인플루언서 대상)</strong> 잉여자재를 무상으로 제공받고, 이를 활용해 멋진 DIY 콘텐츠를 제작하여 홍보하는 형태의 협업에 관심이 있으신가요?</span></li>
+                            <li class="question-item"><span class="question-number">49.</span><span class="question-text">이 플랫폼이 성공하기 위해 '반드시' 갖춰야 할 기능이나 서비스가 있다면 무엇일까요?</span></li>
+                            <li class="question-item"><span class="question-number">50.</span><span class="question-text"><strong>(마무리)</strong> 오늘 인터뷰 외에 이 주제에 대해 더 해주고 싶으신 말씀이 있으신가요? 혹시 저희가 이야기 나눠볼 만한 다른 분을 소개해 주실 수 있을까요?</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demand Flow (Hidden by default) -->
+            <div id="flow-demand" class="hidden">
+                <!-- PART 1 (Common) -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2 class="card-title">PART 1: 인터뷰 대상자 정보 (공통)</h2>
+                        <p class="card-subtitle">
+                            [주의] 한 사람이 두 가지 역할을 겸할 수도 있습니다. (예: 인테리어 업체) 이 경우, 두 그룹의 질문을 모두 활용합니다.
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="question-list">
+                            <li class="question-item"><span class="question-number">1.</span><span class="question-text"><strong>소개:</strong> 현재 어떤 일을 하고 계신가요? (회사명/개인, 직책, 주요 업무)</span></li>
+                            <li class="question-item"><span class="question-number">2.</span><span class="question-text"><strong>경력/규모:</strong> 이 분야에서 일하신 지는 얼마나 되셨나요?</span></li>
+                            <li class="question-item"><span class="question-number">3.</span><span class="question-text"><strong>(기업 대상)</strong> 주로 어떤 규모의 프로젝트(연간/월간 프로젝트 수, 평균 예산)를 담당하시나요?</span></li>
+                            <li class="question-item"><span class="question-number">4.</span><span class="question-text"><strong>(개인 대상)</strong> 얼마나 자주 자재를 구매하거나 프로젝트를 진행하시나요? (예: 월 2~3회)</span></li>
+                            <li class="question-item"><span class="question-number">5.</span><span class="question-text"><strong>의사결정:</strong> 자재를 구매하거나 폐기물을 처리할 때, 직접 의사결정을 하시나요?</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PART 3 (Demand) -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2 class="card-title">PART 3: 현황 및 문제점 파악 (B: 수요자)</h2>
+                        <p class="card-subtitle">대상: 인테리어 업체, DIY족, 공방, 개인 등 자재가 '필요한' 사람</p>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-xl font-bold text-gray-700 mb-4">B-1: 자재 수급 현황</h3>
+                        <ul class="question-list mb-6">
+                            <li class="question-item"><span class="question-number">23.</span><span class="question-text">주로 어떤 자재를, 얼마나 자주 구매하시나요?</span></li>
+                            <li class="question-item"><span class="question-number">24.</span><span class="question-text">자재를 구매하시는 주된 경로는 어디인가요? (을지로 등 오프라인 매장, 대형 건재상, 인터넷 쇼핑몰 등)</span></li>
+                            <li class="question-item"><span class="question-number">25.</span><span class="question-text">현재 자재 구매 경로에서 가장 만족하는 점은 무엇인가요?</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">26. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> 현재 자재 구매 경로에서 가장 불만족스럽거나 불편한 점은 무엇인가요? (가격, 최소 주문 수량(MOQ), 배송비, 품질 확인의 어려움 등)</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">27. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> 혹시 '소량'의 자재가 필요해서 곤란했던 적이 있으신가요? 있었다면, 그 경험에 대해 말씀해 주세요.</span></li>
+                            <li class="question-item"><span class="question-number">28.</span><span class="question-text">프로젝트 예산에서 자재비가 차지하는 비중은 어느 정도이며, 비용을 줄이고 싶은 니즈가 얼마나 크신가요?</span></li>
+                            <li class="question-item"><span class="question-number">29.</span><span class="question-text">자재를 선택할 때 가장 중요하게 생각하는 기준 3가지를 꼽는다면? (가격, 품질, 브랜드, 배송 속도, 디자인 등)</span></li>
+                        </ul>
+
+                        <h3 class="text-xl font-bold text-gray-700 mb-4">B-2: 잉여자재/중고자재 구매 경험</h3>
+                        <ul class="question-list">
+                            <li class="question-item question-item-key"><span class="question-number">30. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> 혹시 비용을 아끼기 위해 '잉여자재'나 '중고 자재'를 구매해 보려고 시도한 적이 있으신가요?</span></li>
+                            <li class="question-item"><span class="question-number">31.</span><span class="question-text">(30번 'Yes'일 경우) 어떤 방법(중고나라, 당근, 현장 방문 등)을 쓰셨고, 그 경험은 어떠셨나요? (성공/실패 이유)</span></li>
+                            <li class="question-item"><span class="question-number">32.</span><span class="question-text">(30번 'No'일 경우) 왜 한 번도 시도해 보지 않으셨나요? (품질을 못 믿어서, 어디서 파는지 몰라서, 운반이 어려워서 등)</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">33. ⭐</span><span class="question-text"><strong>(★핵심질문)</strong> 만약 새것과 동일한 품질의 잉여자재(예: 타일 1박스)를 50% 할인된 가격에 구매할 수 있다면, 얼마나 매력적인가요?</span></li>
+                            <li class="question-item"><span class="question-number">34.</span><span class="question-text">(33번에 이어) 구매를 망설이게 만드는 요인이 있다면 무엇일까요? (정확한 상태 확인, 운반 문제, 신뢰도 등)</span></li>
+                            <li class="question-item"><span class="question-number">35.</span><span class="question-text"><strong>잉여자재 활용 방법(아이디어)</strong>에 대해 생각해 보신 적이 있나요? (User's Q2)</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PART 4 (Common) -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2 class="card-title">PART 4: 플랫폼 반응 및 가설 검증 (공통)</h2>
+                        <p class="card-subtitle">
+                            [플랫폼 소개] "저희는 '건설/인테리어 현장에서 남는 고품질의 잉여자재'를 '소량의 자재가 필요한 사람'에게 연결해주는 모바일 플랫폼(앱)을 만들려고 합니다."
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="question-list mb-6">
+                            <li class="question-item"><span class="question-number">36.</span><span class="question-text">이 아이디어를 처음 들었을 때, 가장 먼저 드는 생각이나 느낌은 어떠신가요?</span></li>
+                            <li class="question-item"><span class="question-number">37.</span><span class="question-text"><strong>(공급자 대상)</strong> 이런 플랫폼이 있다면, 잉여자재를 '등록(판매)'할 의향이 있으신가요? (User's Q3)</span></li>
+                            <li class="question-item"><span class="question-number">38.</span><span class="question-text"><strong>(수요자 대상)</strong> 이런 플랫폼이 있다면, 잉여자재를 '검색(구매)'할 의향이 있으신가요? (User's Q3)</span></li>
+                            <li class="question-item"><span class="question-number">39.</span><span class="question-text">(37, 38번에 이어) 그렇게 생각하신 가장 큰 이유는 무엇인가요?</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">40. ⭐</span><span class="question-text"><strong>(★핵심질문 - 공급자)</strong> 자재를 앱에 등록(사진 찍기, 수량/상태 입력)하는 과정이 얼마나 '간편'해야 사용하실 것 같나요?</span></li>
+                            <li class="question-item question-item-key"><span class="question-number">41. ⭐</span><span class="question-text"><strong>(★핵심질문 - 수요자)</strong> 원하는 자재를 '검색'할 때, 어떤 정보가 가장 중요하게 보여야 할까요? (가격, 위치, 상태, 수량, 배송 가능 여부 등)</span></li>
+                        </ul>
+
+                        <h3 class="text-xl font-bold text-gray-700 mb-4">물류 및 가격 가설 검증</h3>
+                        <ul class="question-list">
+                            <li class="question-item question-item-key"><span class="question-number">42. ⭐</span><span class="question-text"><strong>(★핵심질문 - 공통)</strong> 이 플랫폼에서 가장 큰 문제는 '운반(물류)'일 것 같습니다. 이 문제는 어떻게 해결하는 것이 가장 합리적이라고 생각하시나요? (1)구매자가 직접 픽업(용달) / (2)판매자가 배송 / (3)플랫폼이 배송 대행</span></li>
+                            <li class="question-item"><span class="question-number">43.</span><span class="question-text"><strong>(공급자 대상)</strong> 만약 플랫폼에서 **'무상으로 수거'**해 가는 서비스를 제공한다면(판매대금 0원), 폐기 비용을 내는 것보다 매력적인가요? (User's Q4)</span></li>
+                            <li class="question-item"><span class="question-number">44.</span><span class="question-text"><strong>(공급자 대상)</strong> (43번에 이어) 만약 '무상 수거'가 아니라, 판매 시 판매 금액의 50%를 정산해 드리는 대신 '2주간 보관'을 하셔야 한다면 어떤 것을 선택하시겠어요?</span></li>
+                            <li class="question-item"><span class="question-number">45.</span><span class="question-text"><strong>(수요자 대상)</strong> 잉여자재의 가격은 '새 자재 대비 몇 %' 정도가 적정하다고 생각하시나요?</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PART 5 (Common) -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2 class="card-title">PART 5: 협업 및 파트너 관계 질문 (공통)</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="question-list">
+                            <li class="question-item"><span class="question-number">46.</span><span class="question-text"><strong>(공급자/기업 대상)</strong> 만약 저희가 귀사의 '폐기물 처리 비용 절감' 및 'ESG 경영 성과 보고서'를 제공하는 조건으로, 발생하는 모든 잉여자재를 저희 플랫폼에 독점 공급하는 파트너십(MOU)을 제안한다면 어떠신가요?</span></li>
+                            <li class="question-item"><span class="question-number">47.</span><span class="question-text"><strong>(수요자/공방 대상)</strong> 저희가 잉여자재를 '원자재 키트'로 구성하여 저렴하게 공급하고, 공방에서 이를 '소비자용 완제품(가구, 소품)'으로 만들어 저희 플랫폼에서 함께 판매하는 모델을 제안한다면 어떠신가요? (User's Q5)</span></li>
+                            <li class="question-item"><span class="question-number">48.</span><span class="question-text"><strong>(수요자/인플루언서 대상)</strong> 잉여자재를 무상으로 제공받고, 이를 활용해 멋진 DIY 콘텐츠를 제작하여 홍보하는 형태의 협업에 관심이 있으신가요?</span></li>
+                            <li class="question-item"><span class="question-number">49.</span><span class="question-text">이 플랫폼이 성공하기 위해 '반드시' 갖춰야 할 기능이나 서비스가 있다면 무엇일까요?</span></li>
+                            <li class="question-item"><span class="question-number">50.</span><span class="question-text"><strong>(마무리)</strong> 오늘 인터뷰 외에 이 주제에 대해 더 해주고 싶으신 말씀이 있으신가요? 혹시 저희가 이야기 나눠볼 만한 다른 분을 소개해 주실 수 있을까요?</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnSupplier = document.getElementById('btn-supplier');
+            const btnDemand = document.getElementById('btn-demand');
+            const flowSupplier = document.getElementById('flow-supplier');
+            const flowDemand = document.getElementById('flow-demand');
+
+            function showSupplierFlow() {
+                flowSupplier.classList.remove('hidden');
+                flowDemand.classList.add('hidden');
+                
+                btnSupplier.classList.add('toggle-btn-active');
+                btnSupplier.classList.remove('toggle-btn-inactive');
+                
+                btnDemand.classList.add('toggle-btn-inactive');
+                btnDemand.classList.remove('toggle-btn-active');
+            }
+
+            function showDemandFlow() {
+                flowSupplier.classList.add('hidden');
+                flowDemand.classList.remove('hidden');
+
+                btnSupplier.classList.add('toggle-btn-inactive');
+                btnSupplier.classList.remove('toggle-btn-active');
+                
+                btnDemand.classList.add('toggle-btn-active');
+                btnDemand.classList.remove('toggle-btn-inactive');
+            }
+
+            btnSupplier.addEventListener('click', showSupplierFlow);
+            btnDemand.addEventListener('click', showDemandFlow);
+        });
+    </script>
+</body>
+</html>
