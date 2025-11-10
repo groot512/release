@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국 민주주의 빛의 혁명 - 한강 작가와 함께하는 민주주의 달력</title>
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+  --color-bg-5: rgba(147, 51, 234, 0.08);
+  --color-bg-6: rgba(249, 115, 22, 0.08);
+  --color-bg-7: rgba(236, 72, 153, 0.08);
+  --color-bg-8: rgba(6, 182, 212, 0.08);
+
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+
+  --font-family-base: "Noto Serif KR", "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  --space-0: 0;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --calendar-red: rgba(192, 21, 47, 1);
+  --calendar-gold: rgba(218, 165, 32, 1);
+  --calendar-white: rgba(255, 255, 255, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+
+    --color-bg-1: rgba(29, 78, 216, 0.15);
+    --color-bg-2: rgba(180, 83, 9, 0.15);
+    --color-bg-3: rgba(21, 128, 61, 0.15);
+    --color-bg-4: rgba(185, 28, 28, 0.15);
+    --color-bg-5: rgba(107, 33, 168, 0.15);
+    --color-bg-6: rgba(194, 65, 12, 0.15);
+    --color-bg-7: rgba(190, 24, 93, 0.15);
+    --color-bg-8: rgba(8, 145, 178, 0.15);
+
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    border-bottom: 2px solid var(--calendar-red);
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-24) var(--space-16);
+    text-align: center;
+}
+
+.main-title {
+    font-size: clamp(24px, 5vw, 48px);
+    font-weight: var(--font-weight-bold);
+    color: var(--calendar-red);
+    margin-bottom: var(--space-8);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: clamp(14px, 2.5vw, 20px);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--space-20);
+}
+
+.month-nav {
+    display: flex;
+    gap: var(--space-8);
+    overflow-x: auto;
+    padding: var(--space-12) 0;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.month-nav::-webkit-scrollbar {
+    height: 4px;
+}
+
+.month-nav::-webkit-scrollbar-track {
+    background: var(--color-secondary);
+}
+
+.month-nav::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: var(--radius-full);
+}
+
+.month-btn {
+    padding: var(--space-8) var(--space-16);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-standard);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+}
+
+.month-btn:hover {
+    background: var(--color-secondary-hover);
+    transform: translateY(-2px);
+}
+
+.month-btn.active {
+    background: var(--calendar-red);
+    color: var(--color-white);
+    border-color: var(--calendar-red);
+}
+
+.main-content {
+    margin-top: 220px;
+    padding: var(--space-32) var(--space-16);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.month-section {
+    margin-bottom: 80px;
+    padding: var(--space-32);
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-card-border);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s var(--ease-standard);
+}
+
+.month-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.month-header {
+    text-align: center;
+    margin-bottom: var(--space-32);
+    padding-bottom: var(--space-24);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.month-title {
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: var(--font-weight-bold);
+    color: var(--calendar-red);
+    margin-bottom: var(--space-16);
+    line-height: 1;
+}
+
+.quote-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-24);
+    background: var(--color-bg-1);
+    border-left: 4px solid var(--calendar-gold);
+    border-radius: var(--radius-base);
+}
+
+.quote {
+    font-size: clamp(16px, 3vw, 22px);
+    font-style: italic;
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: var(--space-12);
+    font-weight: var(--font-weight-medium);
+}
+
+.quote::before {
+    content: '"';
+    font-size: 1.5em;
+    color: var(--calendar-gold);
+    margin-right: 4px;
+}
+
+.quote::after {
+    content: '"';
+    font-size: 1.5em;
+    color: var(--calendar-gold);
+    margin-left: 4px;
+}
+
+.quote-source {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-align: right;
+    font-style: normal;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-32);
+}
+
+.event-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    transition: all var(--duration-normal) var(--ease-standard);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.event-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--calendar-red);
+    transform: scaleX(0);
+    transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.event-card:hover::before {
+    transform: scaleX(1);
+}
+
+.event-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    border-color: var(--calendar-red);
+}
+
+.event-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--calendar-red);
+    margin-bottom: var(--space-16);
+    transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.event-card:hover .event-icon {
+    transform: scale(1.1) rotate(5deg);
+    color: var(--calendar-gold);
+}
+
+.event-date {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-8);
+}
+
+.event-year {
+    color: var(--calendar-red);
+    font-weight: var(--font-weight-bold);
+}
+
+.event-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-12);
+    line-height: 1.3;
+}
+
+.event-description {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+.footer {
+    background: var(--color-surface);
+    border-top: 2px solid var(--calendar-red);
+    padding: var(--space-32) var(--space-16);
+    text-align: center;
+    margin-top: 60px;
+}
+
+.footer-text {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-top: 280px;
+        padding: var(--space-16);
+    }
+
+    .month-section {
+        padding: var(--space-20);
+        margin-bottom: 40px;
+    }
+
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-content {
+        padding: var(--space-16);
+    }
+
+    .month-nav {
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .events-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .main-content {
+        margin-top: 240px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .events-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s var(--ease-standard) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="main-title">한국 민주주의 빛의 혁명</h1>
+            <p class="subtitle">한강 작가와 함께하는 민주주의 달력</p>
+            <nav class="month-nav" id="monthNav" role="navigation" aria-label="월별 네비게이션">
+                <!-- Month buttons will be generated by JavaScript -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content" id="mainContent">
+        <!-- Month sections will be generated by JavaScript -->
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">
+            "어떤 일이 있다고 해도 계속 말해지는 진실이 있을 것이고 그런 언어의 힘은 변하지 않을 것이다. 문학은 여분이 아니라 필수라고 생각한다." - 한강<br><br>
+            이 달력은 한강 작가의 노벨문학상 수상을 기념하며, 한국 민주주의를 위해 희생하고 헌신한 모든 분들께 바칩니다.
+        </p>
+    </footer>
+
+    <script>
+        const icons = {
+            candle: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-1.5 2.8-3 5.2-3 7.5 0 2.5 1.3 4.5 3 4.5s3-2 3-4.5c0-2.3-1.5-4.7-3-7.5zm0 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-5 4h10v2H7v-2zm1 3h8v2H8v-2z"/></svg>',
+            fist: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 24h2v-2H7v2zm4 0h2v-2h-2v2zm4 0h2v-2h-2v2zm-8-4h10c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2h-1V8c0-1.1-.9-2-2-2s-2 .9-2 2v1h-1V8c0-1.1-.9-2-2-2S7 6.9 7 8v1H6c-1.1 0-2 .9-2 2v7c0 1.1.9 2 2 2h1zm1-12c0-.55.45-1 1-1s1 .45 1 1v2h2V8c0-.55.45-1 1-1s1 .45 1 1v4h2v-1h1c.55 0 1 .45 1 1v7H6v-7c0-.55.45-1 1-1h1V8z"/></svg>',
+            heart: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>',
+            star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>',
+            scale: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2v6H8l4 4 4-4h-3V2h-2zm-1 9H3l4 11h4l4-11H8zm8 0l4 11h4l4-11h-7z"/></svg>',
+            chains: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>',
+            warning: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+            flag: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>',
+            hands: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 24h2v-2h-2v2zm-4 0h2v-2H7v2zm8 0h2v-2h-2v2zm4 0h2v-2h-2v2zm-12-4h10v-2H7v2zm12 0h2v-2h-2v2zM6 18h2v-2H6v2zm-4 0h2v-2H2v2zm16 0h2v-2h-2v2zm4 0h2v-2h-2v2zM4 14h2v-2H4v2zm4 0h2v-2H8v2zm4 0h2v-2h-2v2zm4 0h2v-2h-2v2zm4 0h2v-2h-2v2z"/></svg>',
+            solidarity: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>',
+            end: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>'
+        };
+
+        const monthsData = [
+            {
+                number: 1,
+                name: "1월 January",
+                quote: "죽지 마. 죽지 마라 제발. 그것만이 최선의 작별의 말이라고 믿는다.",
+                source: "한강, 『흰』",
+                events: [
+                    { date: "1월 14일", year: 1987, title: "박종철 고문치사 사건", description: "서울대 학생 박종철이 경찰의 물고문으로 사망. 6월 항쟁의 도화선이 됨", icon: "candle" },
+                    { date: "1월 8일", year: 1974, title: "긴급조치 1·2호 발동", description: "유신헌법 반대 개헌청원운동을 탄압. 민주주의의 암흑기", icon: "chains" }
+                ]
+            },
+            {
+                number: 2,
+                name: "2월 February",
+                quote: "어떤 기억은 아물지 않습니다. 시간이 흘러 기억이 흐릿해지는 게 아니라, 오히려 그 기억만 남기고 다른 모든 것이 서서히 마모됩니다.",
+                source: "한강, 『소년이 온다』",
+                events: [
+                    { date: "2월 28일", year: 1960, title: "2·28 대구 학생의거", description: "이승만 정권의 부정선거에 항의한 최초의 민주화운동. 4·19혁명의 시작", icon: "fist" }
+                ]
+            },
+            {
+                number: 3,
+                name: "3월 March",
+                quote: "네가 죽은 뒤 장례식을 치르지 못해 내 삶이 장례식이 되었다.",
+                source: "한강, 『소년이 온다』",
+                events: [
+                    { date: "3월 15일", year: 1960, title: "3·15 마산 의거", description: "3·15 부정선거에 항의한 시위. 김주열 열사의 죽음이 전국을 울림", icon: "heart" }
+                ]
+            },
+            {
+                number: 4,
+                name: "4월 April",
+                quote: "사랑이란 어디 있을까? 팔딱팔딱 뛰는 나의 가슴 속에 있지. 사랑이란 무얼까? 우리의 가슴과 가슴 사이를 연결해주는 금실이지.",
+                source: "한강, 노벨상 수상 연설",
+                events: [
+                    { date: "4월 19일", year: 1960, title: "4·19 혁명", description: "이승만 독재에 항거한 전국적 민주항쟁. 학생과 시민이 독재를 무너뜨림", icon: "star" },
+                    { date: "4월 3일", year: 2025, title: "윤석열 대통령 파면", description: "헌법재판소 전원일치 파면. 민주주의 제도의 승리", icon: "scale" }
+                ]
+            },
+            {
+                number: 5,
+                name: "5월 May",
+                quote: "나는 비로소 깨달았다. 죽음을 넘어서 함께 있다는 것이 무엇인지.",
+                source: "한강, 『소년이 온다』",
+                events: [
+                    { date: "5월 18~27일", year: 1980, title: "5·18 광주민주화운동", description: "전두환 신군부에 맞선 광주 시민의 항쟁. 민주주의의 거룩한 희생", icon: "candle" },
+                    { date: "5월 16일", year: 1961, title: "5·16 군사정변", description: "박정희 쿠데타로 민주주의 후퇴. 18년 독재의 시작", icon: "warning" }
+                ]
+            },
+            {
+                number: 6,
+                name: "6월 June",
+                quote: "가장 어두운 밤에도 언어는 우리가 무엇으로 만들어졌는지 묻고, 언어는 우리를 서로 연결한다.",
+                source: "한강, 노벨상 수상 연설",
+                events: [
+                    { date: "6월 10일", year: 1987, title: "6월 민주항쟁", description: "전두환 정권에 맞선 전국적 시위. 대통령 직선제 쟁취", icon: "fist" },
+                    { date: "6월 3일", year: 1964, title: "6·3 항쟁", description: "한일협정 굴욕 반대 시위. 계엄령 속에서도 꺾이지 않은 저항", icon: "flag" }
+                ]
+            },
+            {
+                number: 7,
+                name: "7월 July",
+                quote: "문학을 읽고 쓰는 일은 생명을 파괴하는 행위들의 반대편에 서 있다.",
+                source: "한강, 노벨상 수상 연설",
+                events: [
+                    { date: "7~9월", year: 1987, title: "노동자대투쟁", description: "6월 항쟁 후 민주노조 건설 운동. 경제 민주주의로의 확장", icon: "hands" }
+                ]
+            },
+            {
+                number: 8,
+                name: "8월 August",
+                quote: "이제 당신에게 내가 흰 것을 줄게. 더럽혀지더라도 흰 것을, 오직 흰 것들을 건넬게.",
+                source: "한강, 『흰』",
+                events: [
+                    { date: "8월", year: 1987, title: "노동자대투쟁 확산", description: "민주화의 불이 노동 현장으로. 현대, 대우 등 전국적 파업", icon: "solidarity" }
+                ]
+            },
+            {
+                number: 9,
+                name: "9월 September",
+                quote: "살아남은 자들은 끝없이 떠돌아다닌다.",
+                source: "한강, 『소년이 온다』",
+                events: [
+                    { date: "9월", year: 1987, title: "노동자대투쟁 지속", description: "민주노조 운동의 결실. 3천여 건의 노동쟁의", icon: "flag" }
+                ]
+            },
+            {
+                number: 10,
+                name: "10월 October",
+                quote: "인간의 잔혹함과 존엄성이 극도로 평행하게 존재했던 시대. 시간과 공간을 건너 계속해서 우리에게 되돌아오는 현재형.",
+                source: "한강, 노벨상 수상 연설",
+                events: [
+                    { date: "10월 16~20일", year: 1979, title: "부마민주항쟁", description: "부산·마산 시민의 유신 철폐 항쟁. 박정희 정권 몰락의 계기", icon: "fist" },
+                    { date: "10월 26일", year: 1979, title: "10·26 사건", description: "박정희 사망. 18년 장기집권 종료", icon: "end" },
+                    { date: "10월 17일", year: 1972, title: "10월 유신", description: "박정희 유신헌법 선포. 1인 독재 체제 구축", icon: "chains" }
+                ]
+            },
+            {
+                number: 11,
+                name: "11월 November",
+                quote: "어떤 일이 있다고 해도 계속 말해지는 진실이 있을 것이고 그런 언어의 힘은 변하지 않을 것이다. 문학은 여분이 아니라 필수라고 생각한다.",
+                source: "한강 작가",
+                events: [
+                    { date: "11월~12월", year: "2016-2017", title: "촛불혁명", description: "박근혜 퇴진 요구 평화 촛불집회. 232만 명 참여의 민주주의 승리", icon: "candle" }
+                ]
+            },
+            {
+                number: 12,
+                name: "12월 December",
+                quote: "과거가 현재를 도울 수 있는가? 죽은 자가 산 자를 구할 수 있는가? - 그렇다. 언어의 실로 연결된 우리는 폭력에 맞서 함께 선다.",
+                source: "한강, 노벨상 수상 연설 / 『소년이 온다』",
+                events: [
+                    { date: "12월 3일", year: 2024, title: "윤석열 비상계엄 선포", description: "45년 만의 계엄령. 헌정 사상 최악의 위기", icon: "warning" },
+                    { date: "12월 4일", year: 2024, title: "국회의 계엄 해제", description: "3시간 13분 만에 계엄 무력화. 민주주의 제도의 힘", icon: "scale" },
+                    { date: "12월 9일", year: 2016, title: "박근혜 탄핵소추", description: "국회 탄핵소추안 가결. 촛불의 승리", icon: "candle" }
+                ]
+            }
+        ];
+
+        function generateMonthNav() {
+            const nav = document.getElementById('monthNav');
+            monthsData.forEach((month, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'month-btn';
+                btn.textContent = `${month.number}월`;
+                btn.setAttribute('aria-label', `${month.name}로 이동`);
+                btn.addEventListener('click', () => {
+                    scrollToMonth(index);
+                    updateActiveMonth(index);
+                });
+                nav.appendChild(btn);
+            });
+        }
+
+        function generateMonthSections() {
+            const container = document.getElementById('mainContent');
+            monthsData.forEach((month, index) => {
+                const section = document.createElement('section');
+                section.className = 'month-section';
+                section.id = `month-${month.number}`;
+                section.setAttribute('aria-labelledby', `month-title-${month.number}`);
+
+                const eventsHTML = month.events.map(event => `
+                    <article class="event-card">
+                        <div class="event-icon">
+                            ${icons[event.icon]}
+                        </div>
+                        <div class="event-date">
+                            ${event.date} <span class="event-year">${event.year}</span>
+                        </div>
+                        <h3 class="event-title">${event.title}</h3>
+                        <p class="event-description">${event.description}</p>
+                    </article>
+                `).join('');
+
+                section.innerHTML = `
+                    <header class="month-header">
+                        <h2 class="month-title" id="month-title-${month.number}">${month.name}</h2>
+                        <div class="quote-container">
+                            <p class="quote">${month.quote}</p>
+                            <p class="quote-source">- ${month.source}</p>
+                        </div>
+                    </header>
+                    <div class="events-grid">
+                        ${eventsHTML}
+                    </div>
+                `;
+
+                container.appendChild(section);
+            });
+        }
+
+        function scrollToMonth(index) {
+            const section = document.getElementById(`month-${monthsData[index].number}`);
+            if (section) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const targetPosition = section.offsetTop - headerHeight - 20;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function updateActiveMonth(index) {
+            const buttons = document.querySelectorAll('.month-btn');
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+
+        function observeSections() {
+            const sections = document.querySelectorAll('.month-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        const sectionId = entry.target.id;
+                        const monthNumber = parseInt(sectionId.split('-')[1]);
+                        const monthIndex = monthsData.findIndex(m => m.number === monthNumber);
+                        if (monthIndex !== -1) {
+                            updateActiveMonth(monthIndex);
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.2,
+                rootMargin: '-100px'
+            });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        function init() {
+            generateMonthNav();
+            generateMonthSections();
+            
+            setTimeout(() => {
+                observeSections();
+                
+                const currentMonth = new Date().getMonth();
+                updateActiveMonth(currentMonth);
+            }, 100);
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

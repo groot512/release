@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빛의 혁명 달력 (2025)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts: Noto Serif KR (for quotes) and Inter (for UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark theme (bg-gray-900) */
+            color: #f3f4f6; /* Light text (text-gray-100) */
+        }
+        
+        /* Serif font for thematic elements */
+        .font-serif-kr {
+            font-family: 'Noto Serif KR', serif;
+        }
+
+        /* Calendar cell */
+        .calendar-cell {
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .calendar-cell:hover {
+            background-color: #374151; /* bg-gray-700 */
+        }
+        
+        /* Event marker */
+        .event-marker {
+            width: 24px;
+            height: 24px;
+            color: #facc15; /* text-yellow-400 */
+        }
+
+        /* Modal animation */
+        .modal-enter {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-leave {
+            animation: fadeOut 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 max-w-6xl min-h-screen">
+        <!-- Header -->
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-5xl font-bold font-serif-kr text-white">한국의 민주주의, 빛의 혁명</h1>
+            <p class="text-lg text-gray-400 mt-3">한강 작가의 시선으로 본 2025년</p>
+        </header>
+
+        <!-- Calendar Application -->
+        <div id="calendar-app" class="bg-gray-900 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
+            
+            <!-- Month Header & Navigation -->
+            <div class="flex items-center justify-between p-4 md:p-6 bg-gray-800">
+                <button id="prev-month" class="p-2 rounded-full hover:bg-gray-700 text-gray-300 transition-colors">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <h2 id="month-year" class="text-2xl md:text-3xl font-semibold text-white text-center"></h2>
+                <button id="next-month" class="p-2 rounded-full hover:bg-gray-700 text-gray-300 transition-colors">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <!-- Han Kang Quote Section -->
+            <div class="p-6 md:p-8 bg-gray-800 border-t border-b border-gray-700">
+                <blockquote class="text-center max-w-3xl mx-auto">
+                    <p id="month-quote" class="text-xl md:text-2xl italic font-serif-kr text-gray-300"></p>
+                    <footer class="mt-3 text-sm text-gray-500">— 한강</footer>
+                </blockquote>
+            </div>
+
+            <!-- Calendar Grid -->
+            <div>
+                <!-- Day of Week Labels -->
+                <div class="grid grid-cols-7 gap-px bg-gray-700">
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm hidden md:block">일요일</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm hidden md:block">월요일</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm hidden md:block">화요일</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm hidden md:block">수요일</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm hidden md:block">목요일</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm hidden md:block">금요일</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm hidden md:block">토요일</div>
+                    <!-- Mobile Labels -->
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm md:hidden">일</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm md:hidden">월</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm md:hidden">화</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm md:hidden">수</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm md:hidden">목</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm md:hidden">금</div>
+                    <div class="text-center font-semibold text-gray-400 p-3 text-sm md:hidden">토</div>
+                </div>
+                <!-- Date Cells -->
+                <div id="calendar-days" class="grid grid-cols-7 gap-px bg-gray-700">
+                    <!-- Date cells will be injected here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm py-8">
+            "과거가 현재를 도울 수 있는가? 죽은 자가 산 자를 구할 수 있는가?"
+        </footer>
+    </div>
+    
+    <!-- Event Modal -->
+    <div id="event-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50" aria-modal="true">
+        <div id="modal-backdrop" class="absolute inset-0"></div>
+        <div id="modal-box" class="bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6 relative z-10 border border-gray-700 modal-enter">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h3 id="modal-date" class="text-2xl font-semibold font-serif-kr text-white mb-6"></h3>
+            <div id="modal-content" class="text-gray-300 space-y-5 max-h-[60vh] overflow-y-auto pr-2">
+                <!-- Event content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        // (사용자가 제공한 HTML 테이블을 기반으로 재구성)
+
+        const CALENDAR_YEAR = 2025;
+
+        // 한강 작가의 문장 (월별 테마)
+        const monthlyQuotes = [
+            "과거가 현재를 도울 수 있는가? 죽은 자가 산 자를 구할 수 있는가?", // 1월
+            "우리는 빛을 향해 갔습니다. 그게 전부입니다.", // 2월
+            "어떤 질문들은 단지 질문으로 남겨지는 것만으로도 힘이 있다.", // 3월
+            "그것은 폭력이 아니었다. 그것은... 빛이었다.", // 4월
+            "당신이, 거기, 있었군요.", // 5월
+            "인간의 참혹과 존엄 사이에서, 두 벼랑 사이를 잇는 불가능한 허공의 길.", // 6월
+            "우리는 왜, 이토록 끈질기게 인간이어야 하는가.", // 7월
+            "모든 소설, 결국 사랑을 향하고 있어.", // 8월
+            "문학은 현실의 거울이며, 또한 현실을 바꿀 수 있는 힘.", // 9월
+            "그 어둠 속에서, 나는 당신의 눈을 보았다.", // 10월
+            "수백만 개의 촛불이 모여 하나의 거대한 강을 이루었다.", // 11월
+            "우리는 패배하지 않았습니다. 우리는 다만, 계속 걸어갈 뿐입니다." // 12월
+        ];
+
+        // 월별 민주주의 사건 (날짜별)
+        const monthlyEvents = [
+            // 1월 (Month 0)
+            { 
+                8: [{ year: 1974, title: "긴급조치 1·2호 발동", desc: "유신 반대 목소리를 억압하려던 독재의 손길." }],
+                14: [{ year: 1987, title: "박종철 고문치사 사건", desc: "물고문으로 죽은 21세 청년의 몸. 그의 죽음은 6월 항쟁의 도화선이 됨." }],
+                26: [{ year: 2025, title: "검찰, 윤석열 내란 혐의 기소", desc: "법치주의가 작동하는 과정. (사용자 데이터 기반)" }]
+            },
+            // 2월 (Month 1)
+            {
+                28: [{ year: 1960, title: "2·28 대구 학생의거", desc: "청소년의 분노가 처음 거리로 나섬. 4·19혁명으로 확산." }]
+            },
+            // 3월 (Month 2)
+            {
+                15: [{ year: 1960, title: "3·15 마산 의거", desc: "부정선거에 항거. 김주열 열사의 시신이 4·19를 촉발시킴." }]
+            },
+            // 4월 (Month 3)
+            {
+                3: [{ year: 2025, title: "헌법재판소, 윤석열 파면", desc: "전원일치 파면. 법의 지배가 승리. (사용자 데이터 기반)" }],
+                19: [{ year: 1960, title: "4·19 혁명", desc: "이승만 정권에 대항한 최초의 대규모 민주 항쟁. 학생과 시민의 피로 이승만 하야를 이끌어냄." }]
+            },
+            // 5월 (Month 4)
+            {
+                16: [{ year: 1961, title: "5·16 군사정변", desc: "박정희 쿠데타. 민주주의의 문이 닫히고 18년 독재가 시작됨." }],
+                18: [{ year: 1980, title: "5·18 광주민주화운동", desc: "전두환의 공수부대 투입. 탱크가 시민을 짓밟음. 숭고한 저항의 빛." }]
+            },
+            // 6월 (Month 5)
+            {
+                3: [{ year: 1964, title: "6·3 항쟁", desc: "한일협정 굴욕에 항거한 학생들의 저항. 계엄령 선포." }],
+                10: [{ year: 1987, title: "6월 민주항쟁", desc: "박종철의 죽음이 촉발한 한 달간의 항쟁. 이한열 열사 피살. 대통령 직선제를 획득." }]
+            },
+            // 7월 (Month 6)
+            {
+                1: [{ year: 1987, title: "7~9월 노동자 대투쟁", desc: "6월 항쟁 이후 민주주의의 불이 노동 현장으로 확산. 경제 민주주의의 시작." }]
+            },
+            // 8월 (Month 7)
+            {
+                15: [{ year: 1945, title: "광복", desc: "모든 민주주의의 근간이 되는 '주권 회복'의 날." }]
+            },
+            // 9월 (Month 8)
+            {
+                1: [{ year: 1988, title: "국정감사 부활", desc: "6월 항쟁의 성과로 16년 만에 부활한 국회의 정부 견제 기능. 제도적 민주주의의 복원." }]
+            },
+            // 10월 (Month 9)
+            {
+                16: [{ year: 1979, title: "부마민주항쟁", desc: "부산과 마산에서 유신 철폐를 외친 항쟁. 유신 붕괴의 도화선." }],
+                17: [{ year: 1972, title: "10월 유신", desc: "박정희의 유신헌법. 독재 체제 확립. 암흑의 시대 도래." }],
+                26: [{ year: 1979, title: "10·26 사건", desc: "박정희 피살. 부마항쟁의 격문이 역사의 흐름을 바꿈." }]
+            },
+            // 11월 (Month 10)
+            {
+                1: [{ year: 2016, title: "촛불혁명 (시작)", desc: "박근혜 국정 농단에 맞선 평화 시위. 촛불의 불길이 광장을 밝힘." }]
+            },
+            // 12월 (Month 11)
+            {
+                3: [{ year: 2024, title: "윤석열 비상계엄 선포", desc: "헌정사상 초유의 헌법 위기. 독재의 망령. (사용자 데이터 기반)" }],
+                4: [{ year: 2024, title: "국회, 계엄 해제 결의안 통과", desc: "0시 39분, 3시간 13분 만의 신속한 대응. 절차적 민주주의의 승리. (사용자 데이터 기반)" }],
+                7: [{ year: 2024, title: "이재명 '내란극복' 특위 구성", desc: "역사적 기억에 기초한 정치. (사용자 데이터 기반)" }],
+                26: [{ year: 2024, title: "민주당, 진상규명 특별법 추진", desc: "과거의 죽은 자들을 위한 조사, 항명 군인 포상. (사용자 데이터 기반)" }]
+            }
+        ];
+
+        // --- STATE ---
+        let currentMonthIndex = new Date().getMonth(); // Start with current month
+        if (CALENDAR_YEAR !== new Date().getFullYear()) {
+            currentMonthIndex = 0; // If it's not 2025, default to January
+        }
+
+
+        // --- DOM ELEMENTS ---
+        const monthYearEl = document.getElementById('month-year');
+        const monthQuoteEl = document.getElementById('month-quote');
+        const calendarDaysEl = document.getElementById('calendar-days');
+        const prevMonthBtn = document.getElementById('prev-month');
+        const nextMonthBtn = document.getElementById('next-month');
+        const modalEl = document.getElementById('event-modal');
+        const modalBoxEl = document.getElementById('modal-box');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalDateEl = document.getElementById('modal-date');
+        const modalContentEl = document.getElementById('modal-content');
+
+        // --- FUNCTIONS ---
+
+        /**
+         * Renders the calendar for the given month index
+         */
+        function renderCalendar() {
+            const month = currentMonthIndex;
+            const year = CALENDAR_YEAR;
+
+            // 1. Set Month/Year and Quote
+            monthYearEl.innerText = `${year}년 ${month + 1}월`;
+            monthQuoteEl.innerText = monthlyQuotes[month];
+
+            // 2. Clear previous calendar days
+            calendarDaysEl.innerHTML = '';
+
+            // 3. Get calendar grid data
+            const firstDay = new Date(year, month, 1).getDay(); // 0 = Sunday, 1 = Monday...
+            const daysInMonth = new Date(year, month + 1, 0).getDate(); // Get last day of month
+
+            // 4. Add empty cells for the start of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-cell bg-gray-800 h-20 md:h-32';
+                calendarDaysEl.appendChild(emptyCell);
+            }
+
+            // 5. Add cells for each day
+            const events = monthlyEvents[month];
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-cell relative bg-gray-800 h-20 md:h-32 p-2';
+                
+                // Date number
+                const dateNum = document.createElement('span');
+                dateNum.className = 'absolute top-2 right-2 text-sm text-gray-400';
+                dateNum.innerText = d;
+                dayCell.appendChild(dateNum);
+
+                // Check for events
+                const dayEvents = events[d];
+                if (dayEvents) {
+                    dayCell.classList.add('cursor-pointer');
+                    
+                    // Add event marker (candle icon)
+                    const marker = document.createElement('div');
+                    marker.className = 'event-marker absolute bottom-2 left-2';
+                    marker.innerHTML = '<i data-lucide="candle"></i>';
+                    dayCell.appendChild(marker);
+                    
+                    // Add click listener to show modal
+                    dayCell.addEventListener('click', () => {
+                        showModal(year, month, d, dayEvents);
+                    });
+                }
+                
+                calendarDaysEl.appendChild(dayCell);
+            }
+
+            // 6. Create icons
+            lucide.createIcons();
+        }
+
+        /**
+         * Shows the event modal
+         */
+        function showModal(year, month, day, events) {
+            // Set date
+            modalDateEl.innerText = `${year}년 ${month + 1}월 ${day}일`;
+
+            // Clear previous content
+            modalContentEl.innerHTML = '';
+
+            // Add new event content
+            events.forEach(event => {
+                const eventEl = document.createElement('div');
+                eventEl.className = 'border-l-4 border-yellow-400 pl-4';
+                
+                const title = document.createElement('h4');
+                title.className = 'text-lg font-bold text-white';
+                title.innerText = `(${event.year}) ${event.title}`;
+                
+                const desc = document.createElement('p');
+                desc.className = 'text-gray-300 text-sm mt-1';
+                desc.innerText = event.desc;
+                
+                eventEl.appendChild(title);
+                eventEl.appendChild(desc);
+                modalContentEl.appendChild(eventEl);
+            });
+            
+            // Show modal
+            modalEl.classList.remove('hidden');
+            modalBoxEl.classList.remove('modal-leave');
+            modalBoxEl.classList.add('modal-enter');
+        }
+
+        /**
+         * Closes the event modal
+         */
+        function closeModal() {
+            modalBoxEl.classList.remove('modal-enter');
+            modalBoxEl.classList.add('modal-leave');
+            setTimeout(() => {
+                modalEl.classList.add('hidden');
+            }, 300); // Wait for animation
+        }
+
+        // --- EVENT LISTENERS ---
+
+        // Navigation
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonthIndex = (currentMonthIndex - 1 + 12) % 12; // Loop back
+            renderCalendar();
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonthIndex = (currentMonthIndex + 1) % 12; // Loop forward
+            renderCalendar();
+        });
+
+        // Modal close
+        closeModalBtn.addEventListener('click', closeModal);
+        modalBackdrop.addEventListener('click', closeModal);
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCalendar();
+        });
+    </script>
+
+</body>
+</html>
