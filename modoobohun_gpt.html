@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>모두보훈 마켓 운영 대시보드</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-main: #050816;
+      --bg-card: #0b1220;
+      --bg-subcard: #111827;
+      --accent: #699cee;
+      --accent-soft: rgba(105, 156, 238, 0.25);
+      --text-main: #f9fafb;
+      --text-sub: #9ca3af;
+      --danger: #f97373;
+      --success: #22c55e;
+      --warning: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, #1f2937 0, #050816 55%);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 2fr 1.1fr;
+      gap: 24px;
+      padding: 24px 32px;
+      height: 100vh;
+    }
+
+    header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.7);
+    }
+
+    .brand-text-main {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .brand-text-sub {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .header-meta span strong {
+      color: var(--accent);
+    }
+
+    .time-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 13px;
+    }
+
+    /* 왼쪽 영역 */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(11, 18, 32, 0.92);
+      border-radius: 18px;
+      padding: 16px 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      opacity: 0.12;
+      background: radial-gradient(circle at top left, var(--accent) 0, transparent 65%);
+      transform: translateX(-40%);
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-title {
+      font-size: 14px;
+      color: var(--text-sub);
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--accent);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    .kpi-value {
+      position: relative;
+      z-index: 1;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .kpi-value span.unit {
+      font-size: 16px;
+      font-weight: 500;
+      margin-left: 4px;
+      color: var(--text-sub);
+    }
+
+    .kpi-sub {
+      position: relative;
+      z-index: 1;
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    .kpi-trend {
+      position: relative;
+      z-index: 1;
+      margin-top: 10px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .kpi-trend.up {
+      color: var(--success);
+    }
+
+    .kpi-trend.down {
+      color: var(--danger);
+    }
+
+    .kpi-trend span.label {
+      color: var(--text-sub);
+    }
+
+    .kpi-trend span.value {
+      font-weight: 600;
+    }
+
+    /* 하단 큰 카드 */
+    .section-card {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.6fr 1.2fr;
+      gap: 18px;
+      background: rgba(11, 18, 32, 0.9);
+      border-radius: 20px;
+      padding: 18px 20px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .list-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(55, 65, 81, 0.7);
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-sub);
+    }
+
+    .progress {
+      width: 100%;
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.95);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), #22c55e);
+      width: 48%;
+      transition: width 0.6s ease-out;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* 우측 지도 영역 */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .map-card {
+      flex: 1;
+      background: rgba(11, 18, 32, 0.95);
+      border-radius: 20px;
+      padding: 18px 18px 16px 18px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .map-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .map-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .map-filter {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .map-legend {
+      display: flex;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      margin-right: 4px;
+      display: inline-block;
+    }
+
+    .legend-veteran { background: var(--accent); }
+    .legend-family  { background: var(--success); }
+    .legend-center  { background: var(--warning); }
+
+    .map-view {
+      flex: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 8px;
+      background: radial-gradient(circle at center, #1e293b 0, #020617 70%);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      position: relative;
+    }
+
+    .map-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-sub);
+      font-size: 13px;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .map-placeholder span {
+      font-size: 11px;
+    }
+
+    /* 하단 작은 카드 */
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mini-card {
+      background: var(--bg-subcard);
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 11px;
+      color: var(--text-sub);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mini-card strong {
+      color: var(--text-main);
+    }
+
+    /* 반응형(필요 시) */
+    @media (max-width: 1280px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+        overflow: auto;
+        height: auto;
+      }
+
+      body {
+        overflow: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">BH</div>
+        <div>
+          <div class="brand-text-main">모두보훈 마켓 운영 대시보드</div>
+          <div class="brand-text-sub">보훈대상자·보훈가족·제대군인과 가맹점, 상생센터 현황을 한눈에</div>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span>전체 상생센터 <strong id="total-centers">225</strong>곳 기준</span>
+        <div class="time-pill" id="now-time">로딩 중…</div>
+      </div>
+    </header>
+
+    <!-- 왼쪽: KPI / 상세 -->
+    <section class="left-panel">
+      <!-- 상단 KPI 카드 -->
+      <div class="kpi-grid">
+        <!-- 가입자 현황 -->
+        <article class="card">
+          <div class="card-header">
+            <div class="card-title">가입자 현황</div>
+            <div class="badge">실시간</div>
+          </div>
+          <div class="kpi-value" id="kpi-subs-total">830,000<span class="unit">명</span></div>
+          <div class="kpi-sub">
+            보훈대상자 <strong id="kpi-veteran">520,000</strong> · 보훈가족 <strong id="kpi-family">230,000</strong> · 제대군인 <strong id="kpi-military">80,000</strong>
+          </div>
+          <div class="kpi-trend up">
+            <span class="label">오늘 신규</span>
+            <span class="value" id="kpi-subs-today">+120</span>
+          </div>
+        </article>
+
+        <!-- 가맹점 현황 -->
+        <article class="card">
+          <div class="card-header">
+            <div class="card-title">가맹점 현황</div>
+            <div class="badge">혜택 이용처</div>
+          </div>
+          <div class="kpi-value" id="kpi-shops-total">13,450<span class="unit">개</span></div>
+          <div class="kpi-sub">
+            세븐일레븐 <strong id="kpi-7eleven">13,000</strong>개 · 기타 가맹점 <strong id="kpi-others">450</strong>개
+          </div>
+          <div class="kpi-trend up">
+            <span class="label">이번 달 신규</span>
+            <span class="value" id="kpi-shops-month">+32</span>
+          </div>
+        </article>
+
+        <!-- 상생센터 등록 현황 -->
+        <article class="card">
+          <div class="card-header">
+            <div class="card-title">상생센터 등록</div>
+            <div class="badge">센터</div>
+          </div>
+          <div class="kpi-value" id="kpi-centers-registered">112<span class="unit">개</span></div>
+          <div class="kpi-sub">
+            전체 센터 <span id="kpi-centers-total">225</span>개 중 <strong id="kpi-centers-rate">49.8%</strong> 등록
+          </div>
+          <div class="kpi-trend up">
+            <span class="label">이번 주 신규</span>
+            <span class="value" id="kpi-centers-week">+4</span>
+          </div>
+        </article>
+
+        <!-- 매니저 등록 현황 -->
+        <article class="card">
+          <div class="card-header">
+            <div class="card-title">매니저 등록</div>
+            <div class="badge">운영 인력</div>
+          </div>
+          <div class="kpi-value" id="kpi-managers">63<span class="unit">명</span></div>
+          <div class="kpi-sub">
+            금일 접속 <strong id="kpi-managers-online">18</strong>명 · 평균 응답시간 <strong id="kpi-response-time">3.2분</strong>
+          </div>
+          <div class="kpi-trend up">
+            <span class="label">활성 매니저 비율</span>
+            <span class="value" id="kpi-managers-rate">71%</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- 하단: 가입자 구성 & 센터/가맹점 요약 -->
+      <article class="section-card">
+        <!-- 가입자 구성 -->
+        <div>
+          <h2 class="section-title">가입자 구성 현황</h2>
+          <div class="section-subtitle">보훈대상자, 보훈가족, 제대군인 비율과 주요 이용 지역</div>
+
+          <div class="list">
+            <div class="list-row">
+              <span>보훈대상자</span>
+              <span>
+                <span class="pill">62%</span>
+                <strong id="row-veteran-count">520,000명</strong>
+              </span>
+            </div>
+            <div class="list-row">
+              <span>보훈가족</span>
+              <span>
+                <span class="pill">28%</span>
+                <strong id="row-family-count">230,000명</strong>
+              </span>
+            </div>
+            <div class="list-row">
+              <span>제대군인(40세 미만)</span>
+              <span>
+                <span class="pill">10%</span>
+                <strong id="row-military-count">80,000명</strong>
+              </span>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <div class="section-subtitle" style="margin-bottom:6px;">주요 이용 지역 TOP 3</div>
+            <div class="list">
+              <div class="list-row">
+                <span>서울·경기권</span>
+                <span><strong>43%</strong></span>
+              </div>
+              <div class="list-row">
+                <span>부산·경남권</span>
+                <span><strong>21%</strong></span>
+              </div>
+              <div class="list-row">
+                <span>대구·경북권</span>
+                <span><strong>18%</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 상생센터 & 가맹점 요약 -->
+        <div>
+          <h2 class="section-title">상생센터·가맹점 운영 요약</h2>
+          <div class="section-subtitle">센터 등록률과 지역별 가맹점 커버리지</div>
+
+          <div>
+            <div style="font-size:12px; margin-bottom:4px;">
+              상생센터 등록률
+            </div>
+            <div class="progress">
+              <div class="progress-bar" id="progress-centers"></div>
+            </div>
+            <div class="progress-label">
+              <span>등록 센터 <strong id="label-centers-registered">112개</strong></span>
+              <span>미등록 <strong id="label-centers-pending">113개</strong></span>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <div class="section-subtitle" style="margin-bottom:4px;">가맹점 커버리지</div>
+            <div class="list">
+              <div class="list-row">
+                <span>세븐일레븐 커버리지</span>
+                <span><strong>전국 13,000개 점포</strong></span>
+              </div>
+              <div class="list-row">
+                <span>지역 가맹점 (비편의점)</span>
+                <span><strong>450개</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 오른쪽: 지도 / 간단 요약 -->
+    <section class="right-panel">
+      <!-- 지도 -->
+      <article class="map-card">
+        <div class="map-header">
+          <div>
+            <h2 class="section-title">전국 상생센터·가맹점 지도</h2>
+            <div class="map-legend">
+              <span><span class="legend-dot legend-center"></span>상생센터</span>
+              <span><span class="legend-dot legend-veteran"></span>가맹점(편의점)</span>
+              <span><span class="legend-dot legend-family"></span>기타 가맹점</span>
+            </div>
+          </div>
+          <div class="map-actions">
+            <button class="map-filter">전체</button>
+            <button class="map-filter">센터만</button>
+            <button class="map-filter">가맹점만</button>
+          </div>
+        </div>
+
+        <div class="map-view" id="map-container">
+          <!-- 실제 운영 시에는 Kakao / Naver Map 또는 기존 모두보훈 지도 페이지를 iframe으로 삽입 -->
+          <!-- 예시: <iframe src="https://modoobohun.com/지도-URL" width="100%" height="100%" frameborder="0"></iframe> -->
+          <div class="map-placeholder">
+            <div>여기에 <strong>카카오/네이버 지도</strong> 또는<br />기존 모두보훈 마켓 지도 화면을 삽입하세요.</div>
+            <span>상생센터(관리표 기준) 및 가맹점 위치를 마커로 표시하면<br />센터 등록 상황과 혜택 커버리지를 직관적으로 볼 수 있어요.</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 하단 미니 카드 -->
+      <div class="mini-grid">
+        <article class="mini-card">
+          <div><strong>오늘의 핵심 알림</strong></div>
+          <div>- 신규 상생센터 등록 요청 <strong>3건</strong></div>
+          <div>- 가맹점 정보 변경 요청 <strong>7건</strong></div>
+        </article>
+        <article class="mini-card">
+          <div><strong>시스템 상태</strong></div>
+          <div>API 응답 시간 평균 <strong>210ms</strong></div>
+          <div>주요 장애 <strong>없음</strong></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // 화면 오른쪽 상단 현재 시각 표시
+    function updateClock() {
+      const el = document.getElementById("now-time");
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const d = String(now.getDate()).padStart(2, "0");
+      const h = String(now.getHours()).padStart(2, "0");
+      const min = String(now.getMinutes()).padStart(2, "0");
+      el.textContent = `${y}-${m}-${d} ${h}:${min} 기준 실시간 현황`;
+    }
+    updateClock();
+    setInterval(updateClock, 60 * 1000);
+
+    // 실제 데이터 연동 시 등록률에 맞게 width 조정
+    function setCenterProgress(registered, total) {
+      const rate = total > 0 ? (registered / total) * 100 : 0;
+      const bar = document.getElementById("progress-centers");
+      const labelReg = document.getElementById("label-centers-registered");
+      const labelPending = document.getElementById("label-centers-pending");
+      const totalCenters = document.getElementById("kpi-centers-total");
+
+      bar.style.width = rate.toFixed(1) + "%";
+      labelReg.textContent = `${registered}개`;
+      labelPending.textContent = `${total - registered}개`;
+      totalCenters.textContent = total;
+      document.getElementById("kpi-centers-rate").textContent = rate.toFixed(1) + "%";
+      document.getElementById("kpi-centers-registered").innerHTML = registered + '<span class="unit">개</span>';
+    }
+
+    // 초기 더미값 (112 / 225)
+    setCenterProgress(112, 225);
+
+    // 실제 서버 연동 예시 (API 형태에 맞게 수정)
+    /*
+    fetch("/api/dashboard/summary")
+      .then(res => res.json())
+      .then(data => {
+        // 예: data = { veteran: 520000, family: 230000, military: 80000, shopsTotal: 13450, seven: 13000, centersRegistered: 112, centersTotal: 225, managers: 63, managersOnline: 18, ... }
+        const totalSubs = data.veteran + data.family + data.military;
+        document.getElementById("kpi-veteran").textContent = data.veteran.toLocaleString();
+        document.getElementById("kpi-family").textContent = data.family.toLocaleString();
+        document.getElementById("kpi-military").textContent = data.military.toLocaleString();
+        document.getElementById("kpi-subs-total").innerHTML = totalSubs.toLocaleString() + '<span class="unit">명</span>';
+
+        document.getElementById("row-veteran-count").textContent = data.veteran.toLocaleString() + "명";
+        document.getElementById("row-family-count").textContent = data.family.toLocaleString() + "명";
+        document.getElementById("row-military-count").textContent = data.military.toLocaleString() + "명";
+
+        document.getElementById("kpi-shops-total").innerHTML = data.shopsTotal.toLocaleString() + '<span class="unit">개</span>';
+        document.getElementById("kpi-7eleven").textContent = data.seven.toLocaleString();
+        document.getElementById("kpi-others").textContent = (data.shopsTotal - data.seven).toLocaleString();
+
+        document.getElementById("kpi-managers").innerHTML = data.managers + '<span class="unit">명</span>';
+        document.getElementById("kpi-managers-online").textContent = data.managersOnline;
+        document.getElementById("kpi-response-time").textContent = data.responseTime.toFixed(1) + "분";
+
+        setCenterProgress(data.centersRegistered, data.centersTotal);
+      });
+    */
+  </script>
+</body>
+</html>
