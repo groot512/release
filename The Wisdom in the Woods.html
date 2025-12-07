@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Han Oak | 운명을 읽는 나무</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts: Noto Serif KR (명조/품격), Noto Sans KR (고딕/현대적) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Noto+Serif+KR:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oak: {
+                            900: '#2C241B', // 아주 어두운 나무색
+                            800: '#3E3326', // 묵직한 오크
+                            700: '#5D4D3B', // 중간 톤
+                            100: '#E8E1D9', // 종이/밝은 나무 질감
+                        },
+                        gold: {
+                            DEFAULT: '#C5A059', // 고급스러운 금색 포인트
+                            light: '#E5C585'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif KR"', 'serif'],
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'wood-pattern': "url('https://images.unsplash.com/photo-1543419372-6831d102dc87?q=80&w=2070&auto=format&fit=crop')",
+                        'library-bg': "url('https://images.unsplash.com/photo-1507842217121-ad0773cf4a0f?q=80&w=2073&auto=format&fit=crop')",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth Scrolling */
+        html { scroll-behavior: smooth; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2C241B; }
+        ::-webkit-scrollbar-thumb { background: #5D4D3B; border-radius: 4px; }
+        
+        /* Hexagram Animation */
+        .hexagram-line {
+            transition: all 0.5s ease;
+        }
+        
+        /* Fade In Animation */
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-panel {
+            background: rgba(44, 36, 27, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-oak-900 text-oak-100 font-sans antialiased selection:bg-gold selection:text-oak-900">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b-0 border-b-white/10 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="font-serif text-2xl font-bold tracking-widest text-gold hover:text-white transition-colors">
+                Han Oak<span class="text-xs align-top opacity-70 ml-1">韓</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm font-light tracking-wider">
+                <a href="#philosophy" class="hover:text-gold transition-colors">PHILOSOPHY</a>
+                <a href="#space" class="hover:text-gold transition-colors">SPACE</a>
+                <a href="#divination" class="hover:text-gold transition-colors">EXPERIENCE</a>
+                <a href="#menu" class="hover:text-gold transition-colors">MENU</a>
+                <a href="#contact" class="hover:text-gold transition-colors">CONTACT</a>
+            </div>
+            <button class="md:hidden text-gold" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-oak-900 border-t border-oak-700 p-4 absolute w-full">
+            <div class="flex flex-col space-y-4 text-center">
+                <a href="#philosophy" class="block py-2 hover:text-gold">PHILOSOPHY</a>
+                <a href="#space" class="block py-2 hover:text-gold">SPACE</a>
+                <a href="#divination" class="block py-2 hover:text-gold">EXPERIENCE</a>
+                <a href="#menu" class="block py-2 hover:text-gold">MENU</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-wood-pattern bg-cover bg-center opacity-40 mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-oak-900/80 via-oak-900/60 to-oak-900"></div>
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-in-up">
+            <p class="text-gold tracking-[0.3em] text-sm md:text-base mb-4 uppercase">The Wisdom in the Woods</p>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-oak-100 leading-tight">
+                Han Oak<br><span class="text-2xl md:text-4xl font-light italic text-gold/80 block mt-2">운명을 읽는 나무</span>
+            </h1>
+            <p class="text-oak-100/80 text-lg md:text-xl font-light max-w-2xl mx-auto mb-10 leading-relaxed">
+                동양의 철학(韓)과 서양의 물성(Oak)이 만나,<br>
+                당신의 삶에 대한 질문과 답을 구하는 공간입니다.
+            </p>
+            <a href="#divination" class="inline-block border border-gold text-gold px-8 py-3 hover:bg-gold hover:text-oak-900 transition-all duration-300 font-serif tracking-widest text-sm">
+                당신의 괘(卦) 읽기
+            </a>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-gold/50">
+            <i data-lucide="chevron-down" size="32"></i>
+        </div>
+    </header>
+
+    <!-- Philosophy Section -->
+    <section id="philosophy" class="py-24 bg-oak-900 relative">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            <div class="relative">
+                <div class="aspect-[3/4] bg-oak-800 overflow-hidden relative rounded-sm">
+                     <!-- Abstract representation of Hanok + Oak -->
+                    <img src="https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?q=80&w=2071&auto=format&fit=crop" alt="Korean Architecture Detail" class="object-cover w-full h-full opacity-70 hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 border border-gold/30 m-4 pointer-events-none"></div>
+                </div>
+            </div>
+            <div class="space-y-8">
+                <h2 class="font-serif text-4xl md:text-5xl text-gold mb-4">Han & Oak</h2>
+                <div class="h-1 w-20 bg-gold/50"></div>
+                <p class="text-lg leading-loose text-oak-100/90 font-light">
+                    <strong class="text-white">Han (韓)</strong>은 한국의 전통과 정신을 의미합니다. 우리는 단순히 옛것을 흉내 내는 것이 아니라, 그 속에 담긴 '여백'과 '사색'의 가치를 가져옵니다.
+                </p>
+                <p class="text-lg leading-loose text-oak-100/90 font-light">
+                    <strong class="text-white">Oak (참나무)</strong>는 단단함과 세월의 깊이를 상징합니다. 시간이 지날수록 깊어지는 오크의 색감처럼, 이곳에서의 시간은 당신의 내면을 단단하게 만듭니다.
+                </p>
+                <div class="pt-6">
+                    <span class="inline-flex items-center text-gold border-b border-gold pb-1 text-sm tracking-widest uppercase">
+                        Brand Identity
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Space Concept -->
+    <section id="space" class="py-24 bg-oak-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-3xl md:text-4xl mb-4">Space Design</h2>
+                <p class="text-oak-100/60 font-light">대구대표도서관 옆, 도심 속 인문학 쉘터</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group relative overflow-hidden bg-oak-900 p-8 hover:-translate-y-2 transition-transform duration-300 border border-white/5">
+                    <div class="text-gold mb-6"><i data-lucide="home" size="32"></i></div>
+                    <h3 class="font-serif text-xl mb-4 text-white">Modern Hanok</h3>
+                    <p class="text-sm leading-relaxed text-oak-100/70">
+                        전통 서까래 구조를 노출하고 다크 오크 톤으로 마감하여, 한옥의 안락함과 서재의 무게감을 동시에 전달합니다.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="group relative overflow-hidden bg-oak-900 p-8 hover:-translate-y-2 transition-transform duration-300 border border-white/5">
+                    <div class="text-gold mb-6"><i data-lucide="book-open" size="32"></i></div>
+                    <h3 class="font-serif text-xl mb-4 text-white">Library Lounge</h3>
+                    <p class="text-sm leading-relaxed text-oak-100/70">
+                        도서관 이용객을 위한 긴 우드슬랩 테이블. 눈치 보지 않고 책을 펼칠 수 있는 몰입의 공간입니다.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="group relative overflow-hidden bg-oak-900 p-8 hover:-translate-y-2 transition-transform duration-300 border border-white/5">
+                    <div class="text-gold mb-6"><i data-lucide="sun" size="32"></i></div>
+                    <h3 class="font-serif text-xl mb-4 text-white">I Ching Lighting</h3>
+                    <p class="text-sm leading-relaxed text-oak-100/70">
+                        주역의 64괘를 형상화한 직선형 조명이 바닥에 운명의 그림자를 그립니다. 공간 자체가 하나의 거대한 책입니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Experience: Divination -->
+    <section id="divination" class="py-24 relative overflow-hidden bg-black">
+        <!-- Bg effect -->
+        <div class="absolute inset-0 bg-library-bg bg-cover bg-center opacity-20"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+            <div class="inline-block border border-gold/50 rounded-full px-4 py-1 text-gold text-xs tracking-widest mb-6 uppercase">
+                Signature Experience
+            </div>
+            <h2 class="font-serif text-4xl md:text-5xl text-white mb-6">책으로 읽는 운명</h2>
+            <p class="text-oak-100/70 mb-12 font-light">
+                마음속으로 고민을 떠올리고 버튼을 눌러보세요.<br>
+                주역의 괘와 함께 당신을 위한 책 한 구절을 처방해 드립니다.
+            </p>
+
+            <!-- Interactive Box -->
+            <div class="glass-panel p-8 md:p-12 max-w-2xl mx-auto rounded-lg shadow-2xl relative border-t border-gold/30">
+                <div id="divination-content">
+                    <div class="mb-8 h-32 flex items-center justify-center">
+                        <div id="hexagram-display" class="font-serif text-8xl md:text-9xl text-gold opacity-80 leading-none select-none">
+                            ☰
+                        </div>
+                    </div>
+                    <h3 id="result-title" class="text-2xl font-serif text-white mb-2">건위천 (The Creative)</h3>
+                    <p id="result-desc" class="text-sm text-oak-100/60 mb-8 italic">"크게 형통하니 바르게 함이 이롭다."</p>
+                    
+                    <div class="border-t border-white/10 pt-6">
+                        <p class="text-xs text-gold uppercase tracking-widest mb-2">Prescribed Book</p>
+                        <p id="book-quote" class="text-lg font-serif leading-relaxed text-white">
+                            "인간은 파괴될지언정 패배하지 않는다."
+                        </p>
+                        <p id="book-author" class="text-sm text-oak-100/50 mt-2 text-right">
+                            - 어니스트 헤밍웨이, &lt;노인과 바다&gt;
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-10">
+                    <button onclick="drawDivination()" class="group relative px-8 py-4 bg-gold hover:bg-white text-oak-900 font-bold tracking-widest transition-all duration-300 overflow-hidden">
+                        <span class="relative z-10">운명 읽기 (DRAW)</span>
+                        <div class="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Preview -->
+    <section id="menu" class="py-24 bg-oak-100 text-oak-900">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-oak-900/10 pb-4">
+                <div>
+                    <h2 class="font-serif text-4xl mb-2">Han Oak Menu</h2>
+                    <p class="text-oak-800/60 font-light">나무의 향과 인문학의 깊이를 담았습니다.</p>
+                </div>
+                <div class="text-right mt-4 md:mt-0">
+                    <span class="font-serif italic text-gold">Fusion of Tradition</span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Menu Item 1 -->
+                <div class="flex gap-6 items-start">
+                    <div class="w-24 h-24 bg-oak-800 rounded-sm flex-shrink-0 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=2237&auto=format&fit=crop" class="w-full h-full object-cover opacity-90" alt="Coffee">
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-xl font-bold mb-1">Oak-Aged Cold Brew</h3>
+                        <p class="text-sm text-oak-700/80 mb-2">오크 에이지드 콜드브루</p>
+                        <p class="text-sm text-oak-600 font-light leading-relaxed">
+                            실제 오크통에서 48시간 숙성하여 위스키의 훈연 향과 깊은 나무 내음을 커피에 입혔습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Menu Item 2 -->
+                <div class="flex gap-6 items-start">
+                    <div class="w-24 h-24 bg-oak-800 rounded-sm flex-shrink-0 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1600431562289-5f96dd90a872?q=80&w=2107&auto=format&fit=crop" class="w-full h-full object-cover opacity-90" alt="Cookie">
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-xl font-bold mb-1">I Ching Sand Cookie</h3>
+                        <p class="text-sm text-oak-700/80 mb-2">주역 샌드 쿠키</p>
+                        <p class="text-sm text-oak-600 font-light leading-relaxed">
+                            64괘가 랜덤으로 각인된 버터 샌드. 쑥, 흑임자, 솔티드 카라멜의 조화로운 맛.
+                        </p>
+                    </div>
+                </div>
+
+                 <!-- Menu Item 3 -->
+                 <div class="flex gap-6 items-start">
+                    <div class="w-24 h-24 bg-oak-800 rounded-sm flex-shrink-0 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover opacity-90" alt="Tea">
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-xl font-bold mb-1">Scholar's Clarity Tea</h3>
+                        <p class="text-sm text-oak-700/80 mb-2">선비의 맑은 차</p>
+                        <p class="text-sm text-oak-600 font-light leading-relaxed">
+                            독서와 사색에 집중할 수 있도록 돕는 로즈마리와 국화 블렌딩 티.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Menu Item 4 -->
+                <div class="flex gap-6 items-start">
+                    <div class="w-24 h-24 bg-oak-800 rounded-sm flex-shrink-0 flex items-center justify-center text-white/20">
+                         <i data-lucide="sparkles" size="32"></i>
+                    </div>
+                    <div class="flex flex-col justify-center h-full">
+                        <h3 class="font-serif text-xl font-bold mb-1">Library Discount</h3>
+                        <p class="text-sm text-oak-600 font-light leading-relaxed">
+                            대구대표도서관 대출 도서 지참 시<br>
+                            모든 음료 <strong>10% 할인</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <section id="contact" class="bg-oak-900 py-16 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="font-serif text-3xl text-gold mb-8">Han Oak</h2>
+            <div class="flex flex-col md:flex-row justify-center gap-8 md:gap-16 text-sm font-light text-oak-100/60 mb-12">
+                <div class="flex flex-col items-center gap-2">
+                    <i data-lucide="map-pin" class="text-gold mb-2"></i>
+                    <p>대구광역시 남구 대명동 (대구대표도서관 인근)</p>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <i data-lucide="clock" class="text-gold mb-2"></i>
+                    <p>Open 10:00 - Close 22:00</p>
+                    <p>(매주 수요일 '인문학 살롱' 진행)</p>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <i data-lucide="instagram" class="text-gold mb-2"></i>
+                    <p>@hanoak_official</p>
+                </div>
+            </div>
+            <p class="text-xs text-oak-100/30">© 2025 Han Oak. All Concept Rights Reserved.</p>
+        </div>
+    </section>
+
+    <!-- Script -->
+    <script>
+        // Icons Initialization
+        lucide.createIcons();
+
+        // Divination Data
+        const fateData = [
+            {
+                symbol: "☰",
+                name: "건위천 (The Creative)",
+                desc: "하늘이 굳건하니 스스로 강해져 쉬지 않는다.",
+                quote: "가장 큰 위험은 위험 없는 삶을 사는 것이다.",
+                author: "스티븐 코비"
+            },
+            {
+                symbol: "☷",
+                name: "곤위지 (The Receptive)",
+                desc: "땅의 덕이 두터우니 만물을 실어 나른다.",
+                quote: "부드러움이 결국 강함을 이긴다.",
+                author: "도덕경"
+            },
+            {
+                symbol: "☵",
+                name: "감위수 (The Abysmal)",
+                desc: "물은 웅덩이를 채우고 나서야 바다로 흐른다.",
+                quote: "서두르지 마라. 그러나 멈추지도 마라.",
+                author: "괴테"
+            },
+            {
+                symbol: "☲",
+                name: "이위화 (The Clinging)",
+                desc: "불은 타오르며 빛을 내지만, 연료가 있어야 한다.",
+                quote: "열정은 사람을 춤추게 한다.",
+                author: "파울로 코엘료"
+            },
+            {
+                symbol: "☴",
+                name: "손위풍 (The Gentle)",
+                desc: "바람은 보이지 않으나 세상 모든 곳에 스며든다.",
+                quote: "진정한 여행은 새로운 풍경을 보는 것이 아니라 새로운 눈을 갖는 것이다.",
+                author: "마르셀 프루스트"
+            },
+            {
+                symbol: "☳",
+                name: "진위뇌 (The Arousing)",
+                desc: "우레가 치니 만물이 깨어난다.",
+                quote: "행동만이 의심을 제거하고 확신을 낳는다.",
+                author: "토마스 카일일"
+            }
+        ];
+
+        function drawDivination() {
+            const container = document.getElementById('divination-content');
+            
+            // Simple Fade Out
+            container.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Random Selection
+                const randomFate = fateData[Math.floor(Math.random() * fateData.length)];
+                
+                // Update DOM
+                document.getElementById('hexagram-display').innerText = randomFate.symbol;
+                document.getElementById('result-title').innerText = randomFate.name;
+                document.getElementById('result-desc').innerText = `"${randomFate.desc}"`;
+                document.getElementById('book-quote').innerText = randomFate.quote;
+                document.getElementById('book-author').innerText = `- ${randomFate.author}`;
+                
+                // Fade In
+                container.style.transition = 'opacity 0.5s ease';
+                container.style.opacity = '1';
+                
+            }, 300);
+        }
+    </script>
+</body>
+</html>
