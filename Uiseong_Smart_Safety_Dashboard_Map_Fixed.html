@@ -15,6 +15,7 @@
     <style>
         :root {
             --primary: #008939;   /* 의성 그린 */
+            --primary-dark: #00682b;
             --secondary: #2c3e50; /* 다크 네이비 */
             --accent: #E84638;    /* 경고 레드 */
             --bg-body: #f3f4f6;   /* 밝은 그레이 배경 */
@@ -70,9 +71,15 @@
             gap: 12px;
         }
 
-        .menu-item:hover, .menu-item.active {
-            background-color: #f0fdf4; /* 연한 그린 */
+        .menu-item:hover {
+            background-color: #f0fdf4;
             color: var(--primary);
+        }
+
+        .menu-item.active {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 137, 57, 0.3);
         }
 
         .menu-item i { width: 20px; text-align: center; }
@@ -91,13 +98,24 @@
         }
         .emergency-trigger:hover { background: var(--accent); color: white; }
 
-        /* --- Main Content --- */
+        /* --- Main Content Area --- */
         .main {
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            overflow: hidden;
+            position: relative;
         }
+
+        /* Page Container (SPA Logic) */
+        .page-container {
+            flex: 1;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            overflow-y: auto;
+            height: 100%;
+        }
+        .page-container.active { display: flex; }
 
         /* Header */
         header {
@@ -127,7 +145,7 @@
             color: var(--primary);
         }
 
-        /* Dashboard Grid */
+        /* --- Page 1: Dashboard Styles --- */
         .dashboard-container {
             padding: 30px;
             display: grid;
@@ -139,7 +157,6 @@
             width: 100%;
         }
 
-        /* Card Common Style */
         .card {
             background: var(--bg-card);
             border-radius: 16px;
@@ -148,14 +165,13 @@
             border: 1px solid var(--border);
         }
 
-        /* Top Stats Cards */
+        /* Stats */
         .stat-card {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: 140px;
         }
-        
         .stat-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
         .stat-icon { 
             width: 40px; height: 40px; 
@@ -167,73 +183,44 @@
         .stat-label { font-size: 14px; color: var(--text-sub); }
         .stat-trend { font-size: 12px; color: var(--primary); font-weight: 600; margin-top: 5px; }
 
-        /* Main Map (Digital Twin) */
+        /* Map */
         .map-card {
             grid-column: span 3;
             grid-row: span 2;
             position: relative;
             overflow: hidden;
             min-height: 500px;
-            padding: 0; /* Map fills card */
+            padding: 0; 
         }
-        
         .map-frame {
             width: 100%; height: 100%;
-            /* 의성군 행정지도 적용 */
             background-image: url('https://www.usc.go.kr/design/ko/img/content/tourmap_06.png'); 
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: #eef2ff; /* 지도 배경색 보완 */
+            background-color: #eef2ff;
             position: relative;
         }
-
         .map-overlay-ui {
-            position: absolute;
-            top: 20px; left: 20px;
+            position: absolute; top: 20px; left: 20px;
             background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(4px);
-            z-index: 5;
+            padding: 15px; border-radius: 12px;
+            box-shadow: var(--shadow); backdrop-filter: blur(4px); z-index: 5;
         }
 
-        /* Sensor/CCTV List */
-        .list-card {
-            grid-column: span 1;
-            grid-row: span 2;
-            display: flex;
-            flex-direction: column;
-        }
+        /* List & Table */
+        .list-card { grid-column: span 1; grid-row: span 2; display: flex; flex-direction: column; }
+        .table-card { grid-column: span 4; overflow-x: auto; }
 
-        .list-header { font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; }
-        
         .cctv-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid #f3f4f6;
+            display: flex; align-items: center; gap: 12px; padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6; cursor: pointer; transition: 0.2s;
         }
-        
-        .cctv-thumb {
-            width: 60px; height: 40px;
-            background: #000;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .cctv-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
-        
+        .cctv-item:hover { background: #f9fafb; padding-left: 5px; }
+        .cctv-thumb { width: 60px; height: 40px; background: #000; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px; }
         .cctv-info h4 { font-size: 14px; margin-bottom: 2px; }
         .cctv-info p { font-size: 12px; color: var(--text-sub); }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; margin-left: auto; }
-
-        /* Bottom Table */
-        .table-card {
-            grid-column: span 4;
-            overflow-x: auto;
-        }
 
         table { width: 100%; border-collapse: collapse; font-size: 14px; }
         th { text-align: left; padding: 15px; color: var(--text-sub); border-bottom: 1px solid var(--border); font-weight: 500; }
@@ -243,25 +230,215 @@
         .tag.warning { background: #ffedd5; color: #9a3412; }
         .tag.danger { background: #fee2e2; color: #991b1b; }
 
-        /* --- Simulation Effects --- */
-        body.emergency-mode .status-badge { background: #fee2e2; color: #991b1b; animation: blink 1s infinite; }
-        /* 긴급 모드 시 지도 톤 변경 (붉은 기운) */
-        body.emergency-mode .map-frame { filter: sepia(20%) hue-rotate(-30deg) saturate(150%); transition: filter 0.5s; }
-        body.emergency-mode .stat-value.danger-text { color: var(--accent); }
-        
+        /* --- Page 2: CCTV Monitoring Styles --- */
+        .cctv-page-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .video-grid-container {
+            padding: 20px;
+            overflow-y: auto;
+            background: #e2e8f0;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            align-items: center;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3x3 Layout */
+            gap: 15px;
+        }
+
+        .video-feed {
+            background: black;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .video-feed:hover, .video-feed.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 137, 57, 0.2);
+        }
+
+        .feed-overlay {
+            position: absolute;
+            top: 10px; left: 10px;
+            color: white;
+            font-size: 12px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            z-index: 2;
+        }
+        .rec-dot {
+            width: 8px; height: 8px; background: red; border-radius: 50%;
+            display: inline-block; margin-right: 5px;
+            animation: blink 1s infinite;
+        }
+        .feed-placeholder {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .control-panel-side {
+            background: white;
+            border-left: 1px solid var(--border);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ptz-controller {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .ptz-pad {
+            width: 120px; height: 120px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .ptz-btn {
+            position: absolute;
+            width: 30px; height: 30px;
+            background: white;
+            border-radius: 50%;
+            border: 1px solid #cbd5e1;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            color: var(--text-sub);
+            transition: 0.2s;
+        }
+        .ptz-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .ptz-btn.up { top: 5px; left: 50%; transform: translateX(-50%); }
+        .ptz-btn.down { bottom: 5px; left: 50%; transform: translateX(-50%); }
+        .ptz-btn.left { left: 5px; top: 50%; transform: translateY(-50%); }
+        .ptz-btn.right { right: 5px; top: 50%; transform: translateY(-50%); }
+        .ptz-btn.center { 
+            top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 40px; height: 40px; background: #cbd5e1;
+        }
+
+        .zoom-controls {
+            display: flex; justify-content: center; gap: 10px;
+        }
+        .btn-zoom {
+            padding: 8px 16px;
+            background: white; border: 1px solid var(--border);
+            border-radius: 6px; cursor: pointer; font-size: 14px;
+        }
+        .btn-zoom:active { background: #f1f5f9; }
+
+        /* --- Page 3: Water Level Styles --- */
+        .water-chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        .level-cards {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px;
+        }
+        .level-card {
+            background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border);
+            display: flex; align-items: center; gap: 15px;
+        }
+        .level-icon { font-size: 24px; color: #3b82f6; background: #eff6ff; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+
+        /* --- Page 4: Alerts & SOP Styles --- */
+        .sop-container {
+            display: none; /* Hidden normally */
+            margin-top: 20px;
+        }
+        .sop-flow {
+            display: flex; gap: 10px; margin-bottom: 30px;
+        }
+        .sop-step {
+            flex: 1; background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border);
+            position: relative; opacity: 0.5; transition: 0.3s;
+        }
+        .sop-step.active {
+            border-color: var(--accent); opacity: 1; box-shadow: 0 4px 12px rgba(232, 70, 56, 0.2);
+        }
+        .sop-step h4 { color: var(--text-main); margin-bottom: 5px; }
+        .sop-step p { font-size: 12px; color: var(--text-sub); }
+        .sop-step::after {
+            content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); color: #cbd5e1; font-size: 20px;
+        }
+        .sop-step:last-child::after { content: ''; }
+
+        .alert-action-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+        }
+        .alert-box {
+            background: white; border: 1px solid var(--border); padding: 20px; border-radius: 12px;
+        }
+
+        /* --- Page 5: Report Styles --- */
+        .report-mode-badge {
+            display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-bottom: 10px;
+        }
+        .report-normal { background: #dcfce7; color: var(--primary); }
+        .report-emergency { background: #fee2e2; color: var(--accent); }
+
+        /* Effects */
         @keyframes blink { 50% { opacity: 0.5; } }
+        body.emergency-mode .status-badge { background: #fee2e2; color: #991b1b; animation: blink 1s infinite; }
+        body.emergency-mode .map-frame { filter: sepia(20%) hue-rotate(-30deg) saturate(150%); }
+        body.emergency-mode .stat-value.danger-text { color: var(--accent); }
 
         /* Responsive */
+        @media (max-width: 1400px) {
+            .video-grid { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (max-width: 1200px) {
             .dashboard-container { grid-template-columns: repeat(2, 1fr); }
-            .map-card { grid-column: span 2; }
-            .list-card { grid-column: span 2; }
-            .table-card { grid-column: span 2; }
+            .map-card, .list-card, .table-card { grid-column: span 2; }
+            .cctv-page-layout { grid-template-columns: 1fr; }
+            .control-panel-side { display: none; }
         }
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .dashboard-container { grid-template-columns: 1fr; padding: 15px; }
             .map-card, .list-card, .table-card { grid-column: span 1; }
+            .level-cards { grid-template-columns: 1fr; }
+            .sop-flow { flex-direction: column; }
+            .sop-step::after { display: none; }
         }
     </style>
 </head>
@@ -272,11 +449,21 @@
         <div class="logo">
             <i class="fa-solid fa-layer-group"></i> Smart Uiseong
         </div>
-        <div class="menu-item active"><i class="fa-solid fa-chart-pie"></i> 통합 관제 대시보드</div>
-        <div class="menu-item"><i class="fa-solid fa-video"></i> 지능형 CCTV 모니터링</div>
-        <div class="menu-item"><i class="fa-solid fa-water"></i> 하천/저수지 수위</div>
-        <div class="menu-item"><i class="fa-solid fa-triangle-exclamation"></i> 재난 예보/경보</div>
-        <div class="menu-item"><i class="fa-solid fa-file-contract"></i> 유지관리 보고서</div>
+        <div class="menu-item active" id="menu-dashboard" onclick="showPage('dashboard')">
+            <i class="fa-solid fa-chart-pie"></i> 통합 관제 대시보드
+        </div>
+        <div class="menu-item" id="menu-cctv" onclick="showPage('cctv')">
+            <i class="fa-solid fa-video"></i> 지능형 CCTV 모니터링
+        </div>
+        <div class="menu-item" id="menu-water" onclick="showPage('water')">
+            <i class="fa-solid fa-water"></i> 하천/저수지 수위
+        </div>
+        <div class="menu-item" id="menu-alert" onclick="showPage('alert')">
+            <i class="fa-solid fa-triangle-exclamation"></i> 재난 예보/경보
+        </div>
+        <div class="menu-item" id="menu-report" onclick="showPage('report')">
+            <i class="fa-solid fa-file-contract"></i> 유지관리 보고서
+        </div>
         
         <div class="emergency-trigger" onclick="toggleEmergency()">
             <i class="fa-solid fa-bell"></i> 재난 시뮬레이션
@@ -298,218 +485,361 @@
                 <div class="status-badge" id="systemStatus">
                     <i class="fa-solid fa-circle-check"></i> 정상 운영 중
                 </div>
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb; overflow: hidden;">
-                    <!-- User Avatar Placeholder -->
-                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#cbd5e1; color:#fff;">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
+                <div style="width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb; overflow: hidden; display:flex; align-items:center; justify-content:center; color:white;">
+                    <i class="fa-solid fa-user" style="color:#94a3b8;"></i>
                 </div>
             </div>
         </header>
 
-        <div class="dashboard-container">
-            
-            <!-- 1. 기상 정보 Card -->
-            <div class="card stat-card">
-                <div class="stat-header">
-                    <span class="stat-label">기상청 연동 (의성읍)</span>
-                    <div class="stat-icon"><i class="fa-solid fa-cloud-sun"></i></div>
-                </div>
-                <div class="stat-value" id="weatherTemp">24.5°C</div>
-                <div class="stat-trend">강수확률 10% • 습도 45%</div>
-            </div>
-
-            <!-- 2. 강우량 Card -->
-            <div class="card stat-card">
-                <div class="stat-header">
-                    <span class="stat-label">실시간 강우량 (평균)</span>
-                    <div class="stat-icon" style="color:#3b82f6;"><i class="fa-solid fa-umbrella"></i></div>
-                </div>
-                <div class="stat-value" id="rainAmount">0.0mm</div>
-                <div class="stat-trend" id="rainTrend">▼ 평년 대비 건조</div>
-            </div>
-
-            <!-- 3. 하천 수위 Card -->
-            <div class="card stat-card">
-                <div class="stat-header">
-                    <span class="stat-label">주요 하천 수위 (남대천)</span>
-                    <div class="stat-icon" style="color:#3b82f6;"><i class="fa-solid fa-water"></i></div>
-                </div>
-                <div class="stat-value" id="waterLevel">1.2m</div>
-                <div class="stat-trend">관심단계(3.5m) 이하 안정</div>
-            </div>
-
-            <!-- 4. CCTV 가동률 Card -->
-            <div class="card stat-card">
-                <div class="stat-header">
-                    <span class="stat-label">CCTV 통합 가동 현황</span>
-                    <div class="stat-icon" style="color:var(--primary);"><i class="fa-solid fa-video"></i></div>
-                </div>
-                <div class="stat-value">839<span style="font-size:16px; color:var(--text-sub);">/839</span></div>
-                <div class="stat-trend">가동률 100% • 장애 0건</div>
-            </div>
-
-            <!-- 5. Main Map (Digital Twin) -->
-            <div class="card map-card">
-                <div class="map-frame" id="mapFrame">
-                    <!-- Map Markers - Positioned relative to the Uiseong Map Image -->
-                    
-                    <!-- 의성군청 (중심부) -->
-                    <div style="position: absolute; top: 48%; left: 45%; transform: translate(-50%, -50%); text-align: center;">
-                         <i class="fa-solid fa-building-columns" style="font-size: 24px; color: var(--primary); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"></i>
-                         <div style="background: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-top: 2px; border:1px solid #ddd;">군청</div>
+        <!-- PAGE 1: Integrated Dashboard -->
+        <div id="page-dashboard" class="page-container active">
+            <div class="dashboard-container">
+                <!-- 1. 기상 정보 -->
+                <div class="card stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">기상청 연동 (의성읍)</span>
+                        <div class="stat-icon"><i class="fa-solid fa-cloud-sun"></i></div>
                     </div>
-                    
-                    <!-- 안계면 (서부) -->
-                    <div style="position: absolute; top: 45%; left: 20%; transform: translate(-50%, -50%); text-align: center;">
-                        <i class="fa-solid fa-video" style="font-size: 18px; color: #64748b;"></i>
-                        <div style="font-size: 10px; font-weight: 600; color:#334155;">안계면</div>
-                   </div>
+                    <div class="stat-value" id="weatherTemp">24.5°C</div>
+                    <div class="stat-trend">강수확률 10% • 습도 45%</div>
+                </div>
 
-                    <!-- 춘산면 (남부) -->
-                    <div style="position: absolute; top: 75%; left: 60%; transform: translate(-50%, -50%); text-align: center;">
-                        <i class="fa-solid fa-video" style="font-size: 18px; color: #64748b;"></i>
-                        <div style="font-size: 10px; font-weight: 600; color:#334155;">춘산면</div>
-                   </div>
+                <!-- 2. 강우량 -->
+                <div class="card stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">실시간 강우량 (평균)</span>
+                        <div class="stat-icon" style="color:#3b82f6;"><i class="fa-solid fa-umbrella"></i></div>
+                    </div>
+                    <div class="stat-value" id="rainAmount">0.0mm</div>
+                    <div class="stat-trend" id="rainTrend">▼ 평년 대비 건조</div>
+                </div>
 
-                   <!-- 점곡면 (북부) -->
-                   <div style="position: absolute; top: 25%; left: 65%; transform: translate(-50%, -50%); text-align: center;">
-                        <i class="fa-solid fa-video" style="font-size: 18px; color: #64748b;"></i>
-                        <div style="font-size: 10px; font-weight: 600; color:#334155;">점곡면</div>
-                   </div>
+                <!-- 3. 하천 수위 -->
+                <div class="card stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">주요 하천 수위 (남대천)</span>
+                        <div class="stat-icon" style="color:#3b82f6;"><i class="fa-solid fa-water"></i></div>
+                    </div>
+                    <div class="stat-value" id="waterLevel">1.2m</div>
+                    <div class="stat-trend">관심단계(3.5m) 이하 안정</div>
+                </div>
 
+                <!-- 4. CCTV 가동률 -->
+                <div class="card stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">CCTV 통합 가동 현황</span>
+                        <div class="stat-icon" style="color:var(--primary);"><i class="fa-solid fa-video"></i></div>
+                    </div>
+                    <div class="stat-value">839<span style="font-size:16px; color:var(--text-sub);">/839</span></div>
+                    <div class="stat-trend">가동률 100% • 장애 0건</div>
+                </div>
 
-                    <!-- Dynamic Disaster Marker (Hidden by default) -->
-                    <!-- 남대천 인근 가상 위치 설정 -->
-                    <div id="disasterMarker" style="position: absolute; top: 52%; left: 48%; display: none;">
-                        <div style="width: 80px; height: 80px; background: rgba(232, 70, 56, 0.4); border-radius: 50%; animation: pulse 1.5s infinite; position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);"></div>
-                        <i class="fa-solid fa-water" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20px; color: var(--accent); z-index:2;"></i>
+                <!-- 5. Main Map -->
+                <div class="card map-card">
+                    <div class="map-frame">
+                        <!-- Markers -->
+                        <div style="position: absolute; top: 48%; left: 45%; transform: translate(-50%, -50%); text-align: center;">
+                             <i class="fa-solid fa-building-columns" style="font-size: 24px; color: var(--primary); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"></i>
+                             <div style="background: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-top: 2px; border:1px solid #ddd;">군청</div>
+                        </div>
+                        <div id="disasterMarker" style="position: absolute; top: 52%; left: 48%; display: none;">
+                            <div style="width: 80px; height: 80px; background: rgba(232, 70, 56, 0.4); border-radius: 50%; animation: pulse 1.5s infinite; position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);"></div>
+                            <i class="fa-solid fa-water" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20px; color: var(--accent); z-index:2;"></i>
+                        </div>
+                    </div>
+                    <div class="map-overlay-ui">
+                        <h4 style="font-size: 14px; margin-bottom: 5px;">AI 예측 시뮬레이션</h4>
+                        <p id="aiStatus" style="font-size: 12px; color: var(--text-sub);">현재 위험 요인이 감지되지 않았습니다.</p>
                     </div>
                 </div>
 
-                <div class="map-overlay-ui">
-                    <h4 style="font-size: 14px; margin-bottom: 5px;">AI 예측 시뮬레이션</h4>
-                    <p id="aiStatus" style="font-size: 12px; color: var(--text-sub);">현재 위험 요인이 감지되지 않았습니다.</p>
+                <!-- 6. CCTV List (Compact) -->
+                <div class="card list-card">
+                    <div class="list-header">
+                        <span>주요 감시 구역</span>
+                        <span style="font-size: 12px; color: var(--primary); cursor: pointer;" onclick="showPage('cctv')">+ 전체보기</span>
+                    </div>
+                    <div style="overflow-y: auto; height: 100%;">
+                        <div class="cctv-item">
+                            <div class="cctv-thumb">LIVE</div>
+                            <div class="cctv-info"><h4>안계-03 (용기리)</h4><p>방범용 • 정상</p></div>
+                            <div class="status-dot"></div>
+                        </div>
+                        <div class="cctv-item">
+                            <div class="cctv-thumb">LIVE</div>
+                            <div class="cctv-info"><h4>봉양-01 (화전리)</h4><p>재난감시 • 정상</p></div>
+                            <div class="status-dot"></div>
+                        </div>
+                        <div class="cctv-item">
+                            <div class="cctv-thumb">LIVE</div>
+                            <div class="cctv-info"><h4>점곡-02 (사촌리)</h4><p>산불감시 • 정상</p></div>
+                            <div class="status-dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Table -->
+                <div class="card table-card">
+                    <div class="list-header">
+                        <span>IoT 센서 실시간 데이터</span>
+                        <button style="border:none; background:none; color:var(--text-sub); font-size:12px;"><i class="fa-solid fa-rotate-right"></i> 갱신</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr><th>센서 ID</th><th>설치 위치</th><th>유형</th><th>현재 측정값</th><th>상태</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>UIS-IOT-001</td><td>안계면 위양리 479-2</td><td>강우량계</td><td class="sensor-val">0mm/h</td><td><span class="tag normal">정상</span></td></tr>
+                            <tr><td>UIS-IOT-024</td><td>봉양면 화전리 115-2</td><td>하천수위계</td><td class="sensor-val-level">1.15m</td><td><span class="tag normal">정상</span></td></tr>
+                            <tr><td>UIS-IOT-056</td><td>의성읍 남대천 교량</td><td>수위감지</td><td class="sensor-val-level">1.8m</td><td><span class="tag normal">정상</span></td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
-            <!-- 6. CCTV List (Side) -->
-            <div class="card list-card">
-                <div class="list-header">
-                    <span>주요 감시 구역</span>
-                    <span style="font-size: 12px; color: var(--primary); cursor: pointer;">+ 전체보기</span>
-                </div>
-                <div style="overflow-y: auto; height: 100%;">
-                    <!-- CCTV Items from uploaded data -->
-                    <div class="cctv-item">
-                        <div class="cctv-thumb">
-                            <!-- Placeholder image (simulated feed) -->
-                            <div style="width:100%; height:100%; background:#334155; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:10px;">LIVE</div>
-                        </div>
-                        <div class="cctv-info">
-                            <h4>안계-03 (용기리)</h4>
-                            <p>방범용 • 정상 녹화 중</p>
-                        </div>
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="cctv-item">
-                        <div class="cctv-thumb">
-                             <div style="width:100%; height:100%; background:#334155; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:10px;">LIVE</div>
-                        </div>
-                        <div class="cctv-info">
-                            <h4>봉양-01 (화전리)</h4>
-                            <p>재난감시 • 수위 모니터링</p>
-                        </div>
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="cctv-item">
-                        <div class="cctv-thumb">
-                             <div style="width:100%; height:100%; background:#334155; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:10px;">LIVE</div>
-                        </div>
-                        <div class="cctv-info">
-                            <h4>점곡-02 (사촌리)</h4>
-                            <p>산불감시 • 열화상 가동</p>
-                        </div>
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="cctv-item">
-                        <div class="cctv-thumb">
-                             <div style="width:100%; height:100%; background:#334155; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:10px;">LIVE</div>
-                        </div>
-                        <div class="cctv-info">
-                            <h4>금성-04 (대리리)</h4>
-                            <p>어린이보호 • 속도감지</p>
-                        </div>
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="cctv-item">
-                        <div class="cctv-thumb">
-                             <div style="width:100%; height:100%; background:#334155; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:10px;">LIVE</div>
-                        </div>
-                        <div class="cctv-info">
-                            <h4>남대천 (수위계)</h4>
-                            <p>하천감시 • 수위 데이터 연동</p>
-                        </div>
-                        <div class="status-dot"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. Sensor Data Table (Bottom) -->
-            <div class="card table-card">
-                <div class="list-header">
-                    <span>IoT 센서 실시간 데이터 (10분 주기 갱신)</span>
-                    <button style="border:none; background:none; color:var(--text-sub); font-size:12px;"><i class="fa-solid fa-rotate-right"></i> 갱신</button>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>센서 ID</th>
-                            <th>설치 위치</th>
-                            <th>유형</th>
-                            <th>현재 측정값</th>
-                            <th>상태</th>
-                            <th>마지막 통신</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sensorTableBody">
-                        <tr>
-                            <td>UIS-IOT-001</td>
-                            <td>안계면 위양리 479-2</td>
-                            <td>강우량계</td>
-                            <td class="sensor-val">0mm/h</td>
-                            <td><span class="tag normal">정상</span></td>
-                            <td>10초 전</td>
-                        </tr>
-                        <tr>
-                            <td>UIS-IOT-024</td>
-                            <td>봉양면 화전리 115-2</td>
-                            <td>하천수위계</td>
-                            <td class="sensor-val-level">1.15m</td>
-                            <td><span class="tag normal">정상</span></td>
-                            <td>30초 전</td>
-                        </tr>
-                        <tr>
-                            <td>UIS-IOT-103</td>
-                            <td>춘산면 옥정리 445</td>
-                            <td>적설계</td>
-                            <td>0cm</td>
-                            <td><span class="tag normal">정상</span></td>
-                            <td>1분 전</td>
-                        </tr>
-                        <tr>
-                            <td>UIS-IOT-056</td>
-                            <td>의성읍 남대천 교량</td>
-                            <td>수위감지</td>
-                            <td class="sensor-val-level">1.8m</td>
-                            <td><span class="tag normal">정상</span></td>
-                            <td>즉시</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
         </div>
+
+        <!-- PAGE 2: Intelligent CCTV Monitoring -->
+        <div id="page-cctv" class="page-container">
+            <div class="cctv-page-layout">
+                <!-- Center: Grid -->
+                <div class="video-grid-container">
+                    <div class="filter-bar">
+                        <i class="fa-solid fa-filter" style="color:var(--primary)"></i>
+                        <span style="font-weight:600; font-size:14px;">감시 필터:</span>
+                        <select class="filter-select">
+                            <option>전체 지역</option>
+                            <option>의성읍</option>
+                            <option>안계면</option>
+                            <option>봉양면</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>전체 목적</option>
+                            <option>재난재해 감시</option>
+                            <option>생활 방범</option>
+                            <option>어린이 보호구역</option>
+                            <option>쓰레기 투기 단속</option>
+                        </select>
+                        <div style="margin-left:auto; display:flex; gap:10px;">
+                            <button style="padding:8px 15px; background:var(--primary); color:white; border:none; border-radius:6px; font-weight:600; cursor:pointer;">4분할</button>
+                            <button style="padding:8px 15px; background:white; border:1px solid var(--border); border-radius:6px; cursor:pointer;">9분할</button>
+                        </div>
+                    </div>
+
+                    <div class="video-grid">
+                        <!-- Simulated Feeds -->
+                        <div class="video-feed selected" onclick="selectFeed(this, 'CAM-01: 안계면 용기리')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>안계-03 (용기리)</div>
+                            <img src="https://images.unsplash.com/photo-1590247813693-5541d1c609fd?q=80&w=2009&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                        <div class="video-feed" onclick="selectFeed(this, 'CAM-02: 의성읍 남대천')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>의성읍 남대천 수위계</div>
+                            <img src="https://images.unsplash.com/photo-1552590740-b6c89196b052?q=80&w=1780&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                        <div class="video-feed" onclick="selectFeed(this, 'CAM-03: 봉양면 화전리')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>봉양-01 (화전리)</div>
+                            <img src="https://images.unsplash.com/photo-1444653389962-8149286c578a?q=80&w=2065&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                        <div class="video-feed" onclick="selectFeed(this, 'CAM-04: 점곡면 사촌리')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>점곡-02 (사촌리)</div>
+                            <img src="https://images.unsplash.com/photo-1623861214152-70b54dfd9695?q=80&w=2072&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                        <div class="video-feed" onclick="selectFeed(this, 'CAM-05: 금성면 대리리')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>금성-04 (대리리 어린이)</div>
+                            <img src="https://images.unsplash.com/photo-1549646430-b46187747806?q=80&w=2069&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                        <div class="video-feed" onclick="selectFeed(this, 'CAM-06: 옥산면 정자리')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>옥산-09 (정자리)</div>
+                            <img src="https://images.unsplash.com/photo-1587823568853-475304a9d702?q=80&w=1974&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                        <div class="video-feed" onclick="selectFeed(this, 'CAM-07: 다인면 서릉리')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>다인-12 (서릉리)</div>
+                            <img src="https://images.unsplash.com/photo-1565514020175-9534a9990e4a?q=80&w=1935&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                        <div class="video-feed" onclick="selectFeed(this, 'CAM-08: 단밀면 속암리')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>단밀-10 (속암리)</div>
+                            <img src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=1887&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                        <div class="video-feed" onclick="selectFeed(this, 'CAM-09: 단북면 노연리')">
+                            <div class="feed-overlay"><span class="rec-dot"></span>단북-11 (노연리 공원)</div>
+                            <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2070&auto=format&fit=crop" class="feed-placeholder">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Controller -->
+                <div class="control-panel-side">
+                    <h3 style="font-size:16px; margin-bottom:20px; font-weight:700;"><i class="fa-solid fa-gamepad" style="color:var(--primary)"></i> PTZ 카메라 제어</h3>
+                    
+                    <div style="margin-bottom:20px; font-size:14px; color:var(--text-sub);">
+                        선택된 카메라: <br><strong style="color:var(--text-main); font-size:16px;" id="selectedCamName">CAM-01: 안계면 용기리</strong>
+                    </div>
+
+                    <div class="ptz-controller">
+                        <div class="ptz-pad">
+                            <div class="ptz-btn up"><i class="fa-solid fa-chevron-up"></i></div>
+                            <div class="ptz-btn left"><i class="fa-solid fa-chevron-left"></i></div>
+                            <div class="ptz-btn center"></div>
+                            <div class="ptz-btn right"><i class="fa-solid fa-chevron-right"></i></div>
+                            <div class="ptz-btn down"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                        <div class="zoom-controls">
+                            <button class="btn-zoom"><i class="fa-solid fa-magnifying-glass-minus"></i> 축소</button>
+                            <button class="btn-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i> 확대</button>
+                        </div>
+                    </div>
+
+                    <h4 style="font-size:14px; margin-bottom:10px; font-weight:700;">지능형 분석 이벤트</h4>
+                    <div style="background:#f8fafc; padding:15px; border-radius:8px; border:1px solid var(--border); font-size:13px; height:200px; overflow-y:auto;">
+                        <div style="margin-bottom:8px; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">
+                            <span style="color:var(--primary); font-weight:600;">[객체인식]</span> 사람 감지<br>
+                            <span style="color:#94a3b8; font-size:11px;">안계-03 | 10:42:15</span>
+                        </div>
+                        <div style="margin-bottom:8px; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">
+                            <span style="color:var(--primary); font-weight:600;">[객체인식]</span> 차량 진입<br>
+                            <span style="color:#94a3b8; font-size:11px;">봉양-01 | 10:41:20</span>
+                        </div>
+                        <div style="margin-bottom:8px; padding-bottom:5px;">
+                            <span style="color:#3b82f6; font-weight:600;">[수위감시]</span> 수위 정상<br>
+                            <span style="color:#94a3b8; font-size:11px;">남대천 | 10:40:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: Water Level -->
+        <div id="page-water" class="page-container">
+            <div style="padding: 30px;">
+                <h2 style="margin-bottom: 20px; font-size: 24px;">하천 및 저수지 수위 모니터링</h2>
+                
+                <div class="level-cards">
+                    <div class="level-card">
+                        <div class="level-icon"><i class="fa-solid fa-water"></i></div>
+                        <div>
+                            <p style="color:var(--text-sub); font-size:14px;">평균 하천 수위</p>
+                            <h3 style="font-size:24px; margin-top:5px;" class="sensor-val-level">1.2m</h3>
+                        </div>
+                    </div>
+                    <div class="level-card">
+                        <div class="level-icon" style="color:var(--primary); background:#f0fdf4;"><i class="fa-solid fa-cloud-rain"></i></div>
+                        <div>
+                            <p style="color:var(--text-sub); font-size:14px;">일일 누적 강우량</p>
+                            <h3 style="font-size:24px; margin-top:5px;" class="sensor-val-rain">0.0mm</h3>
+                        </div>
+                    </div>
+                    <div class="level-card">
+                        <div class="level-icon" style="color:var(--accent); background:#fee2e2;"><i class="fa-solid fa-bell"></i></div>
+                        <div>
+                            <p style="color:var(--text-sub); font-size:14px;">홍수 경보 발령</p>
+                            <h3 style="font-size:24px; margin-top:5px;" id="floodAlertStatus">해제</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="water-chart-container">
+                    <canvas id="waterChart"></canvas>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom:15px;">주요 지점별 실시간 현황</h3>
+                    <table>
+                        <thead>
+                            <tr><th>지점명</th><th>설치 위치</th><th>현재 수위</th><th>경계 수위</th><th>상태</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>남대천 교량</td><td>의성읍 남대천</td><td class="sensor-val-level">1.2m</td><td>3.5m</td><td><span class="tag normal status-tag">정상</span></td></tr>
+                            <tr><td>위양 저수지</td><td>안계면 위양리</td><td class="sensor-val-level">2.1m</td><td>5.0m</td><td><span class="tag normal status-tag">정상</span></td></tr>
+                            <tr><td>조문교</td><td>금성면 대리리</td><td class="sensor-val-level">0.8m</td><td>4.0m</td><td><span class="tag normal status-tag">정상</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 4: Disaster Alert (SOP) -->
+        <div id="page-alert" class="page-container">
+            <div style="padding: 30px;">
+                <h2 style="margin-bottom: 20px; font-size: 24px;">재난 예보 및 경보 시스템</h2>
+
+                <!-- Emergency SOP Display (Visible only in emergency) -->
+                <div id="emergencySOP" class="sop-container">
+                    <h3 style="color:var(--accent); margin-bottom:15px; border-bottom:2px solid var(--accent); padding-bottom:10px;">
+                        🚨 [긴급] 풍수해 재난 대응 표준 매뉴얼 (SOP) 가동
+                    </h3>
+                    <div class="sop-flow">
+                        <div class="sop-step active">
+                            <h4>1단계: 상황 인지</h4>
+                            <p>IoT 센서 임계치 초과 감지<br>CCTV 영상 분석 경보</p>
+                        </div>
+                        <div class="sop-step active">
+                            <h4>2단계: 상황 전파</h4>
+                            <p>유관기관(소방/경찰) 핫라인<br>재난문자 긴급 발송</p>
+                        </div>
+                        <div class="sop-step active">
+                            <h4>3단계: 비상 대응</h4>
+                            <p>배수 펌프장 전면 가동<br>주민 대피 명령 하달</p>
+                        </div>
+                        <div class="sop-step">
+                            <h4>4단계: 복구 및 해제</h4>
+                            <p>피해 현황 집계<br>상황 종료 선언</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Normal Operations -->
+                <div class="alert-action-grid">
+                    <div class="alert-box">
+                        <h3 style="margin-bottom:15px;">기상 특보 현황</h3>
+                        <div style="padding:15px; background:#f8fafc; border-radius:8px; margin-bottom:10px;">
+                            <strong>현재 발효중인 특보가 없습니다.</strong>
+                            <p style="font-size:13px; color:var(--text-sub); margin-top:5px;">기상청 데이터 연동: 2025-12-16 14:00 기준</p>
+                        </div>
+                        <button style="width:100%; padding:10px; background:var(--secondary); color:white; border:none; border-radius:6px; cursor:pointer;">기상청 상세정보 보기</button>
+                    </div>
+                    <div class="alert-box">
+                        <h3 style="margin-bottom:15px;">원클릭 상황 전파</h3>
+                        <textarea style="width:100%; height:80px; padding:10px; border:1px solid var(--border); border-radius:6px; margin-bottom:10px;" placeholder="전파할 메시지를 입력하세요."></textarea>
+                        <div style="display:flex; gap:10px;">
+                            <button style="flex:1; padding:10px; background:var(--primary); color:white; border:none; border-radius:6px; cursor:pointer;">재난문자 발송</button>
+                            <button style="flex:1; padding:10px; background:#3b82f6; color:white; border:none; border-radius:6px; cursor:pointer;">마을방송 송출</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 5: Maintenance Report -->
+        <div id="page-report" class="page-container">
+            <div style="padding: 30px;">
+                <h2 style="margin-bottom: 20px; font-size: 24px;">유지관리 및 운영 보고서</h2>
+                
+                <div id="reportHeader" class="report-mode-badge report-normal">
+                    <i class="fa-solid fa-clipboard-check"></i> 평시 일일 점검 모드
+                </div>
+
+                <div class="card">
+                    <div class="list-header">
+                        <span id="reportTitle">CCTV 및 센서 일일 점검 일지</span>
+                        <div style="display:flex; gap:10px;">
+                            <button style="padding:5px 10px; border:1px solid var(--border); background:white; border-radius:4px;">Excel 다운로드</button>
+                            <button style="padding:5px 10px; border:1px solid var(--border); background:white; border-radius:4px;">인쇄</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr><th>시간</th><th>구분</th><th>상세 내용</th><th>담당자</th><th>처리결과</th></tr>
+                        </thead>
+                        <tbody id="reportTableBody">
+                            <!-- Normal Data -->
+                            <tr><td>09:00</td><td>정기점검</td><td>안계면 CCTV 5개소 통신 점검</td><td>김의성</td><td>양호</td></tr>
+                            <tr><td>10:30</td><td>장애처리</td><td>봉양-02 카메라 초점 조정</td><td>박안전</td><td>완료</td></tr>
+                            <tr><td>13:00</td><td>시스템</td><td>서버 스토리지 백업 점검</td><td>최관리</td><td>양호</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -521,99 +851,176 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 2. Simulation Logic
-        let isEmergency = false;
+        // 2. Navigation Logic
+        function showPage(pageId) {
+            document.querySelectorAll('.page-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('menu-' + pageId).classList.add('active');
+        }
 
+        // 3. CCTV Selection Logic
+        function selectFeed(element, camName) {
+            document.querySelectorAll('.video-feed').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('selectedCamName').innerText = camName;
+        }
+
+        // 4. Chart.js Initialization
+        let waterChart;
+        function initChart() {
+            const ctx = document.getElementById('waterChart').getContext('2d');
+            waterChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00'],
+                    datasets: [{
+                        label: '남대천 수위 (m)',
+                        data: [1.1, 1.2, 1.2, 1.1, 1.2, 1.2],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { min: 0, max: 5 } }
+                }
+            });
+        }
+        
+        // Initial call
+        window.onload = function() {
+            initChart();
+        };
+
+        // 5. Emergency Simulation Logic
+        let isEmergency = false;
         function toggleEmergency() {
             isEmergency = !isEmergency;
             const body = document.body;
+            
+            // Common Elements
             const statusBadge = document.getElementById('systemStatus');
             const rainAmount = document.getElementById('rainAmount');
             const rainTrend = document.getElementById('rainTrend');
             const waterLevel = document.getElementById('waterLevel');
-            const weatherTemp = document.getElementById('weatherTemp');
             const disasterMarker = document.getElementById('disasterMarker');
             const aiStatus = document.getElementById('aiStatus');
             
-            // Sensor Values in Table
-            const rainSensors = document.querySelectorAll('.sensor-val');
-            const levelSensors = document.querySelectorAll('.sensor-val-level');
-            const tags = document.querySelectorAll('.tag');
+            // Page Specific Elements
+            const sensorValLevel = document.querySelectorAll('.sensor-val-level');
+            const sensorValRain = document.querySelector('.sensor-val-rain');
+            const statusTags = document.querySelectorAll('.status-tag');
+            const floodAlertStatus = document.getElementById('floodAlertStatus');
+            
+            // Report Page Elements
+            const reportHeader = document.getElementById('reportHeader');
+            const reportTitle = document.getElementById('reportTitle');
+            const reportBody = document.getElementById('reportTableBody');
+            
+            // Alert Page SOP
+            const sopContainer = document.getElementById('emergencySOP');
 
             if (isEmergency) {
-                // Emergency Mode ON
+                // [ON] Emergency Mode
                 body.classList.add('emergency-mode');
-                
-                // Badge Update
                 statusBadge.style.background = '#fee2e2';
                 statusBadge.style.color = '#991b1b';
-                statusBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> 호우 경보 발령';
-
-                // Stats Update
-                weatherTemp.innerText = "19.2°C";
+                statusBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> 풍수해 경보 발령';
+                
+                // Update Values
                 rainAmount.innerText = "120.5mm";
                 rainAmount.classList.add('danger-text');
                 rainTrend.innerText = "▲ 급격한 상승 (위험)";
                 rainTrend.style.color = "var(--accent)";
-                
                 waterLevel.innerText = "4.8m";
                 waterLevel.classList.add('danger-text');
-
-                // Map Update
+                
                 disasterMarker.style.display = 'block';
                 aiStatus.innerHTML = "<strong style='color:var(--accent)'>[위험] 남대천 범람 확률 85% 예측.</strong><br>즉시 대피 방송 및 펌프장 가동 필요.";
 
-                // Table Update
-                rainSensors.forEach(el => el.innerText = "85mm/h");
-                levelSensors.forEach(el => el.innerText = "4.5m");
-                tags.forEach(el => {
-                    el.className = "tag danger";
-                    el.innerText = "경보";
-                });
+                // Page 3: Water Level Updates
+                if(sensorValRain) sensorValRain.innerText = "120.5mm";
+                if(floodAlertStatus) { floodAlertStatus.innerText = "심각 (Red)"; floodAlertStatus.style.color = "var(--accent)"; }
+                sensorValLevel.forEach(el => { el.innerText = "4.8m"; el.style.color = "var(--accent)"; });
+                statusTags.forEach(el => { el.className = "tag danger status-tag"; el.innerText = "위험"; });
+
+                // Update Chart Data
+                waterChart.data.datasets[0].data = [1.2, 2.5, 3.8, 4.5, 4.8, 4.9];
+                waterChart.data.datasets[0].borderColor = '#E84638';
+                waterChart.data.datasets[0].backgroundColor = 'rgba(232, 70, 56, 0.2)';
+                waterChart.update();
+
+                // Page 4: Show SOP
+                if(sopContainer) sopContainer.style.display = "block";
+
+                // Page 5: Report Swapping
+                if(reportHeader) {
+                    reportHeader.className = "report-mode-badge report-emergency";
+                    reportHeader.innerHTML = "<i class='fa-solid fa-bolt'></i> 재난 상황 조치 이력 (실시간)";
+                    reportTitle.innerText = "풍수해 긴급 대응 조치 로그";
+                    reportBody.innerHTML = `
+                        <tr style="background:#fee2e2; font-weight:bold;"><td>14:35</td><td>상황전파</td><td>전 군민 재난문자 발송 (Code: R-01)</td><td>자동발송</td><td>완료</td></tr>
+                        <tr style="background:#fff1f2;"><td>14:32</td><td>비상대응</td><td>안계 배수펌프장 가동 시작</td><td>관제실</td><td>가동중</td></tr>
+                        <tr style="background:#fff1f2;"><td>14:30</td><td>상황인지</td><td>남대천 수위 위험수위(4.5m) 도달 감지</td><td>AI시스템</td><td>경보</td></tr>
+                    `;
+                }
 
             } else {
-                // Normal Mode ON
+                // [OFF] Normal Mode
                 body.classList.remove('emergency-mode');
-
-                // Badge Update
                 statusBadge.style.background = '#dcfce7';
                 statusBadge.style.color = '#166534';
                 statusBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> 정상 운영 중';
 
-                // Stats Update
-                weatherTemp.innerText = "24.5°C";
                 rainAmount.innerText = "0.0mm";
                 rainAmount.classList.remove('danger-text');
                 rainTrend.innerText = "▼ 평년 대비 건조";
                 rainTrend.style.color = "var(--primary)";
-                
                 waterLevel.innerText = "1.2m";
                 waterLevel.classList.remove('danger-text');
 
-                // Map Update
                 disasterMarker.style.display = 'none';
                 aiStatus.innerText = "현재 위험 요인이 감지되지 않았습니다.";
 
-                // Table Update
-                rainSensors.forEach(el => el.innerText = "0mm/h");
-                levelSensors.forEach(el => el.innerText = "1.2m");
-                tags.forEach(el => {
-                    el.className = "tag normal";
-                    el.innerText = "정상";
-                });
+                // Page 3 Reset
+                if(sensorValRain) sensorValRain.innerText = "0.0mm";
+                if(floodAlertStatus) { floodAlertStatus.innerText = "해제"; floodAlertStatus.style.color = "var(--text-main)"; }
+                sensorValLevel.forEach(el => { el.innerText = "1.2m"; el.style.color = "var(--text-main)"; });
+                statusTags.forEach(el => { el.className = "tag normal status-tag"; el.innerText = "정상"; });
+
+                // Reset Chart
+                waterChart.data.datasets[0].data = [1.1, 1.2, 1.2, 1.1, 1.2, 1.2];
+                waterChart.data.datasets[0].borderColor = '#3b82f6';
+                waterChart.data.datasets[0].backgroundColor = 'rgba(59, 130, 246, 0.1)';
+                waterChart.update();
+
+                // Page 4 Hide SOP
+                if(sopContainer) sopContainer.style.display = "none";
+
+                // Page 5 Reset
+                if(reportHeader) {
+                    reportHeader.className = "report-mode-badge report-normal";
+                    reportHeader.innerHTML = "<i class='fa-solid fa-clipboard-check'></i> 평시 일일 점검 모드";
+                    reportTitle.innerText = "CCTV 및 센서 일일 점검 일지";
+                    reportBody.innerHTML = `
+                        <tr><td>09:00</td><td>정기점검</td><td>안계면 CCTV 5개소 통신 점검</td><td>김의성</td><td>양호</td></tr>
+                        <tr><td>10:30</td><td>장애처리</td><td>봉양-02 카메라 초점 조정</td><td>박안전</td><td>완료</td></tr>
+                        <tr><td>13:00</td><td>시스템</td><td>서버 스토리지 백업 점검</td><td>최관리</td><td>양호</td></tr>
+                    `;
+                }
             }
         }
 
-        // Pulse Animation for Map Marker
+        // Add CSS for animation dynamically
         const styleSheet = document.createElement("style");
         styleSheet.innerText = `
-            @keyframes pulse {
-                0% { transform: scale(0.5); opacity: 1; }
-                100% { transform: scale(2); opacity: 0; }
-            }
+            @keyframes pulse { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
         `;
         document.head.appendChild(styleSheet);
-
     </script>
 </body>
 </html>
