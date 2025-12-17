@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K1 Stick Source - Vogle Inc.</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
@@ -15,6 +16,12 @@
             --bright-orange: #FF8E3C;
             --text-dark: #1A1A1A;
             --off-white: #F9F9F9;
+            /* Amazon Style Colors */
+            --amz-blue: #007185;
+            --amz-price: #B12704;
+            --amz-orange: #C7511F;
+            --amz-yellow-btn: #FFD814;
+            --amz-orange-btn: #FFA41C;
         }
 
         * {
@@ -54,6 +61,7 @@
             font-weight: 700;
             color: var(--bright-orange);
             letter-spacing: -1px;
+            cursor: pointer;
         }
 
         .nav-links a {
@@ -77,6 +85,7 @@
             font-weight: 700;
             transition: transform 0.2s, box-shadow 0.2s;
             display: inline-block;
+            cursor: pointer;
         }
 
         .cta-btn:hover {
@@ -239,13 +248,15 @@
             padding: 100px 5%;
             display: flex;
             align-items: center;
+            justify-content: center;
             background-color: var(--mint);
             position: relative;
+            gap: 60px;
         }
 
         .app-content {
             flex: 1;
-            padding-right: 50px;
+            max-width: 500px;
         }
 
         .app-content h2 {
@@ -258,27 +269,259 @@
             flex: 1;
             display: flex;
             justify-content: center;
+            max-width: 400px;
         }
 
         .phone-mockup {
-            width: 300px;
-            height: 600px;
-            background: black;
-            border-radius: 40px;
-            border: 10px solid #333;
+            width: 320px;
+            height: 650px;
+            background: #111;
+            border-radius: 45px;
+            border: 8px solid #2a2a2a;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             position: relative;
+        }
+
+        /* Dynamic Island / Notch */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 28px;
+            background: black;
+            border-radius: 20px;
+            z-index: 100;
         }
 
         .phone-screen {
             width: 100%;
             height: 100%;
-            background: white;
+            background: black;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        /* App Status Bar */
+        .app-status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 20;
+            padding-top: 5px;
+        }
+
+        /* App Video Layer */
+        .app-video-layer {
+            flex: 1;
+            position: relative;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .app-video-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        /* UI Overlay */
+        .app-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 50%);
+            padding-bottom: 80px; /* Space for nav */
+            pointer-events: none;
+        }
+
+        /* Right Side Actions */
+        .app-actions {
+            position: absolute;
+            right: 15px;
+            bottom: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            pointer-events: auto;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        
+        .action-icon:hover {
+            transform: scale(1.1);
+            background: rgba(255,255,255,0.3);
+        }
+
+        .action-text {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Bottom Info & Product */
+        .app-info-area {
+            padding: 0 20px;
+            margin-bottom: 20px;
+            pointer-events: auto;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .channel-name {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dark);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        .product-thumb {
+            width: 40px;
+            height: 40px;
+            background: var(--bright-orange);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .product-price {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .buy-btn-sm {
+            background: var(--text-dark);
+            color: var(--yellow-green);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            border: none;
+        }
+
+        /* Bottom Navigation */
+        .app-bottom-nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 10;
+        }
+
+        .nav-item {
+            color: #888;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            width: 50px;
+        }
+
+        .nav-item.active {
+            color: white;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        /* Scan Button */
+        .scan-btn-container {
+            position: relative;
+            top: -15px;
+        }
+
+        .scan-btn {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--mint), var(--yellow-green));
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            color: #ccc;
+            color: var(--text-dark);
+            box-shadow: 0 0 20px rgba(79, 255, 176, 0.4);
+            border: 4px solid #000;
         }
 
         /* Footer */
@@ -303,7 +546,326 @@
             text-decoration: none;
         }
 
-        /* Mobile Responsive */
+        /* =========================================
+           Amazon Style Purchase Overlay 
+           ========================================= */
+        .buy-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            overflow-y: auto;
+            display: none; /* Hidden by default */
+            font-family: 'Arial', sans-serif; /* Amazon uses generic sans */
+        }
+
+        .buy-overlay.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Amz Header */
+        .amz-header {
+            background: #131921;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .amz-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .amz-logo span { color: var(--bright-orange); margin-left: 2px; }
+
+        .amz-back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .amz-search {
+            flex: 1;
+            margin: 0 40px;
+            max-width: 600px;
+            display: flex;
+            height: 38px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .amz-search-input {
+            flex: 1;
+            padding: 0 10px;
+            border: none;
+            outline: none;
+        }
+        
+        .amz-search-btn {
+            width: 45px;
+            background: var(--amz-orange-btn);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Amz Layout */
+        .amz-container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            color: #0F1111;
+        }
+
+        /* Left: Images */
+        .amz-left-col {
+            width: 40%;
+            position: sticky;
+            top: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .amz-thumbnails {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .amz-thumb {
+            width: 40px;
+            height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+            object-fit: contain;
+            padding: 2px;
+        }
+        
+        .amz-thumb:hover, .amz-thumb.active {
+            border-color: #e77600;
+            box-shadow: 0 0 3px 2px rgba(228,121,17,0.5);
+        }
+
+        .amz-main-img-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .amz-main-img {
+            max-width: 100%;
+            max-height: 500px;
+        }
+
+        /* Center: Details */
+        .amz-center-col {
+            flex: 1;
+        }
+
+        .amz-title {
+            font-size: 24px;
+            line-height: 1.2;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .amz-store-link {
+            color: var(--amz-blue);
+            font-size: 14px;
+            text-decoration: none;
+        }
+        
+        .amz-store-link:hover { text-decoration: underline; color: #c7511f; }
+
+        .amz-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        
+        .stars { color: #FFA41C; }
+        .rating-count { color: var(--amz-blue); }
+
+        .amz-badge {
+            background: #232f3e;
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .amz-badge::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 0;
+            border-top: 22px solid #232f3e;
+            border-right: 10px solid transparent;
+        }
+
+        .amz-price-block {
+            border-top: 1px solid #e7e7e7;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 15px 0;
+            margin: 10px 0;
+        }
+
+        .amz-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+        
+        .amz-price-symbol { font-size: 14px; position: relative; top: -0.5em; }
+        .amz-price-whole { font-size: 28px; font-weight: 500; }
+        .amz-price-fraction { font-size: 14px; position: relative; top: -0.5em; }
+
+        .amz-options {
+            margin: 20px 0;
+        }
+
+        .amz-opt-label {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .amz-chips {
+            display: flex;
+            gap: 10px;
+        }
+
+        .amz-chip {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            background: #fff;
+        }
+        
+        .amz-chip:hover { background: #f0f2f2; }
+        .amz-chip.selected {
+            border: 1px solid #e77600;
+            background: #fff5e3;
+            color: #0F1111;
+            font-weight: 700;
+            box-shadow: 0 0 0 1px #e77600 inset;
+        }
+
+        .amz-bullets {
+            margin-top: 20px;
+        }
+        
+        .amz-bullets h4 { font-size: 16px; margin-bottom: 10px; }
+        .amz-bullets ul { padding-left: 20px; }
+        .amz-bullets li { margin-bottom: 5px; font-size: 14px; line-height: 1.4; }
+
+        /* Right: Buy Box */
+        .amz-right-col {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        .amz-buybox {
+            border: 1px solid #d5d9d9;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .amz-price-lg {
+            font-size: 18px;
+            color: var(--amz-price);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .amz-delivery {
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .amz-date { font-weight: 700; }
+
+        .amz-stock {
+            color: #007600;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .amz-btn {
+            width: 100%;
+            padding: 8px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(213,217,217,0.5);
+            text-align: center;
+        }
+
+        .amz-btn-primary {
+            background-color: var(--amz-yellow-btn);
+        }
+        
+        .amz-btn-primary:hover { background-color: #F7CA00; }
+
+        .amz-btn-secondary {
+            background-color: var(--amz-orange-btn);
+        }
+        
+        .amz-btn-secondary:hover { background-color: #FA8900; }
+
+        .amz-secure {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #565959;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .amz-container { flex-direction: column; }
+            .amz-left-col, .amz-right-col { width: 100%; position: static; }
+            .amz-buybox { margin-top: 20px; }
+            .amz-search { display: none; }
+        }
+
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column;
@@ -331,12 +893,17 @@
 
             .app-section {
                 flex-direction: column-reverse;
-                text-align: center;
+                padding: 60px 5%;
+                gap: 40px;
             }
 
             .app-content {
+                text-align: center;
                 padding-right: 0;
-                margin-top: 40px;
+            }
+            
+            .app-visual {
+                max-width: 100%;
             }
         }
     </style>
@@ -345,13 +912,13 @@
 
     <!-- Navigation -->
     <nav>
-        <div class="logo">Vogle</div>
+        <div class="logo" onclick="toggleAmazonPage(false)">Vogle</div>
         <div class="nav-links">
             <a href="#features">Features</a>
             <a href="#how-it-works">How it Works</a>
             <a href="#app">Community</a>
         </div>
-        <a href="#" class="cta-btn">Pre-Order Now</a>
+        <a href="#" class="cta-btn" onclick="toggleAmazonPage(true)">Pre-Order Now</a>
     </nav>
 
     <!-- Hero Section -->
@@ -359,10 +926,9 @@
         <div class="hero-text" data-aos="fade-right">
             <h1>Pop Your<br><span style="color:white; -webkit-text-stroke: 2px var(--text-dark);">K-Food</span> Magic!</h1>
             <p>라면 스프처럼 톡! 3분 만에 완성되는 한국의 맛.<br>무거운 병 소스는 이제 안녕, 가벼운 K1 스틱을 만나보세요.</p>
-            <a href="#" class="cta-btn" style="background-color: var(--bright-orange); color: white;">Get Early Access 🚀</a>
+            <a href="#" class="cta-btn" onclick="toggleAmazonPage(true)" style="background-color: var(--bright-orange); color: white;">Get Early Access 🚀</a>
         </div>
         <div class="hero-image" data-aos="fade-left">
-            <!-- Placeholder for Korean Food Table Image -->
             <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="맛있는 한식 한상 차림">
         </div>
     </section>
@@ -396,7 +962,7 @@
             <div class="step" data-aos="fade-up" data-aos-delay="100">
                 <div class="step-num">01</div>
                 <div class="step-img">
-                    <img src="https://unifiedflex.com/wp-content/uploads/2023/07/stick-bags.jpg" alt="스틱 뜯기">
+                    <img src="https://unifiedflex.com/wp-content/uploads/2023/07/stick-bags.jpg" alt="스틱 뜯기" onerror="this.onerror=null; this.src='https://placehold.co/400x300?text=Stick+Pack';">
                 </div>
                 <h3>Tear it</h3>
                 <p>K1 스틱을 가볍게 톡 뜯으세요.</p>
@@ -404,7 +970,7 @@
             <div class="step" data-aos="fade-up" data-aos-delay="200">
                 <div class="step-num">02</div>
                 <div class="step-img">
-                    <img src="https://images.unsplash.com/photo-1546554137-f86b9593a222?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="재료와 섞기">
+                    <img src="https://images.unsplash.com/photo-1760228865341-675704c22a5b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="재료와 섞기">
                 </div>
                 <h3>Pour it</h3>
                 <p>물이나 재료 위에 솔솔 뿌려주세요.</p>
@@ -412,7 +978,7 @@
             <div class="step" data-aos="fade-up" data-aos-delay="300">
                 <div class="step-num">03</div>
                 <div class="step-img">
-                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="완성된 요리">
+                    <img src="https://plus.unsplash.com/premium_photo-1705406168732-15720b6b097d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="완성된 요리">
                 </div>
                 <h3>Enjoy K-Food</h3>
                 <p>3분 만에 근사한 한식 완성!</p>
@@ -423,18 +989,110 @@
     <!-- App Section -->
     <section id="app" class="app-section">
         <div class="app-content" data-aos="fade-right">
-            <h2>Scan & Cook</h2>
+            <h2>Watch, Tap, Cook!</h2>
             <p style="font-size: 1.2rem; margin-bottom: 30px;">
-                요리가 처음이어도 걱정 마세요.<br>
-                패키지의 QR코드를 찍으면 전 세계 친구들이 올린<br>
-                다양한 레시피와 꿀팁을 볼 수 있어요.
+                맛있는 영상을 보다가 "어, 이거다!" 싶을 때,<br>
+                화면 속 제품 태그를 눌러보세요.<br>
+                레시피 확인부터 주문까지 10초면 충분합니다.
             </p>
-            <a href="#" class="cta-btn" style="background: white; color: var(--text-dark);">Download App (Coming Soon)</a>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="#" class="cta-btn" style="background: white; color: var(--text-dark);">
+                    <i class="fab fa-apple"></i> App Store
+                </a>
+                <a href="#" class="cta-btn" style="background: white; color: var(--text-dark);">
+                    <i class="fab fa-google-play"></i> Play Store
+                </a>
+            </div>
         </div>
+        
         <div class="app-visual" data-aos="fade-left">
             <div class="phone-mockup">
                 <div class="phone-screen">
-                    <img src="https://images.unsplash.com/photo-1556910103-1c02745a30bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60" alt="App Screen" style="width:100%; height:100%; object-fit:cover;">
+                    <!-- Status Bar -->
+                    <div class="app-status-bar">
+                        <span>12:30</span>
+                        <div style="display: flex; gap: 8px;">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+
+                    <!-- Video Layer (Image Background) -->
+                    <div class="app-video-layer">
+                        <img 
+                            src="https://images.unsplash.com/photo-1580651315530-69c8e0026377?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                            alt="Spicy Tteokbokki"
+                        >
+                    </div>
+
+                    <!-- App Overlay UI -->
+                    <div class="app-overlay">
+                        <!-- Right Side Actions -->
+                        <div class="app-actions">
+                            <div class="action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-heart" style="color: #ff4757;"></i>
+                                </div>
+                                <span class="action-text">1.2k</span>
+                            </div>
+                            <div class="action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-comment-dots"></i>
+                                </div>
+                                <span class="action-text">342</span>
+                            </div>
+                            <div class="action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-share"></i>
+                                </div>
+                                <span class="action-text">Share</span>
+                            </div>
+                        </div>
+
+                        <!-- Info Area -->
+                        <div class="app-info-area">
+                            <div class="video-title">3분 완성! 매콤달콤 떡볶이 🌶️</div>
+                            <div class="channel-name">
+                                <i class="fas fa-check-circle" style="color: var(--mint);"></i> K-Food Master
+                            </div>
+
+                            <!-- Shopping Tag Card -->
+                            <div class="product-card" onclick="toggleAmazonPage(true)">
+                                <div class="product-thumb">🌶️</div>
+                                <div class="product-details">
+                                    <div class="product-name">K1 매운맛 스틱</div>
+                                    <div class="product-price">₩8,900 / 10ea</div>
+                                </div>
+                                <button class="buy-btn-sm">구매하기</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Navigation -->
+                    <div class="app-bottom-nav">
+                        <div class="nav-item active">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </div>
+                        <div class="nav-item">
+                            <i class="fas fa-utensils"></i>
+                            <span>Recipe</span>
+                        </div>
+                        <div class="scan-btn-container">
+                            <div class="scan-btn">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                        </div>
+                        <div class="nav-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>Shop</span>
+                        </div>
+                        <div class="nav-item">
+                            <i class="fas fa-user"></i>
+                            <span>My</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -452,12 +1110,186 @@
         </div>
     </footer>
 
+    <!-- AMAZON STYLE OVERLAY -->
+    <div id="amazonBuyPage" class="buy-overlay">
+        <div class="amz-header">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <a href="#" class="amz-logo" onclick="toggleAmazonPage(false)">Vogle <span>Prime</span></a>
+                <a href="#" class="amz-back-btn" onclick="toggleAmazonPage(false)"><i class="fas fa-map-marker-alt"></i> Deliver to Korea</a>
+            </div>
+            <div class="amz-search">
+                <div style="background: #f3f3f3; color: #333; padding: 0 10px; display: flex; align-items: center; font-size: 12px; border-right: 1px solid #ccc; cursor: pointer;">All</div>
+                <input type="text" class="amz-search-input" value="K1 Magic Stick Sauce">
+                <button class="amz-search-btn"><i class="fas fa-search" style="color: #333;"></i></button>
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 14px; align-items: center;">
+                <div>Hello, <b>Buddy</b></div>
+                <div>Returns <br><b>& Orders</b></div>
+                <div style="display: flex; align-items: center; font-weight: bold;">
+                    <i class="fas fa-shopping-cart" style="font-size: 20px; margin-right: 5px;"></i> 0
+                </div>
+            </div>
+        </div>
+
+        <div class="amz-container">
+            <!-- Left: Images -->
+            <div class="amz-left-col">
+                <div class="amz-thumbnails">
+                    <img src="https://unifiedflex.com/wp-content/uploads/2023/07/stick-bags.jpg" class="amz-thumb active" onmouseover="changeImage(this)">
+                    <img src="https://images.unsplash.com/photo-1580651315530-69c8e0026377?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="amz-thumb" onmouseover="changeImage(this)">
+                    <img src="https://plus.unsplash.com/premium_photo-1705406168732-15720b6b097d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="amz-thumb" onmouseover="changeImage(this)">
+                    <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="amz-thumb" onmouseover="changeImage(this)">
+                </div>
+                <div class="amz-main-img-wrapper">
+                    <img id="mainImage" src="https://unifiedflex.com/wp-content/uploads/2023/07/stick-bags.jpg" class="amz-main-img">
+                </div>
+            </div>
+
+            <!-- Center: Details -->
+            <div class="amz-center-col">
+                <div class="amz-title">K1 Magic Stick - Authentic Korean Spicy Sauce Powder (Tteokbokki Flavor) - 3 Minute Recipe, Easy Travel Pack (10 Sticks)</div>
+                <a href="#" class="amz-store-link">Visit the Vogle Store</a>
+                <div class="amz-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">1,402 ratings</span>
+                </div>
+                
+                <div class="amz-badge">Amazon's Choice</div>
+                <span>for "korean sauce stick"</span>
+
+                <div class="amz-price-block">
+                    <div class="amz-price-row">
+                        <span style="color: #cc0c39; margin-right: 5px;">-15%</span>
+                        <span class="amz-price-symbol">$</span>
+                        <span class="amz-price-whole">18</span>
+                        <span class="amz-price-fraction">99</span>
+                    </div>
+                    <div style="font-size: 13px; color: #565959; margin-top: 5px;">List Price: <span style="text-decoration: line-through;">$22.00</span></div>
+                </div>
+
+                <div class="amz-options">
+                    <div class="amz-opt-label">Flavor Name: <span id="selectedFlavor">Original Spicy</span></div>
+                    <div class="amz-chips">
+                        <div class="amz-chip selected" onclick="selectFlavor(this, 'Original Spicy')">Original Spicy</div>
+                        <div class="amz-chip" onclick="selectFlavor(this, 'Mild Soy')">Mild Soy</div>
+                        <div class="amz-chip" onclick="selectFlavor(this, 'Fire Chicken')">Fire Chicken</div>
+                    </div>
+                </div>
+
+                <div class="amz-bullets">
+                    <h4>About this item</h4>
+                    <ul>
+                        <li>🔥 AUTHENTIC K-TASTE: Developed by top chefs in Seoul, capturing the perfect balance of spicy, sweet, and savory.</li>
+                        <li>✈️ TRAVEL FRIENDLY: No more leaking bottles! Powder type sticks are 80% lighter and TSA friendly.</li>
+                        <li>🕒 3 MINUTE MAGIC: Just sprinkle over cooked rice cakes, noodles, or any veggie stir-fry.</li>
+                        <li>🌱 NATURAL INGREDIENTS: Made with premium Korean red pepper powder (Gochugaru) and garlic.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right: Buy Box -->
+            <div class="amz-right-col">
+                <div class="amz-buybox">
+                    <div class="amz-price-lg">$18.99</div>
+                    <div class="amz-delivery">
+                        FREE delivery <b>Tuesday, March 24</b> on orders shipped by Amazon over $35
+                    </div>
+                    <div class="amz-delivery" style="margin-bottom: 20px;">
+                        Or fastest delivery <b>Tomorrow, March 20</b>. Order within <span style="color: #007600;">3 hrs 15 mins</span>
+                    </div>
+                    <div class="amz-stock">In Stock</div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 13px;">Qty:</label>
+                        <select style="padding: 3px; border-radius: 4px; border: 1px solid #ccc; background: #f0f2f2; box-shadow: 0 2px 5px rgba(15,17,17,.15);">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+
+                    <button class="amz-btn amz-btn-primary" onclick="addToCart()">Add to Cart</button>
+                    <button class="amz-btn amz-btn-secondary" onclick="buyNow()">Buy Now</button>
+
+                    <div class="amz-secure">
+                        <i class="fas fa-lock"></i> Secure transaction
+                    </div>
+                    
+                    <div style="margin-top: 15px; font-size: 12px; color: #565959; line-height: 1.5;">
+                        <div style="display: flex; justify-content: space-between;"><span>Ships from</span> <span>Amazon</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Sold by</span> <span>Vogle Inc.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
         });
+
+        // Amazon Page Logic
+        function toggleAmazonPage(show) {
+            const overlay = document.getElementById('amazonBuyPage');
+            if (show) {
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            } else {
+                overlay.classList.remove('active');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 300); // Wait for fade out if we add transition
+                overlay.classList.remove('active'); // Actually just toggle class for display block/none in simple CSS
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Fix for simple display toggle
+        document.getElementById('amazonBuyPage').style.display = 'none';
+        
+        // Override the toggle function to be simpler for inline styles
+        window.toggleAmazonPage = function(show) {
+            const overlay = document.getElementById('amazonBuyPage');
+            if (show) {
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function changeImage(thumb) {
+            // Remove active class from all thumbs
+            document.querySelectorAll('.amz-thumb').forEach(t => t.classList.remove('active'));
+            // Add active to clicked
+            thumb.classList.add('active');
+            // Change main image
+            document.getElementById('mainImage').src = thumb.src;
+        }
+
+        function selectFlavor(chip, flavorName) {
+            document.querySelectorAll('.amz-chip').forEach(c => c.classList.remove('selected'));
+            chip.classList.add('selected');
+            document.getElementById('selectedFlavor').innerText = flavorName;
+        }
+
+        function addToCart() {
+            alert("Added to Cart! 🛒\n(This is a demo)");
+        }
+
+        function buyNow() {
+            alert("Thank you for your purchase! 📦\nShipping to: South Korea");
+        }
     </script>
 </body>
 </html>
