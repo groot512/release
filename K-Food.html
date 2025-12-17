@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>(가칭) 주식회사 보글 | K-Food를 3분 만에</title>
+  <meta name="description" content="K1 스틱소스 + QR 레시피 플랫폼. 전 세계 누구나 3분 만에 한식 한 상." />
+  <style>
+    :root{
+      --mint:#31D0C6;
+      --yg:#B9F54A;      /* yellow-green */
+      --orange:#FF8A3D;  /* bright orange */
+      --ink:#111827;
+      --muted:#6B7280;
+      --paper:#F8FAFC;
+      --card:rgba(255,255,255,.88);
+      --stroke:rgba(17,24,39,.10);
+      --shadow: 0 14px 40px rgba(0,0,0,.10);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 500px at 15% 0%, rgba(49,208,198,.25), transparent 60%),
+        radial-gradient(900px 500px at 90% 15%, rgba(185,245,74,.20), transparent 60%),
+        radial-gradient(900px 500px at 85% 90%, rgba(255,138,61,.18), transparent 60%),
+        linear-gradient(180deg, #ffffff, #f7fafc 70%, #ffffff);
+      overflow-x:hidden;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
+
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:20;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.7);
+      border-bottom: 1px solid rgba(17,24,39,.06);
+    }
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      height:72px;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-weight:900;
+      letter-spacing:-.2px;
+    }
+    .logo{
+      width:42px; height:42px; border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, var(--yg), transparent 55%),
+        radial-gradient(circle at 75% 35%, var(--orange), transparent 55%),
+        radial-gradient(circle at 55% 78%, var(--mint), transparent 55%),
+        linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
+      border:1px solid rgba(17,24,39,.08);
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-30%;
+      background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.55), transparent 60%);
+      transform: rotate(10deg);
+      animation: sheen 6.5s ease-in-out infinite;
+    }
+    @keyframes sheen{
+      0%,50%{transform:translateX(-35%) rotate(10deg)}
+      100%{transform:translateX(35%) rotate(10deg)}
+    }
+
+    .nav{
+      display:flex; align-items:center; gap:8px;
+    }
+    .nav a{
+      padding:10px 12px;
+      border-radius:999px;
+      font-weight:700;
+      color:rgba(17,24,39,.78);
+    }
+    .nav a:hover{background:rgba(17,24,39,.05)}
+    .cta{
+      display:flex; gap:10px; align-items:center;
+    }
+
+    .btn{
+      border:0; cursor:pointer;
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:900;
+      letter-spacing:-.2px;
+      display:inline-flex; align-items:center; gap:10px;
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn-primary{
+      color:#0b1220;
+      background:
+        radial-gradient(120px 60px at 25% 30%, rgba(185,245,74,.95), transparent 70%),
+        radial-gradient(120px 60px at 80% 30%, rgba(255,138,61,.90), transparent 70%),
+        linear-gradient(135deg, rgba(49,208,198,.95), rgba(49,208,198,.70));
+      box-shadow: 0 16px 34px rgba(49,208,198,.25);
+      border: 1px solid rgba(17,24,39,.10);
+    }
+    .btn-primary:hover{filter:saturate(1.08)}
+    .btn-ghost{
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(17,24,39,.10);
+      color:rgba(17,24,39,.80);
+    }
+    .btn-ghost:hover{box-shadow:0 10px 24px rgba(0,0,0,.08)}
+
+    /* Hero */
+    .hero{
+      padding: 26px 0 18px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:22px;
+      align-items:stretch;
+    }
+
+    .hero-card{
+      border-radius: var(--radius2);
+      overflow:hidden;
+      border: 1px solid rgba(17,24,39,.10);
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(120deg, rgba(255,255,255,.85), rgba(255,255,255,.65));
+      position:relative;
+    }
+
+    /* Background image: “한식 한상” 느낌 (교체 가능) */
+    .hero-card .bg{
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.92), rgba(255,255,255,.75) 50%, rgba(255,255,255,.55)),
+        url("https://images.unsplash.com/photo-1604908554162-5b7b12f9d91a?auto=format&fit=crop&w=1800&q=80");
+      background-size:cover;
+      background-position:center;
+      filter:saturate(1.1);
+      transform: scale(1.02);
+    }
+
+    .hero-card .content{
+      position:relative;
+      padding: 34px 32px;
+    }
+
+    .tagline{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(17,24,39,.10);
+      font-weight:900;
+      letter-spacing:-.2px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:99px;
+      background: var(--mint);
+      box-shadow: 10px 0 0 var(--yg), 20px 0 0 var(--orange);
+    }
+
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(30px, 3.4vw, 50px);
+      line-height:1.05;
+      letter-spacing:-1px;
+    }
+    .lead{
+      margin: 0 0 18px;
+      font-size: clamp(15px, 1.4vw, 18px);
+      line-height:1.5;
+      color: rgba(17,24,39,.76);
+      max-width: 48ch;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top:14px;
+    }
+
+    .mini{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 14px;
+      color: rgba(17,24,39,.70);
+      font-weight:800;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(17,24,39,.10);
+    }
+    .pill b{color:rgba(17,24,39,.88)}
+
+    /* Right column: QR + Preview */
+    .side{
+      display:grid;
+      gap:12px;
+    }
+
+    .side-card{
+      background: rgba(255,255,255,.80);
+      border: 1px solid rgba(17,24,39,.10);
+      border-radius: var(--radius2);
+      box-shadow: 0 12px 30px rgba(0,0,0,.08);
+      padding: 18px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .side-title{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .side-title h3{
+      margin:0;
+      font-size: 16px;
+      letter-spacing:-.2px;
+    }
+    .badge{
+      font-weight:900;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(17,24,39,.10);
+      background:
+        linear-gradient(135deg, rgba(185,245,74,.55), rgba(49,208,198,.40), rgba(255,138,61,.35));
+    }
+
+    .qrbox{
+      display:grid;
+      grid-template-columns: 96px 1fr;
+      gap:14px;
+      align-items:center;
+    }
+    .qr{
+      width:96px; height:96px; border-radius:16px;
+      background: #fff;
+      border:1px solid rgba(17,24,39,.12);
+      display:grid; place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    /* “QR처럼 보이는” 장식 (실제 QR 필요 시 이미지로 교체) */
+    .qr:before{
+      content:"";
+      width:74px; height:74px;
+      background:
+        linear-gradient(90deg, #111 8px, transparent 8px) 0 0 / 14px 14px,
+        linear-gradient(#111 8px, transparent 8px) 0 0 / 14px 14px;
+      opacity:.85;
+      mask: radial-gradient(circle at 15% 15%, transparent 18px, #000 18px),
+            radial-gradient(circle at 85% 15%, transparent 18px, #000 18px),
+            radial-gradient(circle at 15% 85%, transparent 18px, #000 18px);
+    }
+    .qrtext p{margin:0; color:rgba(17,24,39,.72); font-weight:700; line-height:1.4}
+    .qrtext small{display:block; margin-top:6px; color:rgba(17,24,39,.55); font-weight:800}
+
+    .preview{
+      margin-top:14px;
+      border-radius: 18px;
+      border:1px solid rgba(17,24,39,.10);
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(49,208,198,.10), rgba(185,245,74,.10), rgba(255,138,61,.08));
+    }
+    .preview .frame{
+      padding:14px;
+      display:grid;
+      gap:10px;
+    }
+    .cardline{
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(17,24,39,.10);
+      border-radius: 16px;
+      padding: 12px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:-.2px;
+    }
+    .cardline span{color:rgba(17,24,39,.70); font-weight:800}
+    .chip{
+      padding:8px 10px; border-radius:999px;
+      background: rgba(17,24,39,.06);
+      border:1px solid rgba(17,24,39,.08);
+      font-size:12px;
+      font-weight:900;
+    }
+
+    /* Sections */
+    section{padding: 36px 0}
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:16px; margin-bottom: 14px;
+    }
+    .section-head h2{
+      margin:0;
+      font-size: clamp(22px, 2.2vw, 30px);
+      letter-spacing:-.6px;
+    }
+    .section-head p{
+      margin:0;
+      color: rgba(17,24,39,.66);
+      font-weight:700;
+      max-width: 55ch;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    .feature{
+      background: var(--card);
+      border:1px solid rgba(17,24,39,.10);
+      border-radius: var(--radius2);
+      padding:18px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.07);
+      min-height: 152px;
+      position:relative;
+      overflow:hidden;
+    }
+    .feature:before{
+      content:"";
+      position:absolute; inset:-40%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(49,208,198,.25), transparent 55%),
+        radial-gradient(circle at 65% 35%, rgba(185,245,74,.18), transparent 55%),
+        radial-gradient(circle at 55% 75%, rgba(255,138,61,.16), transparent 55%);
+      transform: rotate(10deg);
+    }
+    .feature > *{position:relative}
+    .feature h3{margin:0 0 8px; letter-spacing:-.3px}
+    .feature p{margin:0; color:rgba(17,24,39,.70); font-weight:700; line-height:1.45}
+    .kpi{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;
+    }
+    .kpi .pill{background:rgba(255,255,255,.82)}
+
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+    }
+    .step{
+      background: rgba(255,255,255,.80);
+      border:1px solid rgba(17,24,39,.10);
+      border-radius: var(--radius2);
+      padding:16px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+    }
+    .num{
+      width:38px; height:38px; border-radius:14px;
+      display:grid; place-items:center;
+      font-weight:900;
+      background:
+        linear-gradient(135deg, rgba(49,208,198,.75), rgba(185,245,74,.55), rgba(255,138,61,.50));
+      border: 1px solid rgba(17,24,39,.10);
+      margin-bottom:10px;
+    }
+    .step h4{margin:0 0 6px; letter-spacing:-.2px}
+    .step p{margin:0; color:rgba(17,24,39,.70); font-weight:700; line-height:1.4}
+
+    /* Form */
+    .signup{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    .panel{
+      background: rgba(255,255,255,.82);
+      border:1px solid rgba(17,24,39,.10);
+      border-radius: var(--radius2);
+      padding:18px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.07);
+    }
+    .field{
+      display:grid;
+      gap:8px;
+      margin-top:10px;
+    }
+    label{font-weight:900; color:rgba(17,24,39,.78)}
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(17,24,39,.14);
+      background: rgba(255,255,255,.92);
+      font-weight:800;
+      outline:none;
+    }
+    textarea{min-height:108px; resize:vertical}
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(49,208,198,.7);
+      box-shadow: 0 0 0 4px rgba(49,208,198,.18);
+    }
+    .toast{
+      margin-top:10px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px dashed rgba(17,24,39,.18);
+      background: rgba(185,245,74,.14);
+      font-weight:900;
+      display:none;
+    }
+    .toast.show{display:block}
+
+    /* Footer */
+    footer{
+      padding: 24px 0 42px;
+      color: rgba(17,24,39,.62);
+      font-weight:800;
+    }
+    .foot{
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      padding-top:12px;
+      border-top:1px solid rgba(17,24,39,.08);
+    }
+
+    /* Mobile */
+    .hamburger{
+      display:none;
+      border:1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.78);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns: 1fr; }
+      .grid3{grid-template-columns: 1fr; }
+      .steps{grid-template-columns: 1fr 1fr; }
+      .signup{grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px){
+      .nav{display:none}
+      .hamburger{display:inline-flex}
+      .topbar-inner{height:66px}
+      .hero-card .content{padding: 26px 18px}
+      .steps{grid-template-columns: 1fr; }
+      .qrbox{grid-template-columns: 80px 1fr}
+      .qr{width:80px; height:80px}
+    }
+
+    /* Mobile menu */
+    .mobile-menu{
+      display:none;
+      padding: 0 20px 14px;
+    }
+    .mobile-menu.show{display:block}
+    .mobile-menu a{
+      display:block;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(17,24,39,.08);
+      background: rgba(255,255,255,.75);
+      margin-top:8px;
+      font-weight:900;
+      color:rgba(17,24,39,.78);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Topbar -->
+  <div class="topbar" role="banner">
+    <div class="container">
+      <div class="topbar-inner">
+        <div class="brand" aria-label="브랜드">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <div style="font-size:14px; font-weight:900; color:rgba(17,24,39,.72)">(가칭) 주식회사 보글</div>
+            <div style="font-size:16px; font-weight:1000; letter-spacing:-.3px">BOGLE K-Food</div>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="주요 메뉴">
+          <a href="#why">왜 보글?</a>
+          <a href="#how">사용 방법</a>
+          <a href="#lineup">라인업</a>
+          <a href="#contact">문의</a>
+        </nav>
+
+        <div class="cta">
+          <button class="btn btn-ghost" id="btnLang" aria-label="언어 토글">KR / EN</button>
+          <button class="btn btn-primary" id="btnScroll" aria-label="사전등록으로 이동">사전등록</button>
+          <button class="hamburger" id="btnMenu" aria-label="모바일 메뉴">메뉴</button>
+        </div>
+      </div>
+
+      <div class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴">
+        <a href="#why">왜 보글?</a>
+        <a href="#how">사용 방법</a>
+        <a href="#lineup">라인업</a>
+        <a href="#contact">문의</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <div class="bg" aria-hidden="true"></div>
+          <div class="content">
+            <div class="tagline">
+              <span class="dot" aria-hidden="true"></span>
+              <span id="heroTag">K-Food를 “3분 만에” 만드는 가장 쉬운 방법</span>
+            </div>
+
+            <h1 id="heroTitle">
+              한식 한 상을<br/>스틱 한 포로.
+            </h1>
+
+            <p class="lead" id="heroLead">
+              복잡한 한식 맛을 <b>분말 스틱소스</b>로 표준화하고,
+              패키지의 <b>QR</b>을 스캔하면 <b>3분 레시피 영상/앱</b>으로 바로 연결돼요.
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn btn-primary" id="btnPrimary">사전등록하고 런칭 알림 받기</button>
+              <button class="btn btn-ghost" id="btnSecondary">제품/플랫폼 소개 보기</button>
+            </div>
+
+            <div class="mini" aria-label="핵심 포인트">
+              <div class="pill">📦 <b>초경량</b> · 해외배송 최적화</div>
+              <div class="pill">⏱️ <b>3분 레시피</b> · 숏폼 가이드</div>
+              <div class="pill">🌎 <b>다국어</b> · 글로벌 MZ 타겟</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="side" aria-label="오른쪽 정보 영역">
+          <div class="side-card">
+            <div class="side-title">
+              <h3 id="side1Title">QR로 바로 시작</h3>
+              <div class="badge" id="side1Badge">QR → App</div>
+            </div>
+
+            <div class="qrbox">
+              <div class="qr" aria-label="QR 예시"></div>
+              <div class="qrtext">
+                <p id="qrText1">패키지 QR을 스캔하면</p>
+                <p id="qrText2"><b>해당 소스로 만드는 레시피</b>가 즉시 열려요.</p>
+                <small id="qrText3">* 실제 출시 시, 제품별 고유 QR 제공</small>
+              </div>
+            </div>
+
+            <div class="preview" aria-label="앱 미리보기">
+              <div class="frame">
+                <div class="cardline">
+                  <div>🎬 <span id="pv1">3분 숏폼 레시피</span></div>
+                  <div class="chip">Shorts</div>
+                </div>
+                <div class="cardline">
+                  <div>🥄 <span id="pv2">계량 가이드(초보 OK)</span></div>
+                  <div class="chip">Guide</div>
+                </div>
+                <div class="cardline">
+                  <div>📸 <span id="pv3">K-Food 챌린지 커뮤니티</span></div>
+                  <div class="chip">Community</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="side-card">
+            <div class="side-title">
+              <h3 id="side2Title">글로벌 판매 & 확장</h3>
+              <div class="badge" id="side2Badge">CBT</div>
+            </div>
+            <p style="margin:0; color:rgba(17,24,39,.72); font-weight:800; line-height:1.5" id="side2Text">
+              아마존/쇼피 등 크로스보더 이커머스에 최적화된 패키징으로 시작해,
+              굿즈(뚝배기/수저/앞치마)와 건조 식재료 밀키트로 확장해요.
+            </p>
+            <div class="kpi">
+              <div class="pill">🚚 부피·무게 절감</div>
+              <div class="pill">🛍️ 콘텐츠 커머스</div>
+              <div class="pill">🎁 굿즈/밀키트</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Why -->
+  <section id="why">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2 id="whyTitle">왜 “보글”이 필요할까?</h2>
+          <p id="whyLead">
+            K-콘텐츠로 한식은 뜨거운데, 막상 “집에서 따라 하기”는 어렵고 배송은 비싸요.
+            보글은 맛과 경험을 함께 제공하는 스마트 쿠킹 솔루션을 지향해요.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid3" aria-label="핵심 가치 3가지">
+        <div class="feature">
+          <h3 id="f1">1) 복잡한 맛, 스틱 한 포로 표준화</h3>
+          <p id="f1p">육수/찌개/떡볶이 등 한식의 “복합 조미”를 분말 스틱에 담아, 초보도 실패 없이 시작.</p>
+          <div class="kpi">
+            <div class="pill">✅ 1회분</div>
+            <div class="pill">✅ 상온 보관</div>
+            <div class="pill">✅ 간편 계량</div>
+          </div>
+        </div>
+        <div class="feature">
+          <h3 id="f2">2) QR 스캔 → 3분 레시피 영상</h3>
+          <p id="f2p">검색 없이 바로 연결. “오늘은 이 소스로 뭘 만들지?”를 클릭 한 번으로 해결.</p>
+          <div class="kpi">
+            <div class="pill">🎬 Shorts</div>
+            <div class="pill">🌐 다국어</div>
+            <div class="pill">📲 App/Web</div>
+          </div>
+        </div>
+        <div class="feature">
+          <h3 id="f3">3) 콘텐츠 커머스로 팬덤 확장</h3>
+          <p id="f3p">요리 인증샷/챌린지로 재방문을 만들고, 소스 → 굿즈 → 밀키트로 자연스럽게 확장.</p>
+          <div class="kpi">
+            <div class="pill">📸 Community</div>
+            <div class="pill">🎁 Goods</div>
+            <div class="pill">🍱 Meal-kit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How -->
+  <section id="how">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2 id="howTitle">사용 방법은 라면처럼 간단하게</h2>
+          <p id="howLead">한식 장벽을 “스틱 + QR”로 낮추는 흐름을 그대로 랜딩에서 보여줘요.</p>
+        </div>
+      </div>
+
+      <div class="steps" aria-label="4단계 사용 방법">
+        <div class="step">
+          <div class="num">1</div>
+          <h4 id="s1">스틱소스를 고른다</h4>
+          <p id="s1p">육수/찌개/떡볶이 등 상황별로 선택.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h4 id="s2">QR을 스캔한다</h4>
+          <p id="s2p">제품별 고유 QR로 레시피가 자동 매칭.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h4 id="s3">3분 영상대로 따라 한다</h4>
+          <p id="s3p">계량 가이드 + 숏폼으로 빠르게 완성.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h4 id="s4">인증하고 공유한다</h4>
+          <p id="s4p">챌린지/커뮤니티로 재미와 재방문을 만든다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lineup -->
+  <section id="lineup">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2 id="lineupTitle">초기 라인업(예시)</h2>
+          <p id="lineupLead">사업계획서의 “10종” 콘셉트를 랜딩에서 보기 좋게 배치해요(확정명/이미지는 출시 시 업데이트).</p>
+        </div>
+      </div>
+
+      <div class="grid3" aria-label="라인업 카드">
+        <div class="feature">
+          <h3>🍲 베이스 4종</h3>
+          <p>김치찌개 / 떡볶이 / (예) 불고기 / (예) 된장찌개</p>
+          <div class="kpi">
+            <div class="pill">핵심 메뉴</div>
+            <div class="pill">초보 친화</div>
+          </div>
+        </div>
+        <div class="feature">
+          <h3>🐟 육수 6종</h3>
+          <p>멸치 / 해물 / 사골 등 “한식 기본맛”을 빠르게.</p>
+          <div class="kpi">
+            <div class="pill">국·탕</div>
+            <div class="pill">볶음/찜</div>
+          </div>
+        </div>
+        <div class="feature">
+          <h3>🎁 확장 패키지</h3>
+          <p>소스 + 건조 식재료 + 굿즈(뚝배기/수저/앞치마) 조합으로 한류 감성 “선물템”.</p>
+          <div class="kpi">
+            <div class="pill">굿즈</div>
+            <div class="pill">밀키트</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact / Signup -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2 id="contactTitle">사전등록 / 파트너 문의</h2>
+          <p id="contactLead">런칭 알림 + B2B(제조/OEM, 물류, 크리에이터, 인플루언서) 협업 문의를 한 화면에서 받게 구성했어.</p>
+        </div>
+      </div>
+
+      <div class="signup">
+        <div class="panel">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px" id="formTitle">런칭 알림 받기</h3>
+          <p style="margin:0; color:rgba(17,24,39,.68); font-weight:800" id="formLead">
+            이메일만 남기면, 출시/펀딩/글로벌 입점 소식을 먼저 보내드려요.
+          </p>
+
+          <div class="field">
+            <label for="email" id="lblEmail">이메일</label>
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="region" id="lblRegion">거주 지역</label>
+            <select id="region">
+              <option value="KR">Korea</option>
+              <option value="US">United States</option>
+              <option value="JP">Japan</option>
+              <option value="SEA">Southeast Asia</option>
+              <option value="EU">Europe</option>
+              <option value="ETC">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <button class="btn btn-primary" id="btnSubmit">사전등록 완료</button>
+          </div>
+
+          <div class="toast" id="toast">✅ 등록 완료! 런칭 소식을 가장 먼저 알려줄게요.</div>
+          <p style="margin:10px 0 0; color:rgba(17,24,39,.55); font-weight:800" id="privacy">
+            * 데모 페이지: 실제 전송 대신 브라우저에만 저장됩니다(localStorage).
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px" id="b2bTitle">파트너/투자/협업 문의</h3>
+          <p style="margin:0; color:rgba(17,24,39,.68); font-weight:800" id="b2bLead">
+            제조(OEM/ODM), 물류(FBA), 콘텐츠(숏폼), 크로스셀링 굿즈 등 무엇이든 편하게.
+          </p>
+
+          <div class="field">
+            <label for="name" id="lblName">이름/조직</label>
+            <input id="name" type="text" placeholder="예: 홍길동 / OO Studio" />
+          </div>
+
+          <div class="field">
+            <label for="topic" id="lblTopic">문의 유형</label>
+            <select id="topic">
+              <option>OEM/제조</option>
+              <option>플랫폼(App/Web) 개발</option>
+              <option>물류/글로벌 이커머스</option>
+              <option>콘텐츠/크리에이터</option>
+              <option>투자/펀딩</option>
+              <option>기타</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="msg" id="lblMsg">메시지</label>
+            <textarea id="msg" placeholder="간단히 상황/제안/연락처를 남겨주세요."></textarea>
+          </div>
+
+          <div class="field">
+            <button class="btn btn-ghost" id="btnCopy">문의 내용 복사</button>
+          </div>
+
+          <p style="margin:10px 0 0; color:rgba(17,24,39,.55); font-weight:800" id="hint">
+            * 데모 페이지: “복사” 후 이메일/폼/CRM에 붙여넣는 방식으로 연결하면 됩니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="foot">
+        <div>© <span id="year"></span> (가칭) 주식회사 보글. All rights reserved.</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <a href="#why">Why</a>
+          <a href="#how">How</a>
+          <a href="#lineup">Lineup</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll helpers
+    const $ = (s) => document.querySelector(s);
+    const scrollToId = (id) => document.querySelector(id)?.scrollIntoView({behavior:"smooth", block:"start"});
+
+    $("#btnScroll").addEventListener("click", () => scrollToId("#contact"));
+    $("#btnPrimary").addEventListener("click", () => scrollToId("#contact"));
+    $("#btnSecondary").addEventListener("click", () => scrollToId("#why"));
+
+    // Mobile menu
+    $("#btnMenu").addEventListener("click", () => {
+      $("#mobileMenu").classList.toggle("show");
+    });
+    document.querySelectorAll(".mobile-menu a").forEach(a=>{
+      a.addEventListener("click", ()=> $("#mobileMenu").classList.remove("show"));
+    });
+
+    // Fake signup
+    const toast = $("#toast");
+    $("#btnSubmit").addEventListener("click", () => {
+      const email = $("#email").value.trim();
+      if(!email || !email.includes("@")){
+        toast.textContent = "이메일을 정확히 입력해줘요 🙂";
+        toast.style.background = "rgba(255,138,61,.14)";
+        toast.classList.add("show");
+        return;
+      }
+      const data = {
+        email,
+        region: $("#region").value,
+        ts: new Date().toISOString()
+      };
+      const list = JSON.parse(localStorage.getItem("bogle_prelaunch") || "[]");
+      list.push(data);
+      localStorage.setItem("bogle_prelaunch", JSON.stringify(list));
+
+      toast.textContent = "✅ 등록 완료! 런칭 소식을 가장 먼저 알려줄게요.";
+      toast.style.background = "rgba(185,245,74,.14)";
+      toast.classList.add("show");
+      $("#email").value = "";
+    });
+
+    // Copy B2B inquiry
+    $("#btnCopy").addEventListener("click", async () => {
+      const payload =
+`[보글 협업 문의]
+- 이름/조직: ${$("#name").value || "-"}
+- 문의 유형: ${$("#topic").value || "-"}
+- 메시지: ${$("#msg").value || "-"}
+
+(연락처를 함께 남겨주시면 더 빨라요)`;
+      try{
+        await navigator.clipboard.writeText(payload);
+        alert("복사 완료! 원하는 채널(이메일/CRM)에 붙여넣어 주세요.");
+      }catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = payload;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        alert("복사 완료! (fallback)");
+      }
+    });
+
+    // Year
+    $("#year").textContent = new Date().getFullYear();
+
+    // KR/EN toggle (간단 데모)
+    let isEN = false;
+    const dict = {
+      heroTag: ["K-Food를 “3분 만에” 만드는 가장 쉬운 방법", "The easiest way to make K-Food in 3 minutes"],
+      heroTitle: ["한식 한 상을<br/>스틱 한 포로.", "A full Korean meal,<br/>with one stick."],
+      heroLead: [
+        "복잡한 한식 맛을 <b>분말 스틱소스</b>로 표준화하고, 패키지의 <b>QR</b>을 스캔하면 <b>3분 레시피 영상/앱</b>으로 바로 연결돼요.",
+        "We standardize complex Korean flavors into <b>powder stick sauces</b>. Scan the <b>QR</b> and jump straight into a <b>3-minute recipe video/app</b>."
+      ],
+      side1Title: ["QR로 바로 시작", "Start instantly with QR"],
+      side2Title: ["글로벌 판매 & 확장", "Global sales & expansion"],
+      whyTitle: ["왜 “보글”이 필요할까?", "Why BOGLE?"],
+      howTitle: ["사용 방법은 라면처럼 간단하게", "As easy as instant noodles"],
+      lineupTitle: ["초기 라인업(예시)", "Initial lineup (sample)"],
+      contactTitle: ["사전등록 / 파트너 문의", "Pre-launch / Partnerships"],
+      btnSubmit: ["사전등록 완료", "Join waitlist"],
+      privacy: ["* 데모 페이지: 실제 전송 대신 브라우저에만 저장됩니다(localStorage).", "* Demo page: saved locally in your browser (localStorage)."]
+    };
+
+    function setText(id, html){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.innerHTML = html;
+    }
+
+    $("#btnLang").addEventListener("click", () => {
+      isEN = !isEN;
+      setText("heroTag", dict.heroTag[isEN?1:0]);
+      setText("heroTitle", dict.heroTitle[isEN?1:0]);
+      setText("heroLead", dict.heroLead[isEN?1:0]);
+      setText("side1Title", dict.side1Title[isEN?1:0]);
+      setText("side2Title", dict.side2Title[isEN?1:0]);
+      setText("whyTitle", dict.whyTitle[isEN?1:0]);
+      setText("howTitle", dict.howTitle[isEN?1:0]);
+      setText("lineupTitle", dict.lineupTitle[isEN?1:0]);
+      setText("contactTitle", dict.contactTitle[isEN?1:0]);
+      setText("btnSubmit", dict.btnSubmit[isEN?1:0]);
+      setText("privacy", dict.privacy[isEN?1:0]);
+    });
+  </script>
+</body>
+</html>

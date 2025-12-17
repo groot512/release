@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K1 Stick Source - Vogle Inc.</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mint: #4FFFB0;
+            --yellow-green: #D4FF5F;
+            --bright-orange: #FF8E3C;
+            --text-dark: #1A1A1A;
+            --off-white: #F9F9F9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--off-white);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--bright-orange);
+            letter-spacing: -1px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            margin-left: 30px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--mint);
+        }
+
+        .cta-btn {
+            background-color: var(--text-dark);
+            color: var(--yellow-green);
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background-color: var(--bright-orange);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            background: linear-gradient(135deg, var(--mint) 0%, var(--yellow-green) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-text {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #333;
+            max-width: 500px;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 20px 20px 0px var(--bright-orange);
+            transform: rotate(-3deg);
+            transition: transform 0.5s;
+        }
+
+        .hero-image img:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 5%;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 3rem;
+            margin-bottom: 60px;
+            color: var(--text-dark);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--mint);
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: var(--off-white);
+            padding: 20px;
+            border-radius: 50%;
+            color: var(--bright-orange);
+        }
+
+        /* How it Works */
+        .how-it-works {
+            background-color: var(--text-dark);
+            color: white;
+            padding: 100px 5%;
+        }
+
+        .how-it-works h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 80px;
+            color: var(--yellow-green);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .step {
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .step-num {
+            font-size: 80px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.1);
+            line-height: 1;
+            margin-bottom: -40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-img {
+            width: 100%;
+            height: 200px;
+            background: #333;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .step-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* App Section */
+        .app-section {
+            padding: 100px 5%;
+            display: flex;
+            align-items: center;
+            background-color: var(--mint);
+            position: relative;
+        }
+
+        .app-content {
+            flex: 1;
+            padding-right: 50px;
+        }
+
+        .app-content h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .app-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            background: black;
+            border-radius: 40px;
+            border: 10px solid #333;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #ccc;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 50px 5%;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 32px;
+            font-family: 'Fredoka', sans-serif;
+            color: var(--bright-orange);
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                height: auto;
+                padding-top: 120px;
+                padding-bottom: 60px;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+
+            .hero-image {
+                margin-top: 40px;
+            }
+            
+            .hero-image img {
+                width: 100%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .app-section {
+                flex-direction: column-reverse;
+                text-align: center;
+            }
+
+            .app-content {
+                padding-right: 0;
+                margin-top: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Vogle</div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How it Works</a>
+            <a href="#app">Community</a>
+        </div>
+        <a href="#" class="cta-btn">Pre-Order Now</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text" data-aos="fade-right">
+            <h1>Pop Your<br><span style="color:white; -webkit-text-stroke: 2px var(--text-dark);">K-Food</span> Magic!</h1>
+            <p>라면 스프처럼 톡! 3분 만에 완성되는 한국의 맛.<br>무거운 병 소스는 이제 안녕, 가벼운 K1 스틱을 만나보세요.</p>
+            <a href="#" class="cta-btn" style="background-color: var(--bright-orange); color: white;">Get Early Access 🚀</a>
+        </div>
+        <div class="hero-image" data-aos="fade-left">
+            <!-- Placeholder for Korean Food Table Image -->
+            <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="맛있는 한식 한상 차림">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2 data-aos="fade-up">Why K1 Stick?</h2>
+        <div class="feature-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="icon">✈️</div>
+                <h3>Travel Light</h3>
+                <p>액상 대비 80% 가벼워요.<br>해외 배송도, 캠핑도 문제없죠!</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon">👩‍🍳</div>
+                <h3>Pro Chef Taste</h3>
+                <p>한국 맛집의 비밀 레시피를<br>스틱 하나에 완벽하게 담았어요.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon">📱</div>
+                <h3>Smart Cooking</h3>
+                <p>QR만 찍으세요.<br>3분 컷 레시피 영상이 바로 뜹니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <h2 data-aos="fade-up">How to Magic</h2>
+        <div class="steps">
+            <div class="step" data-aos="fade-up" data-aos-delay="100">
+                <div class="step-num">01</div>
+                <div class="step-img">
+                    <img src="https://unifiedflex.com/wp-content/uploads/2023/07/stick-bags.jpg" alt="스틱 뜯기">
+                </div>
+                <h3>Tear it</h3>
+                <p>K1 스틱을 가볍게 톡 뜯으세요.</p>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-num">02</div>
+                <div class="step-img">
+                    <img src="https://images.unsplash.com/photo-1546554137-f86b9593a222?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="재료와 섞기">
+                </div>
+                <h3>Pour it</h3>
+                <p>물이나 재료 위에 솔솔 뿌려주세요.</p>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="300">
+                <div class="step-num">03</div>
+                <div class="step-img">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="완성된 요리">
+                </div>
+                <h3>Enjoy K-Food</h3>
+                <p>3분 만에 근사한 한식 완성!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Section -->
+    <section id="app" class="app-section">
+        <div class="app-content" data-aos="fade-right">
+            <h2>Scan & Cook</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 30px;">
+                요리가 처음이어도 걱정 마세요.<br>
+                패키지의 QR코드를 찍으면 전 세계 친구들이 올린<br>
+                다양한 레시피와 꿀팁을 볼 수 있어요.
+            </p>
+            <a href="#" class="cta-btn" style="background: white; color: var(--text-dark);">Download App (Coming Soon)</a>
+        </div>
+        <div class="app-visual" data-aos="fade-left">
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <img src="https://images.unsplash.com/photo-1556910103-1c02745a30bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60" alt="App Screen" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">Vogle</div>
+        <p>Copyright © 2026 Vogle Inc. All rights reserved.</p>
+        <p style="color: #666; font-size: 14px; margin-top: 10px;">Seoul, Republic of Korea</p>
+        <div class="social-links" style="margin-top: 20px;">
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+            <a href="#">YouTube</a>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+</html>
