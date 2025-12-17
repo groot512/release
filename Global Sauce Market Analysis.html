@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글로벌 및 국내 소스 시장 심층 분석 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Data Labels Plugin 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
+    <!-- Fonts: Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #ef4444;
+            margin-top: 8px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="mb-6 md:mb-0">
+                    <p class="text-blue-200 font-semibold tracking-wider uppercase text-sm mb-2">2024-2025 Market Research</p>
+                    <h1 class="text-4xl md:text-5xl font-black leading-tight mb-4">
+                        글로벌 소스 시장 <br>
+                        <span class="text-red-400">심층 분석 및 전망</span>
+                    </h1>
+                    <p class="text-blue-100 max-w-2xl text-lg">
+                        전 세계 소스 시장의 10년 트렌드, 국내 시장의 성장, 그리고 K-Sauce의 해외 진출 전략 보고서
+                    </p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20">
+                    <div class="text-center">
+                        <p class="text-sm text-blue-200">2024 글로벌 시장 규모 (추정)</p>
+                        <p class="text-4xl font-bold text-white mt-1">약 129.5조 원</p>
+                        <div class="mt-2 text-xs bg-red-500 text-white px-2 py-1 rounded inline-block">CAGR +5.2%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-12 space-y-20">
+
+        <!-- Section 1: Global Market Trend -->
+        <section id="global-market">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 section-title">1. 전세계 소스 시장 규모 (최근 10년)</h2>
+                <p class="mt-4 text-slate-600 leading-relaxed max-w-4xl">
+                    지난 10년간 시장은 연평균 4~5% 성장했습니다. 특히 팬데믹 이후 가정 내 조리 수요가 유지되며, 2024년 시장 규모는 약 129조 원에 달할 것으로 추정됩니다.
+                </p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl card-shadow border border-slate-100">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold text-blue-900">글로벌 소스 시장 규모 추이</h3>
+                    <span class="text-sm text-slate-500">단위: 조 원 (KRW)</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="globalTrendChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Domestic Market -->
+        <section id="domestic-market">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800 section-title">2. 국내 소스 시장 규모</h2>
+                    <p class="mt-4 text-slate-600 leading-relaxed">
+                        국내 소스 시장은 HMR(가정간편식) 시장 확대와 함께 성장 중입니다. 2023년 기준 약 2.3조 원 규모를 돌파했습니다.
+                    </p>
+                    <ul class="mt-6 space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-red-500 mr-2 text-xl">📈</span>
+                            <span class="text-slate-700"><strong>성장 요인:</strong> 만능 소스, 파우치형 소용량 제품 인기</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl card-shadow border border-slate-100">
+                    <h3 class="text-xl font-semibold text-blue-900 mb-4">국내 시장 성장 (단위: 조 원)</h3>
+                    <div class="chart-container">
+                        <canvas id="koreaMarketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Liquid vs Powder Distribution -->
+        <section id="form-factor" class="bg-blue-50 -mx-4 px-4 py-12 md:rounded-3xl">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8 text-center">
+                    <h2 class="text-3xl font-bold text-slate-800 section-title">3. 액상류 vs 분말형 소스 분포</h2>
+                    <p class="mt-4 text-slate-600 max-w-3xl mx-auto">
+                        국내는 액상 비중이 압도적이나, 해외는 시즈닝 문화로 인해 분말형 비중이 40%에 육박합니다.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Domestic Chart -->
+                    <div class="bg-white p-6 rounded-xl card-shadow">
+                        <h3 class="text-center font-bold text-lg mb-2">🇰🇷 국내 시장 (Domestic)</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="domesticPieChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Overseas Chart -->
+                    <div class="bg-white p-6 rounded-xl card-shadow">
+                        <h3 class="text-center font-bold text-lg mb-2">🌎 해외 시장 (Global)</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="globalPieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 & 5: E-commerce & Global Favorites -->
+        <section id="ecommerce-products">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- E-commerce Share -->
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 section-title mb-6">4. 채널별 점유율</h2>
+                    <p class="mb-4 text-slate-600 text-sm">
+                        북미는 아마존이 과반을 점유하며, 아시아는 알리바바 등 로컬 플랫폼 강세입니다. (단위: %)
+                    </p>
+                    <div class="bg-white p-6 rounded-xl card-shadow border border-slate-100">
+                        <div class="chart-container">
+                            <canvas id="ecommerceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Global Favorites Bubble -->
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 section-title mb-6">5. 품목별 포지셔닝</h2>
+                    <p class="mb-4 text-slate-600 text-sm">
+                        매운 소스(K-Sauce 포함)는 점유율은 낮으나 성장률이 가장 높은 '기회 시장'에 위치합니다.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl card-shadow border border-slate-100">
+                        <div class="chart-container">
+                            <canvas id="bubbleChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-xs text-center text-slate-500">
+                            X축: 성장률 / Y축: 점유율 / 원 크기: 매출규모 (숫자: 점유율)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Corporate Strategy -->
+        <section id="corporate-strategy">
+            <h2 class="text-3xl font-bold text-slate-800 section-title mb-8">6. 대기업 진출 및 해외 성공 사례</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow border-t-4 border-red-500">
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">S양식품 (Buldak)</h3>
+                        <p class="text-slate-600 text-sm">유튜브 'Fire Noodle Challenge' 바이럴을 통해 라면 소스를 독립 제품화하여 월마트 등 메인스트림 진입.</p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow border-t-4 border-blue-500">
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">C제일제당 (Bibigo)</h3>
+                        <p class="text-slate-600 text-sm">'Gotchu(고추)' 등 현지화 네이밍 전략 및 매운맛 단계 세분화로 진입 장벽 낮춤.</p>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl overflow-hidden card-shadow border-t-4 border-yellow-500">
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">O뚜기 (Global)</h3>
+                        <p class="text-slate-600 text-sm">베트남 생산 거점을 활용하여 마요네즈, 치즈 소스 등 비한식 소스의 현지화 수출 확대.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Future Growth (Radar) -->
+        <section id="future-outlook" class="mb-12">
+            <div class="flex flex-col md:flex-row items-center gap-12 bg-white p-8 rounded-2xl card-shadow border border-slate-200">
+                <div class="flex-1">
+                    <h2 class="text-3xl font-bold text-slate-800 section-title mb-6">7. K-소스의 경쟁력 비교</h2>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        글로벌 평균 대비 K-소스는 '건강'과 '맛의 독창성'에서 높은 평가를 받으나, '가격 경쟁력'과 '유통 접근성' 보완이 필요합니다.
+                    </p>
+                </div>
+                <div class="flex-1 w-full">
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-slate-400 py-12 border-t border-slate-200">
+            <p class="mb-2">© 2025 Market Insights Team.</p>
+            <p class="text-xs">Data Sources: Euromonitor, Statista (2024 Estimates)</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- Register Plugin ---
+        Chart.register(ChartDataLabels);
+
+        // --- Colors ---
+        const colorPrimary = '#1e3a8a';
+        const colorSecondary = '#3b82f6';
+        const colorAccent = '#ef4444';
+        const colorTeal = '#06b6d4';
+        const colorYellow = '#eab308';
+        const colorGray = '#94a3b8';
+
+        // --- Common Options ---
+        const baseOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { top: 20 } }, // Give space for labels at top
+            plugins: {
+                tooltip: {
+                    backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                    titleFont: { family: "'Noto Sans KR', sans-serif" },
+                    bodyFont: { family: "'Noto Sans KR', sans-serif" },
+                    padding: 10,
+                    cornerRadius: 6
+                },
+                legend: {
+                    labels: {
+                        font: { family: "'Noto Sans KR', sans-serif", size: 12 },
+                        color: '#475569',
+                        boxWidth: 12,
+                        padding: 15
+                    },
+                    position: 'top',
+                    align: 'center'
+                },
+                datalabels: {
+                    display: false // Default off, enable per chart
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // 1. Global Market (Line)
+            new Chart(document.getElementById('globalTrendChart'), {
+                type: 'line',
+                data: {
+                    labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+                    datasets: [{
+                        label: '시장 규모 (조 원)',
+                        data: [90.0, 94.5, 99.4, 104.7, 108.1, 114.1, 119.0, 122.9, 126.1, 129.5],
+                        borderColor: colorPrimary,
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: colorAccent,
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    ...baseOptions,
+                    plugins: {
+                        ...baseOptions.plugins,
+                        datalabels: {
+                            display: true,
+                            align: 'top',
+                            anchor: 'end',
+                            offset: 4,
+                            formatter: function(value) { return Math.round(value) + '조'; },
+                            font: { weight: 'bold', size: 10 },
+                            color: colorPrimary
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: false, min: 80, grid: { color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // 2. Korea Market (Bar)
+            new Chart(document.getElementById('koreaMarketChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['2019년', '2020년', '2021년', '2022년', '2023년'],
+                    datasets: [{
+                        label: '국내 시장 규모',
+                        data: [1.85, 2.05, 2.15, 2.24, 2.32],
+                        backgroundColor: [colorGray, colorSecondary, colorSecondary, colorPrimary, colorAccent],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    ...baseOptions,
+                    plugins: {
+                        ...baseOptions.plugins,
+                        datalabels: {
+                            display: true,
+                            align: 'end',
+                            anchor: 'end',
+                            offset: -5, // Put slightly above or inside top
+                            formatter: function(value) { return value + '조'; },
+                            font: { weight: 'bold', size: 12 },
+                            color: '#1e293b' // Dark text for visibility
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, max: 2.8 }, // Add headroom
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // 3. Form Factor (Pies) - Domestic
+            new Chart(document.getElementById('domesticPieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['액상형', '분말형'],
+                    datasets: [{
+                        data: [78, 22],
+                        backgroundColor: [colorPrimary, colorAccent],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    ...baseOptions,
+                    cutout: '50%',
+                    plugins: {
+                        ...baseOptions.plugins,
+                        datalabels: {
+                            display: true,
+                            color: '#fff',
+                            font: { weight: 'bold', size: 14 },
+                            formatter: (value) => value + '%'
+                        }
+                    }
+                }
+            });
+
+            // 3. Form Factor (Pies) - Global
+            new Chart(document.getElementById('globalPieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['액상형', '분말형'],
+                    datasets: [{
+                        data: [62, 38],
+                        backgroundColor: [colorSecondary, colorYellow],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    ...baseOptions,
+                    cutout: '50%',
+                    plugins: {
+                        ...baseOptions.plugins,
+                        datalabels: {
+                            display: true,
+                            color: '#fff',
+                            font: { weight: 'bold', size: 14 },
+                            formatter: (value) => value + '%'
+                        }
+                    }
+                }
+            });
+
+            // 4. E-commerce (Stacked Bar)
+            new Chart(document.getElementById('ecommerceChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['북미', '아시아', '유럽'],
+                    datasets: [
+                        { label: '아마존', data: [55, 10, 35], backgroundColor: colorPrimary },
+                        { label: '이베이', data: [15, 5, 10], backgroundColor: colorSecondary },
+                        { label: '로컬 대형몰', data: [5, 65, 15], backgroundColor: colorAccent },
+                        { label: '기타', data: [25, 20, 40], backgroundColor: colorGray }
+                    ]
+                },
+                options: {
+                    ...baseOptions,
+                    indexAxis: 'y',
+                    plugins: {
+                        ...baseOptions.plugins,
+                        datalabels: {
+                            display: true,
+                            color: '#fff',
+                            font: { size: 11 },
+                            formatter: (value) => value > 5 ? value + '%' : '' // Hide if too small
+                        }
+                    },
+                    scales: {
+                        x: { stacked: true, grid: { display: false } },
+                        y: { stacked: true, grid: { display: false } }
+                    }
+                }
+            });
+
+            // 5. Bubble Chart
+            new Chart(document.getElementById('bubbleChart'), {
+                type: 'bubble',
+                data: {
+                    datasets: [
+                        { label: '케첩', data: [{x: 2, y: 30, r: 25}], backgroundColor: colorAccent },
+                        { label: '마요네즈', data: [{x: 3, y: 35, r: 30}], backgroundColor: colorYellow },
+                        { label: '간장', data: [{x: 5, y: 15, r: 15}], backgroundColor: colorPrimary },
+                        { label: '매운 소스', data: [{x: 12, y: 8, r: 10}], backgroundColor: colorTeal }
+                    ]
+                },
+                options: {
+                    ...baseOptions,
+                    plugins: {
+                        ...baseOptions.plugins,
+                        datalabels: {
+                            display: true,
+                            align: 'center',
+                            anchor: 'center',
+                            color: '#fff', // White text on bubbles
+                            font: { weight: 'bold', size: 11 },
+                            formatter: function(value, context) {
+                                // Show Label if big enough, else just value
+                                const label = context.dataset.label;
+                                return context.dataset.data[0].r > 15 ? label : value.y + '%';
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: '성장률 (%)' } },
+                        y: { title: { display: true, text: '점유율 (%)' } }
+                    }
+                }
+            });
+
+            // 7. Radar
+            new Chart(document.getElementById('radarChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['가격', '건강', '맛', '브랜드', '유통', '패키지'],
+                    datasets: [{
+                        label: 'K-소스',
+                        data: [70, 95, 98, 85, 75, 80],
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderColor: colorAccent,
+                        pointBackgroundColor: colorAccent,
+                    }, {
+                        label: '글로벌 평균',
+                        data: [85, 75, 70, 90, 95, 85],
+                        backgroundColor: 'rgba(30, 58, 138, 0.2)',
+                        borderColor: colorPrimary,
+                        pointBackgroundColor: colorPrimary,
+                    }]
+                },
+                options: {
+                    ...baseOptions,
+                    scales: {
+                        r: {
+                            suggestedMin: 50, suggestedMax: 100,
+                            pointLabels: { font: { size: 12 } }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
