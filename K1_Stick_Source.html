@@ -132,11 +132,13 @@
             z-index: 2;
             display: flex;
             justify-content: center;
+            flex-direction: column; /* Stack image and slogan vertically */
+            align-items: center;
         }
 
         .hero-image img {
-            width: 90%;
-            max-width: 500px;
+            width: 100%;
+            max-width: 650px;
             border-radius: 20px;
             box-shadow: 20px 20px 0px var(--bright-orange);
             transform: rotate(-3deg);
@@ -147,9 +149,21 @@
             transform: rotate(0deg) scale(1.02);
         }
 
+        /* New Slogan Style inside Hero */
+        .hero-slogan {
+            margin-top: 50px; /* Space from image */
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            color: #2E5C38; /* Dark Green to harmonize with the Mint/Yellow-Green background */
+            text-align: center;
+            font-weight: 600;
+            line-height: 1.5;
+            max-width: 600px;
+        }
+
         /* Features Section */
         .features {
-            padding: 100px 5%;
+            padding: 100px 5%; /* Restore padding */
             text-align: center;
         }
 
@@ -929,7 +943,10 @@
             <a href="#" class="cta-btn" onclick="toggleAmazonPage(true)" style="background-color: var(--bright-orange); color: white;">Get Early Access 🚀</a>
         </div>
         <div class="hero-image" data-aos="fade-left">
-            <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="맛있는 한식 한상 차림">
+            <img src="https://images.unsplash.com/photo-1580651315530-69c8e0026377?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="맛있는 한식 한상 차림">
+            <div class="hero-slogan">
+                "Selling culture through Korea's signature sauces,<br>communicating with the world."
+            </div>
         </div>
     </section>
 
